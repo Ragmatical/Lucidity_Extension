@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			a#orange {
+				position:absolute;
+				top:55px;
+				right:5px;
+				border:solid 1px black;
+				padding:5px;
+				cursor:pointer;
+			}
+
+			a#identify {
+				position:absolute;
+				top:125px;
+				right:5px;
+				border:solid 1px black;
+				padding:5px;
+				cursor:pointer;
+			}
+
+			a#notorange {
+				position:absolute;
+				top:200px;
+				right:5px;
+				border:solid 1px black;
+				padding:5px;
+				cursor:pointer;
+			}
+			a:hover {
+				background-color:#EFEFEF;
+			}
+		</style>
+	</head>
+	<body>
+
+		<!-- THE ELEMENT WHERE THE VIDEO IS GETTING DISPLAY -->
+		<video playsinline></video>
+
+		<!-- THE ELEMENT WHERE THE IMAGE IS GETTING SAVED -->
+		<canvas></canvas>
+
+		<a id="orange">Orange</a>
+		<a id='identify'>Identify</a>
+		<a id="notorange">Not Orange</a>
+
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+		<script>
+			/* VARIABLES */
+			var ngrokUrl =  'https://2deb1043.ngrok.io/'; //'https://ai.experimentdrivenlife.com/capture/'
+			var width = 640;
+			var height = 480;
+			var constraints = {
+				audio: false
+				, video: {
+					width: width, height: height
+					, facingMode: "environment"
+				}
+			};
+			var videoIsOn = false;
+			var userInteracted = false;
+			var canvas = document.querySelector('canvas');
+			var video = document.querySelector('video');
+			var orange = document.querySelector('#orange');
+			var notorange = document.querySelector('#notorange');
+			var identify = document.querySelector('#identify');
+			var context = canvas.getContext('2d');
+			var startIndex = 0;
+			var model;
+			canvas.width = 640;
+			canvas.height = 480;
+
+			/* FUNCTION TO TAKE THE PICTURE */
+			function captureMultiplePicture() {
+
+				if(!videoIsOn || !userInteracted) return;
+				/* GRABBING THE PICTURE FROM THE VIDEO */
+				context.drawImage(video, 0, 0, width, height);
+				var link = document.getElementById('spam');
+				link.setAttribute('download', `image${startIndex++}.png`);
+				link.setAttribute('href', canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream'));
+				setTimeout(function() {
+					link.click();
+				}, 1000);
+			}
+
+			/* SETTING UP THE VIDEO */
+			function setupVideo() {
+				if(userInteracted) return;
+				userInteracted = true;
+				navigator
+					.mediaDevices
+					.getUserMedia(constraints)
+					.then(function(mediaStream) {
+						var video = document.querySelector('video');
+						video.srcObject = mediaStream;
+						video.onloadedmetadata = function(e) {
+							/* PLAY THE VIDEO WHEN CAMERA IS ON */
+							video.play();
+							videoIsOn = true;
+
+						};
+					})
+					.catch(function(err) {
+						console.log(err.name + ": " + err.message);
+					});
+			}
+
+			/* INTERACT WITH THE PAGE */
+			document.body.addEventListener('click', function() {
+				setupVideo()
+			})
+
+			document.body.addEventListener('touchend', function() {
+				setupVideo()
+			});
+
+			function sendData(path) {
+				userInteracted = true;
+				if(!videoIsOn || !userInteracted) return;
+				/* GRABBING THE PICTURE FROM THE VIDEO */
+				context.drawImage(video, 0, 0, width, height);
+
+				var imageDataToSend = canvas.toDataURL();
+				var req = new XMLHttpRequest();
+				req.open('POST', ngrokUrl + path, true);
+				req.setRequestHeader('content-type', 'application/json');
+				req.onreadystatechange = function() {
+					if (req.readyState != 4) {
+						return;
+					}
+					console.log(req.response)
+				}
+				req.send(JSON.stringify({ image: imageDataToSend }));
+			}
+
+			orange.addEventListener('click', function(e) {
+				//sendData('saveimage/orange');
+				sendData('saveimage/orange')
+			})
+
+			notorange.addEventListener('click', function(e) {
+				//sendData('saveimage/notorange');
+				sendData('saveimage/notorange')
+			})
+
+			identify.addEventListener('click', function(e) {
+
+				// TAKES A PICTURE FROM THE VIDEO AND DRAWS IT ON THE CANVAS:
+				context.drawImage(video, 0, 0, width, height);
+
+				// TURNS THE PICTURE INTO A SINGLE MATRIX OF GREY PIXELS
+				const greyLevelData = tf.browser.fromPixels(canvas, 1);
+
+				// RESIZES THE IMAGE TO BE 64 by 64 PIXELS
+				const smallerImage = tf.image.resizeNearestNeighbor(greyLevelData, [64,64]);
+
+				// PUTTING OUR IMAGE MATRIX INTO A LIST
+				const singleImageTensor = smallerImage.expandDims(0);
+
+				// RUNNING THE PREDICTION
+				const prediction = model.predict(singleImageTensor);
+
+				// OUTPUTING THE PREDICTION
+				const result = prediction.arraySync()[0];
+
+				// DETERMINING IT IF IS AN ORAGE OR NOT
+				const answer = result[0] > result[1] ? 'Not an Orange' : 'Orange';
+				alert(answer)
+			});
+
+			tf.loadLayersModel(ngrokUrl + '/model.json') /*'https://joy.wisen.space/teach/model.json'*/
+			.then(function(_model) {
+				model = _model;
+			})
+
+
+		</script>
+	</body>
+</html>

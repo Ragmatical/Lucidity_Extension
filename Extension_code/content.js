@@ -7,7 +7,7 @@ function sendData(data) {
 			var req = new XMLHttpRequest();
 
 			// Opening up a connection with the server to 'POST' data
-				req.open('POST', 'mongodb://joosting:pronetosheep@geekformers.com:27018/knowledge?authSource=admin', true);
+				req.open('POST', 'http://localhost:8081', true);
 
 			// Explain to the server that we are sending the data in json format
 				req.setRequestHeader('content-type', 'application/json')
