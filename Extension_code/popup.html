@@ -11,9 +11,9 @@
   	<div id='container'>
   		<h3><center>Lucidity</center></h3>
   		<div class='buttoncontainer'>
-		  	<button class="tablink" onclick="openPage('todo', this, 'red')">Todos</button>
-			<button class="tablink" onclick="openPage('rewards', this, 'red')" id="defaultOpen">Rewards</button>
-			<button class="tablink" onclick="openPage('settings', this, 'red')">Settings</button>
+		  <button id='btodo' class="tablink" page='todo' color='red'>Todos</button>
+			<!-- <button class="tablink" onclick="openPage('rewards', this, 'red')" id="defaultOpen">Rewards</button>
+			<button class="tablink" onclick="openPage('settings', this, 'red')">Settings</button> -->
 		</div>
 
 		<div id="todo" class="tabcontent">
@@ -122,6 +122,12 @@
 			// Get the element with id="defaultOpen" and click on it
 			document.getElementById("defaultOpen").click();function f(){
 			}
+
+      document.getElementById('btodo').addEventListener('click', function() {
+          var color = this.getAttribute('color');
+          var page = this.getAttribute('color');
+          openPage(page, this, color);
+      })
 	</script>
 	<script>
 		//globals
