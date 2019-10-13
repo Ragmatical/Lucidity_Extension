@@ -21,6 +21,13 @@ function getLists(){
     xhr.send()
 }
 
+function sendUserData(url){
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', `https://lucidity.ninja/userdata/5d7e5db36ce4b5a013795834?site=${url}`)
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.send();
+}
+
 
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse){
@@ -32,18 +39,20 @@ chrome.runtime.onMessage.addListener(
             } else{
                 // console.log(url)
                 sendResponse({res: 'BLOCK'})
-                
+
             }
         } if (mode === 1) {
             if (blacklist.some(el => url.includes(el))){
                 sendResponse({res: 'BLOCK'})
             }
         } if (mode === 2) {
+						sendUserData(url)
             return
         } if (mode === 3) {
             if(blacklist.some(el => url.includes(el))){
                 sendResponse({res: 'BLOCK'})
             } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el))){
+								sendUserData(url)
                 sendResponse({res: 'AI'})
             }
         }
