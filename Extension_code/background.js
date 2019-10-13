@@ -1,17 +1,38 @@
-var mode = 0;
-var whitelist = ["https://www.schoology.com", "https://www.desmos.com/"]
+var mode = 1;
+var whitelist = []
 
-var blacklist = ["www.google.com", "www.youtube.com"]
+var blacklist = []
+
+
+function getLists(){
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', 'https://lucidity.ninja/blackWhiteList/5d7e5db36ce4b5a013795834')
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.onreadystatechange = (res) => {
+        if (xhr.readyState != 4 || xhr.status > 300) {
+            return;
+        }
+        var bwdata = JSON.parse(xhr.responseText);
+        for (i=0; i<bwdata.length; i++){
+            if(bwdata[i].type === "blacklist") blacklist.push(bwdata[i].url)
+            else if(bwdata[i].type === "whitelist") whitelist.push(bwdata[i].url)
+        }
+   }
+    xhr.send()
+}
+
 
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse){
         var url = req.site;
+        getLists()
         if (mode === 0) {
             if (whitelist.some(el => url.includes(el))){
                 return
             } else{
                 // console.log(url)
                 sendResponse({res: 'BLOCK'})
+                
             }
         } if (mode === 1) {
             if (blacklist.some(el => url.includes(el))){
