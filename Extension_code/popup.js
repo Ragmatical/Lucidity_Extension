@@ -4,6 +4,13 @@ var username = document.querySelector(#username)
 var password = document.querySelector(#password)
 var loginButton = document.querySelector(#loginButton)
 
+chrome.storage.sync.get(['username'], function(result){
+	
+})
+chrome.storage.sync.get(['password'], function(result){
+
+})
+
 function getLists(){
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', '/blackWhiteList/5d7e5db36ce4b5a013795834');
@@ -41,8 +48,15 @@ function sendLoginData(data){
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', '/users/login');
 	xhr.setRequestHeader('content-type', 'application/json');
-	xhr.onreadystatechange = readyStateChange;
-  xhr.send(JSON.stringify(data));
+	xhr.onreadystatechange = (res) => {
+			if (xhr.readyState != 4 || xhr.status > 300) {
+                return;
+            }
+        var data = JSON.parse(xhr.responseText);
+        chrome.storage.sync.set({username: data.username})
+				chrome.storage.sync.set({password: data.password})
+    };
+    xhr.send(JSON.stringify(data));
 }
 
 loginButton.addEventListener('click', sendLoginData({username, password}))
