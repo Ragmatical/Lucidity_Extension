@@ -1,3 +1,23 @@
+
+
+document.getElementById("settingsTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "visible";
+  document.getElementById("whitelistPanel").style.visibility = "hidden";
+  document.getElementById("home").style.visibility = "hidden";
+})
+
+document.getElementById("whitelistTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "hidden";
+  document.getElementById("whitelistPanel").style.visibility = "visible";
+  document.getElementById("home").style.visibility = "hidden";
+})
+
+document.getElementById("homeTab").addEventListener('click', function(e) {
+  document.getElementById("settings").style.visibility = "hidden";
+  document.getElementById("whitelistPanel").style.visibility = "hidden";
+  document.getElementById("home").style.visibility = "visible";
+})
+
 // var blacklist = document.querySelector('#blacklist')
 // var whitelist = document.querySelector('#whitelist')
 var username = document.querySelector('#username')
@@ -6,8 +26,9 @@ var loginButton = document.querySelector('#loginButton')
 
 chrome.storage.sync.get(['id'], function(result){
 	if(!result.id){
+
 	}else{
-		window.alert("logged in")
+		console.log('logged in')
 	}
 })
 
@@ -54,7 +75,7 @@ function sendLoginData(data){
             }
         var data = JSON.parse(xhr.responseText);
         chrome.storage.sync.set({id: data.id})
-				window.alert("logged in")
+				console.log("logged in")
     };
     xhr.send(JSON.stringify(data));
 }
