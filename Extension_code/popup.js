@@ -67,17 +67,24 @@ function convertLists(data){
 
 function sendLoginData(data){
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '/users/login');
+  console.log('here')
+	xhr.open('POST', 'https://lucidity.ninja/users/login');
+  console.log('here')
 	xhr.setRequestHeader('content-type', 'application/json');
+  console.log('here')
 	xhr.onreadystatechange = (res) => {
 			if (xhr.readyState != 4 || xhr.status > 300) {
                 return;
             }
+            console.log(xhr,responseText)
         var data = JSON.parse(xhr.responseText);
         chrome.storage.sync.set({id: data.id})
 				console.log("logged in")
     };
-    xhr.send(JSON.stringify(data));
+  console.log(data)
+  xhr.send(JSON.stringify(data));
 }
 
-loginButton.addEventListener('click', sendLoginData({username, password}))
+loginButton.addEventListener('click', function(){
+  sendLoginData({username:username.value, password:password.value})
+})
