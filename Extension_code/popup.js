@@ -1,5 +1,8 @@
 var blacklist = document.querySelector(#blacklist)
 var whitelist = document.querySelector(#whitelist)
+var username = document.querySelector(#username)
+var password = document.querySelector(#password)
+var loginButton = document.querySelector(#loginButton)
 
 function getLists(){
 	var xhr = new XMLHttpRequest();
@@ -33,3 +36,13 @@ function convertLists(data){
 	}
 );
 }
+
+function sendLoginData(data){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', '/users/login');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = readyStateChange;
+  xhr.send(JSON.stringify(data));
+}
+
+loginButton.addEventListener('click', sendLoginData({username, password}))
