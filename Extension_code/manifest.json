@@ -28,7 +28,8 @@
 
   "permissions": [
 
-   "activeTab"
+   "activeTab",
+   "storage"
 
    ]
 

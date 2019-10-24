@@ -1,14 +1,14 @@
-var blacklist = document.querySelector(#blacklist)
-var whitelist = document.querySelector(#whitelist)
-var username = document.querySelector(#username)
-var password = document.querySelector(#password)
-var loginButton = document.querySelector(#loginButton)
+// var blacklist = document.querySelector('#blacklist')
+// var whitelist = document.querySelector('#whitelist')
+var username = document.querySelector('#username')
+var password = document.querySelector('#password')
+var loginButton = document.querySelector('#loginButton')
 
-chrome.storage.sync.get(['username'], function(result){
-	
-})
-chrome.storage.sync.get(['password'], function(result){
-
+chrome.storage.sync.get(['id'], function(result){
+	if(!result.id){
+	}else{
+		window.alert("logged in")
+	}
 })
 
 function getLists(){
@@ -53,8 +53,8 @@ function sendLoginData(data){
                 return;
             }
         var data = JSON.parse(xhr.responseText);
-        chrome.storage.sync.set({username: data.username})
-				chrome.storage.sync.set({password: data.password})
+        chrome.storage.sync.set({id: data.id})
+				window.alert("logged in")
     };
     xhr.send(JSON.stringify(data));
 }
