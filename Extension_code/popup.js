@@ -26,7 +26,7 @@ var loginButton = document.querySelector('#loginButton')
 
 chrome.storage.sync.get(['id'], function(result){
 	if(!result.id){
-
+    console.log('')
 	}else{
 		console.log('logged in')
 	}
