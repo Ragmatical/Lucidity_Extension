@@ -22,7 +22,7 @@ document.getElementById("homeTab").addEventListener('click', function(e) {
 // var whitelist = document.querySelector('#whitelist')
 var username = document.querySelector('#username')
 var password = document.querySelector('#password')
-var loginButton = document.querySelector('#loginButton')
+var loginBtn = document.querySelector('#loginBtn')
 
 chrome.storage.sync.get(['id'], function(result){
 	if(!result.id){
@@ -85,6 +85,6 @@ function sendLoginData(data){
   xhr.send(JSON.stringify(data));
 }
 
-loginButton.addEventListener('click', function(){
+loginBtn.addEventListener('click', function(){
   sendLoginData({username:username.value, password:password.value})
 })

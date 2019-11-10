@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
   <link href="popup.css" rel="stylesheet">
+  <link href="dist/hamburgers.css" rel="stylesheet">
   <style>
   </style>
 </head>
@@ -15,10 +16,12 @@
   <div><img src="icon.png" id="logo">
     <div>
       <div id="loginFields">
-        <input type="text" placeholder="Username" class="input">
-        <input type="password" placeholder="Password" class="input">
+        <input type="text" placeholder="Username" class="input" id="username">
+        <input type="password" placeholder="Password" class="input" id="password">
         <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
       </div>
+
+
       <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
 
       <!--
