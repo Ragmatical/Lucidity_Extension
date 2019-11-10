@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html>
- <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
-   <link href="popup.css" rel="stylesheet">
-   <style>
-   </style>
- </head>
- <body>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
+  <link href="popup.css" rel="stylesheet">
+  <style>
+  </style>
+</head>
+
+<body>
 
 
-  <img src="ontrackLogo.png" style="position: relative; transform: scale(0.27); right: 50%; margin-top: -40%;">
-  <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
+  <div><img src="icon.png" id="logo">
+    <div>
+      <div id="loginFields">
+        <input type="text" placeholder="Username" class="input">
+        <input type="password" placeholder="Password" class="input">
+        <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
+      </div>
+      <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
 
-
+      <!--
    <hr style="position: absolute; top: 55px; width: 95%;">
-
-   <!-- top menu bar-->
-<!--   <div class='tabs'>
+-->
+      <!-- top menu bar-->
+      <!--   <div class='tabs'>
       <div class="tabs-1" id="homeTab">
         Todos
       </div>
@@ -39,8 +47,8 @@
 
    <br><br>
 -->
-   <!-- Hamburger Menu -->
-<!--
+      <!-- Hamburger Menu -->
+      <!--
    <div id="table">
      <div class="tr" id="openSettings">
         <div class="td"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
@@ -56,8 +64,8 @@
     </div>
   </div>
 -->
-   <!-- Settings Menu -->
-<!--
+      <!-- Settings Menu -->
+      <!--
    <div id="settings">
      <center><input id="settingsPassword" type="password" style="border-top: none; border-left: none; border-right: none; border-color: red; outline: none; height: 2.5em; font-size: 15px;" placeholder="password"></center>
      <hr />
@@ -66,8 +74,8 @@
 
        <h3>
 -->
-         <!-- Educational Search -->
-<!--       </h3>
+      <!-- Educational Search -->
+      <!--       </h3>
        <input checked name="timer" type="radio" value="on"><span>On</span>
        <input name="timer" type="radio" value="off"><span>Off</span>
     </center>
@@ -147,5 +155,6 @@
 
 
 -->
- </body>
- </html>
+</body>
+
+</html>
