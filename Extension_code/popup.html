@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
   <link href="popup.css" rel="stylesheet">
-  <link href="dist/hamburgers.css" rel="stylesheet">
   <style>
   </style>
 </head>
@@ -21,8 +20,30 @@
         <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
       </div>
 
+      <div id="Lists" class="tabcontent">
+        <h1>Whitelist - Blacklist</h1>
+        <p>WHITELIST</p>
+      </div>
 
-      <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
+      <div id="Todos" class="tabcontent">
+        <h1>Todos</h1>
+        <p>Paris is the capital of France.</p>
+      </div>
+
+      <div id="Rewards" class="tabcontent">
+        <h1>Rewards</h1>
+        <p>Tokyo is the capital of Japan.</p>
+      </div>
+
+      <div id="Settings" class="tabcontent">
+        <h1>Settings</h1>
+        <p>Oslo is the capital of Norway.</p>
+      </div>
+
+      <button class="tablink" onclick="openTab('Lists', this, 'red')" id="defaultOpen"></button>
+      <button class="tablink" onclick="openTab('Todos', this, 'green')"></button>
+      <button class="tablink" onclick="openTab('Rewards', this, 'blue')"></button>
+      <button class="tablink" onclick="openTab('Settings', this, 'orange')"></button>
 
       <!--
    <hr style="position: absolute; top: 55px; width: 95%;">
@@ -153,11 +174,10 @@
 
      </div>
 </div>
-    <script src="ui2.js"></script>
-   <script src="popup.js"></script>
-
-
 -->
+      <script src="popup.js"></script>
+
+
 </body>
 
 </html>
