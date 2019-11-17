@@ -14,36 +14,53 @@
 
   <div><img src="icon.png" id="logo">
     <div>
-      <div id="loginFields">
-        <input type="text" placeholder="Username" class="input" id="username">
-        <input type="password" placeholder="Password" class="input" id="password">
-        <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
-      </div>
 
-      <div id="Lists" class="tabcontent">
-        <h1>Whitelist - Blacklist</h1>
-        <p>WHITELIST</p>
-      </div>
+  <div id="loginFields">
+    <input type="text" placeholder="Username" class="input" id="username">
+    <input type="password" placeholder="Password" class="input" id="password">
+    <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
+    <div id="error">Login</div>
+  </div>
 
-      <div id="Todos" class="tabcontent">
-        <h1>Todos</h1>
-        <p>Do these!</p>
-      </div>
+  <div id="Lists" class="tabcontent">
+    <h1>Whitelist - Blacklist</h1>
+    <p>WHITELIST</p>
+  </div>
 
-      <div id="Rewards" class="tabcontent">
-        <h1>Rewards</h1>
-        <p>Cash in Rewards!</p>
-      </div>
+  <div id="Todos" class="tabcontent">
+    <h1>Todos</h1>
+    <p>Do these!</p>
+  </div>
 
-      <div id="Settings" class="tabcontent">
-        <h1>Settings</h1>
-        <p>You can adjust the settings here</p>
-      </div>
+  <div id="Rewards" class="tabcontent">
+    <h1>Rewards</h1>
+    <p>Cash in Rewards!</p>
+  </div>
 
-      <button class="tablink" onclick="openTab('Lists', this, 'red')"><img src="lists.svg" class="icon"></button>
-      <button class="tablink" onclick="openTab('Todos', this, 'green')"><img src="todos.svg" class="icon"></button>
-      <button class="tablink" onclick="openTab('Rewards', this, 'blue')">$</button>
-      <button class="tablink" onclick="openTab('Settings', this, 'orange')"><img src="gear.svg" class="icon"</button>
+  <div id="Settings" class="tabcontent">
+    <h1>Settings</h1>
+    <p>You can adjust the settings here</p>
+  </div>
+
+      <div class="tabs">
+        <div class="tabs-1" id="homeTab">
+          <img src="todos.svg" width="25" height="25">
+        </div>
+        <div class="tabs-2" id="settingsTab">
+          <img src="gear.svg" width="25" height="25">
+        </div>
+        <div class="tabs-3" id="whitelistTab">
+          <img src="lists.svg" width="40" height="40">
+        </div>
+        <div class="tabs-4" id="rewardsTab">
+          <svg style="display: block; margin: auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+      </div>
 
       <!--
    <hr style="position: absolute; top: 55px; width: 95%;">

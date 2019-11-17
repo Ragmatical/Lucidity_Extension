@@ -25,32 +25,9 @@ var password = document.querySelector('#password')
 var loginBtn = document.querySelector('#loginBtn')
 var loginStatus = false;
 
-function openTab(tabName, elmnt, color) {
-  // Hide all elements with class="tabcontent" by default */
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].style.backgroundColor = "";
-  }
-  document.getElementById(tabName).style.display = "block";
-  elmnt.style.backgroundColor = color;
-}
-
-chrome.storage.sync.get(['id'], function(result){
-	if(!result.id){
-    console.log('')
-	}else{
-		console.log('logged in')
-	}
-})
-
 function getLists(){
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/blackWhiteList/5d7e5db36ce4b5a013795834');
+	xhr.open('GET', 'https://www.lucidity.ninja/blackWhiteList/5d7e5db36ce4b5a013795834');
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 			if (xhr.readyState != 4 || xhr.status > 300) {
@@ -81,6 +58,41 @@ function convertLists(data){
 );
 }
 
+var homeTab = document.getElementById("homeTab")
+var settingsTab = document.getElementById("settingsTab")
+var whitelistTab = document.getElementById("whitelistTab")
+var rewardsTab = document.getElementById("rewardsTab")
+
+homeTab.addEventListener('click', function(){
+  openTab("Todos")
+})
+
+settingsTab.addEventListener('click', function(){
+  openTab("Settings")
+})
+
+whitelistTab.addEventListener('click', function(){
+  openTab("Lists")
+})
+
+rewardsTab.addEventListener('click', function(){
+  openTab("Rewards")
+})
+
+function openTab(tab){
+  console.log(document.getElementsByClassName("tabcontent"));
+  Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+  document.getElementById(tab).style.display = "block";
+}
+
+Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+homeTab.style.display="none";
+settingsTab.style.display="none";
+whitelistTab.style.display="none";
+rewardsTab.style.display="none";
+document.getElementById("error").style.visibility = "hidden"
+
+
 function sendLoginData(data){
 	var xhr = new XMLHttpRequest();
   console.log("made request")
@@ -97,10 +109,21 @@ function sendLoginData(data){
           console.log("data id: ", data._id)
         })
 				console.log("logged in")
+        if(JSON.parse(xhr.responseText)._id) {
+          loginStatus = true
+          document.getElementById("loginFields").style.display="none"
+          document.getElementById("Todos").style.display="block"
+          homeTab.style.display="initial";
+          settingsTab.style.display="initial";
+          whitelistTab.style.display="initial";
+          rewardsTab.style.display="initial";
+        } else{
+          document.getElementById("error").innerHTML = "Invalid Username/Password"
+          document.getElementById("error").style.visibility = "visible"
+        }
     };
   console.log("data: ", data)
   xhr.send(JSON.stringify(data));
-  loginStatus = true
 }
 
 loginBtn.addEventListener('click', function(){
