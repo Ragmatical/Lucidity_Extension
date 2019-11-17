@@ -129,3 +129,104 @@ function sendLoginData(data){
 loginBtn.addEventListener('click', function(){
   sendLoginData({username:username.value, password:password.value})
 })
+
+var myNodelist = document.getElementsByTagName("LI");
+var list = document.querySelector('ul');
+var allButton = document.querySelector('#allButton');
+var activeButton = document.querySelector('#activeButton');
+var completedButton = document.querySelector('#completedButton');
+var submitButton = document.querySelector('#submit')
+var addButton = document.querySelector('#addBtn')
+
+function hideActiveTasks(){
+	// if() < go thru each task using a loop n hide the non checked ones
+	showAllTasks()
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  if(myNodelist[i].className != 'checked'){
+	  	myNodelist[i].style.display = 'none';
+	  }
+	}
+}
+
+function hideCompletedTasks(){
+	// if() < go thru each task using a loop n hide the checked ones
+	showAllTasks()
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  if(myNodelist[i].className === 'checked'){
+	  	myNodelist[i].style.display = 'none';
+	  }
+	}
+}
+
+function showAllTasks(){
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  myNodelist[i].style.display = 'block';
+	}
+}
+
+// Create a "close" button and append it to each list item
+function addCloseButton(){
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  var span = document.createElement("SPAN");
+	  var txt = document.createTextNode("\u00D7");
+	  span.className = "close";
+	  span.appendChild(txt);
+	  myNodelist[i].appendChild(span);
+	}
+}
+
+
+// Click on a close button to hide the current list item
+
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    // div.style.display = "none";
+    div.remove()
+  }
+}
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.querySelector("#taskInput").value;
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.querySelector("#todoList").appendChild(li);
+  }
+  document.querySelector("#taskInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.remove();
+    }
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+allButton.addEventListener("click", showAllTasks);
+activeButton.addEventListener("click", hideCompletedTasks);
+completedButton.addEventListener("click", hideActiveTasks);
+addButton.addEventListener("click", newElement);
