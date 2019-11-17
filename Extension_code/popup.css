@@ -6,6 +6,15 @@ body {
   height: 400px;
 }
 
+.icon {
+  width: inherit;
+  height: inherit;
+  display: block;
+  padding: none;
+  margin: none;
+  align-items: center;
+}
+
 /* Style the tab buttons */
 .tablink {
   background-color: #555;
@@ -14,9 +23,9 @@ body {
   border: none;
   outline: none;
   cursor: pointer;
-  padding: 14px 16px;
   font-size: 17px;
   width: 25%;
+  align-items: center;
 }
 
 /* Change background color of buttons on hover */
@@ -26,7 +35,7 @@ body {
 
 /* Set default styles for tab content */
 .tabcontent {
-  color: white;
+  color: black;
   display: none;
   padding: 50px;
   text-align: center;

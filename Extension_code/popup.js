@@ -39,7 +39,6 @@ function openTab(tabName, elmnt, color) {
   document.getElementById(tabName).style.display = "block";
   elmnt.style.backgroundColor = color;
 }
-document.getElementById("defaultOpen").click();
 
 chrome.storage.sync.get(['id'], function(result){
 	if(!result.id){
