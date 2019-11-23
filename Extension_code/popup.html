@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
   <link href="popup.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -13,56 +14,93 @@
   <div><img src="icon.png" id="logo">
     <div>
 
-  <div id="loginFields">
-    <input type="text" placeholder="Username" class="input" id="username">
-    <input type="password" placeholder="Password" class="input" id="password">
-    <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
-    <div id="error">Login</div>
-  </div>
+      <div id="loginFields">
+        <input type="text" placeholder="Username" class="input" id="username">
+        <input type="password" placeholder="Password" class="input" id="password">
+        <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
+        <div id="error">Login</div>
+      </div>
 
-  <div id="Lists" class="tabcontent">
-    <h1>Whitelist - Blacklist</h1>
-    <p>WHITELIST</p>
-  </div>
+      <div id="Lists" class="tabcontent">
+        <h1>Whitelist - Blacklist</h1>
+        <p>WHITELIST</p>
+      </div>
 
-  <div id="Todos" class="tabcontent">
-    <h1>Todos</h1>
-    <div>
-			<input type="text" id="taskInput" placeholder="task...">
-			<span id="addBtn">Add</span>
-		</div>
-		<div id='container'>
-			<button id='allButton' class='lucid-text-h5'>All</button>
-			<button id='activeButton' class='lucid-text-h5'>Active</button>
-			<button id='completedButton' class='lucid-text-h5'>Done</button>
-		</div>
+      <div id="Todos" class="tabcontent">
+        <h1>Todos</h1>
+        <div>
+          <input type="text" id="taskInput" placeholder="task...">
+          <span id="addBtn">Add</span>
+        </div>
+        <div id='container'>
+          <button id='allButton' class='lucid-text-h5'>All</button>
+          <button id='activeButton' class='lucid-text-h5'>Active</button>
+          <button id='completedButton' class='lucid-text-h5'>Done</button>
+        </div>
 
-		<ul id="todoList">
-		</ul>
-  </div>
+        <ul id="todoList">
+        </ul>
+      </div>
 
-  <div id="Rewards" class="tabcontent">
-    <h1>Rewards</h1>
-    <p>Cash in Rewards!</p>
-  </div>
+      <div id="Rewards" class="tabcontent">
+        <h1>Rewards</h1>
+        <p>Cash in Rewards!</p>
+      </div>
 
-  <div id="Settings" class="tabcontent">
-    <h1>Settings</h1>
-    <p>You can adjust the settings here</p>
-  </div>
+      <div id="Settings" class="tabcontent">
+        <h1>Settings</h1>
+        <p>You can adjust the settings here</p>
+      </div>
 
       <div class="tabs">
         <div class="tabs-1" id="homeTab">
+          <!--
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        -->
+          <i class="material-icons">
+            assignment
+          </i>
         </div>
-        <div class="tabs-2" id="settingsTab">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        <div class="tabs-2" id="whitelistTab">
+          <!--
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+            </path>
+          </svg>
+        -->
+          <i class="material-icons">
+            list
+          </i>
         </div>
-        <div class="tabs-3" id="whitelistTab">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg>
+        <div class="tabs-3" id="rewardsTab">
+          <!--
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="8" y1="6" x2="21" y2="6"></line>
+            <line x1="8" y1="12" x2="21" y2="12"></line>
+            <line x1="8" y1="18" x2="21" y2="18"></line>
+            <line x1="3" y1="6" x2="3" y2="6"></line>
+            <line x1="3" y1="12" x2="3" y2="12"></line>
+            <line x1="3" y1="18" x2="3" y2="18"></line>
+          </svg>
+        -->
+
+          <i class="material-icons">
+            hourglass_full
+          </i>
         </div>
-        <div class="tabs-4" id="rewardsTab">
-          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <div class="tabs-4" id="settingsTab">
+          <!--
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
+        -->
+
+          <i class="material-icons">
+            settings_applications
+          </i>
         </div>
       </div>
 
