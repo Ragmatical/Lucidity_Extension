@@ -226,7 +226,7 @@ function newElement() {
 }
 
 chrome.storage.sync.get(['id'], function(result) {
-  if (!result) {
+  if(!result) {
     return
   } else {
     loginStatus = true;
