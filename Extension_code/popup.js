@@ -226,12 +226,12 @@ function newElement() {
 }
 
 chrome.storage.sync.get(['id'], function(result) {
-  if(!result) {
-    return
-  } else {
+  if(Object.values(result)[0].startsWith('5')){
     loginStatus = true;
     console.log("Logged in from last time")
     loggedIn();
+  } else {
+    console.log("ID does not start with 5 or ID not found.")
   }
 })
 
