@@ -213,7 +213,7 @@ function newElement() {
 }
 
 chrome.storage.sync.get(['id'], function(result) {
-  if(Object.values(result)[0].startsWith('5')){
+  if (Object.values(result)[0].startsWith('5')) {
     loginStatus = true;
     console.log("Logged in from last time")
     loggedIn();
@@ -228,6 +228,235 @@ list.addEventListener('click', function(ev) {
     ev.target.classList.toggle('checked');
   }
 }, false);
+
+// var $lockButton = document.querySelector('#lockButton');
+var $addWhite = document.querySelector('#addWhite');
+var $addBlack = document.querySelector('#addBlack');
+var whitelist = document.getElementById('whitelist');
+var blacklist = document.getElementById('blacklist');
+
+var topmostlist = document.getElementById('topmostlist');
+var recentlist = document.getElementById('recentlist');
+//var mode = 0;
+
+/** function toggleLock(){
+	if($lockButton.classList.contains('checked')){
+		$lockButton.classList.remove('fa-lock');
+		$lockButton.classList.add('fa-lock-open');
+		mode = 1;
+	} else {
+		$lockButton.classList.add('fa-lock')
+		$lockButton.classList.remove('fa-lock-open')
+		mode = 0;
+	}
+	$lockButton.classList.toggle('checked')
+
+}
+**/
+
+function getLists() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/blackWhiteList/5d7e5db36ce4b5a013795834');
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.onreadystatechange = (res) => {
+    if (xhr.readyState != 4 || xhr.status > 300) {
+      return;
+    }
+    var data = JSON.parse(xhr.responseText);
+    convertLists(data);
+  };
+  xhr.send();
+}
+
+function getSitesVisited() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/userdata/report/5d7e5db36ce4b5a013795834');
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.onreadystatechange = (res) => {
+    if (xhr.readyState != 4 || xhr.status > 300) {
+      return;
+    }
+    var data = JSON.parse(xhr.responseText);
+    displayTimes(data);
+  };
+  xhr.send();
+}
+
+function displayTimes(data) {
+  var mostoccurence = data.sort((a, b) => (a.count > b.count) ? -1 : 1)
+  var topmostTimes = [mostoccurence[0]._id, mostoccurence[1]._id, mostoccurence[2]._id]
+  var recentTimes = [data[0]._id, data[1]._id, data[2]._id]
+  var red = topmostTimes[0].count / topmostTimes.length * 360
+  // var orange = topmostTimes
+  // document.getElementsByClassName('pie')[0].style.backgroundImage = `conic-gradient(red 0deg, orange 0 ${}deg, yellow 0 80deg, green 0 290deg, blue 0 360deg)`
+
+  topmostlist.innerHTML = '';
+  topmostTimes.forEach(function(item) {
+    var li = document.createElement('li')
+    li.innerHTML = `<a href='${item}' class='topmost'>${item}</a>`
+    topmostlist.appendChild(li);
+  })
+  // <div class="pie" style="--segment1: 40; --segment2: 70; --segment3: 90;"></div>
+  recentlist.innerHTML = '';
+  recentTimes.forEach(function(item) {
+    var li = document.createElement('li')
+    li.innerHTML = `<a href='${item}' class='recent'>${item}</a>`
+    recentlist.appendChild(li);
+  })
+
+}
+
+function convertLists(data) {
+  data.forEach(function(d) {
+    if (d.type === "whitelist") {
+      var blahWhite = document.createElement('li');
+      var whitelink = document.createElement('a');
+      var whiteDelete = document.createElement('button');
+
+      whitelink.innerHTML = d.url;
+      whitelink.href = "//" + d.url;
+      whiteDelete.innerHTML = "X";
+
+
+      blahWhite.appendChild(whitelink);
+      blahWhite.appendChild(whiteDelete);
+      whitelist.appendChild(blahWhite);
+
+      whiteDelete.addEventListener('click', function() {
+        whitelist.removeChild(blahWhite)
+        deleteItem({
+          url: d.url,
+          user: "5d7e5db36ce4b5a013795834"
+        });
+      });
+    } else if (d.type === "blacklist") {
+      var blahBlack = document.createElement('li');
+      var blacklink = document.createElement('a');
+      var blackDelete = document.createElement('button');
+
+      blacklink.innerHTML = d.url;
+      blacklink.href = "//" + d.url;
+      blackDelete.innerHTML = "X";
+
+      blahBlack.appendChild(blacklink);
+      blahBlack.appendChild(blackDelete);
+      blacklist.appendChild(blahBlack);
+
+      blackDelete.addEventListener('click', function() {
+        blacklist.removeChild(blahBlack)
+        deleteItem({
+          url: d.url,
+          user: "5d7e5db36ce4b5a013795834"
+        });
+      });
+    } else {
+      return;
+    }
+  });
+}
+
+function addWhite() {
+  /**	if(mode === 0){
+  		window.alert("You are not authenticated to make changes, please click the lock.")
+  	}else
+  		**/
+  var newWhite = prompt("Enter the URL of the whitelisted site.");
+  var blahWhite = document.createElement('li');
+  var whitelink = document.createElement('a');
+  var whiteDelete = document.createElement('button');
+
+  if (newWhite === "") {
+    return;
+  }
+  whiteDelete.innerHTML = "X";
+
+  whitelink.innerHTML = newWhite;
+  whitelink.href = "//" + newWhite;
+  blahWhite.appendChild(whitelink);
+  blahWhite.appendChild(whiteDelete);
+
+  whitelist.appendChild(blahWhite);
+  save({
+    type: 'whitelist',
+    url: newWhite
+  });
+
+  whiteDelete.addEventListener('click', function() {
+    whitelist.removeChild(blahWhite);
+    deleteItem({
+      url: newWhite,
+      user: "5d7e5db36ce4b5a013795834"
+    });
+  });
+
+  //	}
+}
+
+function addBlack() {
+  /**
+  	if(mode === 0){
+  		window.alert("You are not authenticated to make changes, please click the lock.")
+  	}else
+  	**/
+  var newBlack = prompt("Enter the URL of the blacklisted site.");
+  var blahBlack = document.createElement('li');
+  var blacklink = document.createElement('a');
+  var blackDelete = document.createElement('button');
+
+  if (newBlack === "") {
+    return;
+  }
+  blackDelete.innerHTML = "X";
+
+  blacklink.innerHTML = newBlack;
+  blacklink.href = "//" + newBlack;
+  blahBlack.appendChild(blacklink);
+  blahBlack.appendChild(blackDelete);
+
+  blacklist.appendChild(blahBlack);
+  save({
+    type: 'blacklist',
+    url: newBlack
+  });
+
+  blackDelete.addEventListener('click', function() {
+    blacklist.removeChild(blahBlack);
+    deleteItem({
+      url: newBlack,
+      user: "5d7e5db36ce4b5a013795834"
+    });
+  });
+  //	}
+}
+
+function deleteItem(data, parent, blah) {
+
+  xhr = new XMLHttpRequest();
+  xhr.open('DELETE', '/blackwhitelist/5d7e5db36ce4b5a013795834');
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.onreadystatechange = (res) => {
+    console.log(xhr.responseText);
+  };
+  xhr.send(JSON.stringify(data));
+
+}
+
+function save(data) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/blackwhitelist/5d7e5db36ce4b5a013795834');
+
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.onreadystatechange = (res) => {
+    console.log(xhr.responseText);
+  };
+  xhr.send(JSON.stringify(data));
+}
+
+// $lockButton.addEventListener('click', toggleLock)
+$addWhite.addEventListener('click', addWhite);
+$addBlack.addEventListener('click', addBlack);
+getLists();
+getSitesVisited();
 
 allButton.addEventListener("click", showAllTasks);
 activeButton.addEventListener("click", hideCompletedTasks);

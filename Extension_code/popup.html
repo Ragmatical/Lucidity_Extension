@@ -22,69 +22,89 @@
       </div>
 
       <div id="Lists" class="tabcontent">
-        <h1>Whitelist - Blacklist</h1>
-        <p>WHITELIST</p>
-      </div>
-
-      <div id="Todos" class="tabcontent">
-        <h1>Todos</h1>
         <div>
-          <input type="text" id="taskInput" placeholder="task...">
-          <span id="addBtn">Add</span>
-        </div>
-        <div id='container'>
-          <button id='allButton' class='lucid-text-h5'>All</button>
-          <button id='activeButton' class='lucid-text-h5'>Active</button>
-          <button id='completedButton' class='lucid-text-h5'>Done</button>
+          <h4>Blacklist</h4>
+          <ul id='blacklist'>
+          </ul>
+          <button id='addBlack'>Blacklist a website</button>
         </div>
 
-        <ul id="todoList">
-        </ul>
+        <div>
+          <h4>Whitelist</h4>
+          <ul id='whitelist'>
+          </ul>
+          <button id='addWhite'>Whitelist a website</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="Todos" class="tabcontent">
+      <h1>Todos</h1>
+      <div>
+        <input type="text" id="taskInput" placeholder="task...">
+        <span id="addBtn">Add</span>
+      </div>
+      <div id='container'>
+        <button id='allButton' class='lucid-text-h5'>All</button>
+        <button id='activeButton' class='lucid-text-h5'>Active</button>
+        <button id='completedButton' class='lucid-text-h5'>Done</button>
       </div>
 
-      <div id="Rewards" class="tabcontent">
-        <h1>Rewards</h1>
-        <p>Cash in Rewards!</p>
-      </div>
+      <ul id="todoList">
+      </ul>
+    </div>
 
-      <div id="Settings" class="tabcontent">
-        <h1>Settings</h1>
-        <p>You can adjust the settings here</p>
-      </div>
+    <div id="Rewards" class="tabcontent">
+      <h1>Rewards</h1>
+      <p>Cash in Rewards!</p>
+    </div>
 
-      <div id="Search" class="tabcontent">
-        <h1>Search</h1>
-        <p>Educational Search Bar!</p>
-      </div>
+    <div id="Settings" class="tabcontent">
+      <h1>Settings</h1>
+      <label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
+    </div>
 
-      <div class="tabs">
-        <div class="tabs-1" id="homeTab">
-          <i class="material-icons">
-            assignment
-          </i>
-        </div>
-        <div class="tabs-2" id="whitelistTab">
-          <i class="material-icons">
-            list
-          </i>
-        </div>
-        <div class="tabs-3" id="rewardsTab">
-          <i class="material-icons">
-            hourglass_full
-          </i>
-        </div>
-        <div class="tabs-4" id="settingsTab">
-          <i class="material-icons">
-            settings_applications
-          </i>
-        </div>
-        <div class="tabs-5" id="searchTab">
-          <i class="material-icons">
-            search
-          </i>
+    <div id="Search" class="tabcontent">
+      <div id='main'>
+        <br />
+        <input class="input" type="text" name="search" placeholder="Search.." id='search'>
+        <div id='links'>
         </div>
       </div>
-      <script src="popup.js"></script>
+    </div>
+
+    <div class="tabs">
+      <div class="tabs-1" id="homeTab">
+        <i class="material-icons">
+          assignment
+        </i>
+      </div>
+      <div class="tabs-2" id="whitelistTab">
+        <i class="material-icons">
+          list
+        </i>
+      </div>
+      <div class="tabs-3" id="rewardsTab">
+        <i class="material-icons">
+          hourglass_full
+        </i>
+      </div>
+      <div class="tabs-4" id="settingsTab">
+        <i class="material-icons">
+          settings_applications
+        </i>
+      </div>
+      <div class="tabs-5" id="searchTab">
+        <i class="material-icons">
+          search
+        </i>
+      </div>
+    </div>
+    <script src="popup.js"></script>
 </body>
 
 </html>
