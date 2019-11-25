@@ -1,23 +1,3 @@
-// document.getElementById("settingsTab").addEventListener('click', function(e) {
-//   document.getElementById("settings").style.visibility = "visible";
-//   document.getElementById("whitelistPanel").style.visibility = "hidden";
-//   document.getElementById("home").style.visibility = "hidden";
-// })
-//
-// document.getElementById("whitelistTab").addEventListener('click', function(e) {
-//   document.getElementById("settings").style.visibility = "hidden";
-//   document.getElementById("whitelistPanel").style.visibility = "visible";
-//   document.getElementById("home").style.visibility = "hidden";
-// })
-//
-// document.getElementById("homeTab").addEventListener('click', function(e) {
-//   document.getElementById("settings").style.visibility = "hidden";
-//   document.getElementById("whitelistPanel").style.visibility = "hidden";
-//   document.getElementById("home").style.visibility = "visible";
-// })
-
-// var blacklist = document.querySelector('#blacklist')
-// var whitelist = document.querySelector('#whitelist')
 var username = document.querySelector('#username')
 var password = document.querySelector('#password')
 var loginBtn = document.querySelector('#loginBtn')
@@ -57,6 +37,7 @@ var homeTab = document.getElementById("homeTab")
 var settingsTab = document.getElementById("settingsTab")
 var whitelistTab = document.getElementById("whitelistTab")
 var rewardsTab = document.getElementById("rewardsTab")
+var searchTab = document.getElementById("searchTab")
 
 homeTab.addEventListener('click', function() {
   openTab("Todos")
@@ -74,6 +55,10 @@ rewardsTab.addEventListener('click', function() {
   openTab("Rewards")
 })
 
+searchTab.addEventListener('click', function() {
+  openTab("Search")
+})
+
 function openTab(tab) {
   console.log(document.getElementsByClassName("tabcontent"));
   Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
@@ -85,6 +70,7 @@ homeTab.style.display = "none";
 settingsTab.style.display = "none";
 whitelistTab.style.display = "none";
 rewardsTab.style.display = "none";
+searchTab.style.display = "none";
 document.getElementById("error").style.visibility = "hidden"
 
 function loggedIn() {
@@ -95,6 +81,7 @@ function loggedIn() {
     settingsTab.style.display = "initial";
     whitelistTab.style.display = "initial";
     rewardsTab.style.display = "initial";
+    searchTab.style.display = "initial";
   } else {
     document.getElementById("error").innerHTML = "Invalid Username/Password"
     document.getElementById("error").style.visibility = "visible"

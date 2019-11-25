@@ -33,7 +33,7 @@ body {
   outline: none;
   cursor: pointer;
   font-size: 17px;
-  width: 25%;
+  width: 20%;
   align-items: center;
 }
 
@@ -62,6 +62,10 @@ body {
 }
 
 #Settings {
+  display: none;
+}
+
+#Search {
   display: none;
 }
 
@@ -338,16 +342,17 @@ hr {
   position: absolute;
   bottom: 10%;
   align-items: center;
+  width:100%;
+  display: block;
 }
 
 .tabs-1 {
   display: inline-block;
   text-align: center;
-  margin: auto;
-  width: 25%;
+  width: 20%;
   border-right: 1px solid black;
   transition: color 0.3s;
-  position: absolute;
+  padding: 15px;
 }
 
 .tabs-1:hover {
@@ -359,12 +364,10 @@ hr {
 .tabs-2 {
   display: inline-block;
   text-align: center;
-  margin: auto;
-  width: 25%;
+  width: 20%;
   border-right: 1px solid black;
   transition: color 0.3s;
-  position: absolute;
-  left: 25%
+  padding: 15px;
 }
 
 .tabs-2:hover {
@@ -376,12 +379,10 @@ hr {
 .tabs-3 {
   display: inline-block;
   text-align: center;
-  margin: auto;
-  width: 25%;
+  width: 20%;
   transition: color 0.3s;
-  position: absolute;
-  left: 50%;
   border-right: 1px solid black;
+  padding: 15px;
 }
 
 .tabs-3:hover {
@@ -393,11 +394,10 @@ hr {
 .tabs-4 {
   display: inline-block;
   text-align: center;
-  margin: auto;
-  width: 25%;
-  left: 75%;
-  position: absolute;
+  width: 20%;
   transition: color 0.3s;
+  border-right: 1px solid black;
+  padding: 15px;
 }
 
 .tabs-4:hover {
@@ -406,19 +406,18 @@ hr {
   transition: color 0.3s;
 }
 
-#home-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(113, 109, 218);
+.tabs-5 {
+  display: inline-block;
+  text-align: center;
+  width: 20%;
+  transition: color 0.3s;
+  padding: 15px;
 }
 
-#settings-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(255, 255, 255);
-}
-
-#whitelist-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(255, 255, 255);
+.tabs-5:hover {
+  cursor: pointer;
+  color: red;
+  transition: color 0.3s;
 }
 
 ul {
