@@ -1,157 +1,110 @@
 <!DOCTYPE html>
 <html>
- <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
-   <link href="popup.css" rel="stylesheet">
-   <style>
-   </style>
- </head>
- <body>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src gap://ready file://* *; style-src 'self' http://* https://* 'unsafe-inline'; script-src 'self' http://* https://* 'unsafe-inline' 'unsafe-eval'">
+  <link href="popup.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
 
 
-  <img src="ontrackLogo.png" style="position: relative; transform: scale(0.27); right: 50%; margin-top: -40%;">
-  <!--<svg id="options" style="position: absolute; top: 18px; right: 10px; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>-->
+  <div><img src="icon.png" id="logo">
+    <div>
 
-
-   <hr style="position: absolute; top: 55px; width: 95%;">
-
-   <!-- top menu bar-->
-   <div class='tabs'>
-      <div class="tabs-1" id="homeTab">
-        Todos
+      <div id="loginFields">
+        <input type="text" placeholder="Username" class="input" id="username">
+        <input type="password" placeholder="Password" class="input" id="password">
+        <div class="btnContainer"><button id="loginBtn" class="btn2">Login</button></div>
+        <div id="error">Login</div>
       </div>
-      <div class="tabs-2" id="settingsTab">
-        Settings
+
+      <div id="Lists" class="tabcontent">
+        <div>
+          <h4>Blacklist</h4>
+          <ul id='blacklist'>
+          </ul>
+          <button id='addBlack'>Blacklist a website</button>
+        </div>
+
+        <div>
+          <h4>Whitelist</h4>
+          <ul id='whitelist'>
+          </ul>
+          <button id='addWhite'>Whitelist a website</button>
+        </div>
+
       </div>
-      <div class="tabs-3" id="whitelistTab">
-        Rewards
-      </div>
-   </div>
-
-   <hr/>
-
-   <div id="tab-area">
-     <div id="home">
-       <!-- <iframe src="https://www.lucidity.ninja/todo.html" width="100%" height="100%" frameborder="0"></iframe>
-       -->
-       <input id='username' type='text'></input>
-       <input id='password' type='password'><input>
-       <button id='loginButton'>Login<button>
-
-     </div>
-
-   <br><br>
-
-
-   <!-- Hamburger Menu
-   <div id="table">
-     <div class="tr" id="openSettings">
-        <div class="td"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></div>
-        <div class="td">Settings</div>
-     </div>
-     <div class="tr" id="openWhitelistPanel">
-        <div class="td"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M12 18v-6M9 15h6"/></svg></div>
-        <div class="td">Whitelist</div>
-      </div>
-     <div class="tr">
-      <div class="td"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-      <div class="td">Link Account</div>
     </div>
-  </div> -->
 
-   <!--Settings Menu-->
-   <div id="settings">
-     <center><input id="settingsPassword" type="password" style="border-top: none; border-left: none; border-right: none; border-color: red; outline: none; height: 2.5em; font-size: 15px;" placeholder="password"></center>
-     <hr />
-    <center>
+    <div id="Todos" class="tabcontent">
+      <h1>Todos</h1>
+      <div>
+        <input type="text" id="taskInput" placeholder="task...">
+        <span id="addBtn">Add</span>
+      </div>
+      <div id='container'>
+        <button id='allButton' class='lucid-text-h5'>All</button>
+        <button id='activeButton' class='lucid-text-h5'>Active</button>
+        <button id='completedButton' class='lucid-text-h5'>Done</button>
+      </div>
 
+      <ul id="todoList">
+      </ul>
+    </div>
 
-       <h3>
-         Educational Search
-       </h3>
-       <input checked name="timer" type="radio" value="on"><span>On</span>
-       <input name="timer" type="radio" value="off"><span>Off</span>
-    </center>
-     <hr />
-     <div id='bottom' style='display:flex;'>
-				<div style='margin:auto'>
-					<h4>Blacklist</h4>
-					<ul id='blacklist'>
-					</ul>
-					<button id='addBlack'>Blacklist a website</button>
-				</div>
+    <div id="Rewards" class="tabcontent">
+      <h1>Rewards</h1>
+      <p>Cash in Rewards!</p>
+    </div>
 
-				<div style='margin:auto'>
-					<h4>Whitelist</h4>
-					<ul id='whitelist'>
-					</ul>
-					<button id='addWhite'>Whitelist a website</button>
-				</div>
+    <div id="Settings" class="tabcontent">
+      <h1>Settings</h1>
+      <label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label>
+    </div>
 
-			</div>
-      <hr />
-      <center>
-         <h3>
-           Tool On
-         </h3>
-         <input checked name="timer" type="radio" value="on"><span>On</span>
-         <input name="timer" type="radio" value="off"><span>Off</span>
-      </center>
+    <div id="Search" class="tabcontent">
+      <div id='main'>
+        <br />
+        <input class="input" type="text" name="search" placeholder="Search.." id='search'>
+        <div id='links'>
+        </div>
+      </div>
+    </div>
 
-     <!-- <h3 style="text-align: center;font-family: system-ui, sans-serif !important; font-size: 16px;">Settings</h3>
-     <h3>Block Mode</h3>
-     <input name="mode" type="radio" value="0.15"><span>Light</span>
-     <input checked name="mode" type="radio" value="0.2"><span>Moderate</span>
-     <input name="mode" type="radio" value="0.25"><span>Strict</span>
-     <h3>Timer Widget</h3>
-     <input checked name="timer" type="radio" value="on"><span>On</span>
-     <input name="timer" type="radio" value="off"><span>Off</span>
-     <h3>Enhanced Block</h3><svg id="enhancedWarning" style="position: absolute; left: 43%; top: 58%; cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ee0d0d" stroke-width="3" stroke-linecap="square" stroke-linejoin="arcs"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12" y2="17"></line></svg>
-     <input name="enhanced" type="radio" value="on"><span>On</span>
-     <input checked name="enhanced" type="radio" value="off"><span>Off</span>
-     <button id="saveSettings">Save</button> -->
-   </div>
+    <div class="tabs">
+      <div class="tabs-1" id="homeTab">
+        <i class="material-icons">
+          assignment
+        </i>
+      </div>
+      <div class="tabs-2" id="whitelistTab">
+        <i class="material-icons">
+          list
+        </i>
+      </div>
+      <div class="tabs-3" id="rewardsTab">
+        <i class="material-icons">
+          hourglass_full
+        </i>
+      </div>
+      <div class="tabs-4" id="settingsTab">
+        <i class="material-icons">
+          settings_applications
+        </i>
+      </div>
+      <div class="tabs-5" id="searchTab">
+        <i class="material-icons">
+          search
+        </i>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
 
-
-   <div id="overlay"></div>
-
-
-   <div id="whitelistPanel">
-     <iframe src="https://www.lucidity.ninja/rewards.html" width="100%" height="100%" frameborder="0"></iframe>
-  </div>
-
-   <!-- <center><button id="power">Turn Extension On</button></center>
-   <br><br> -->
-
-
-   <!-- <button id="superBlock">Turn on enhanced mode!</button>
-  <br><br> -->
-
-   <!-- <h1 style="text-align: center">Actions:</h1>-->
-   </div>
-
-
-   <!-- <div class="tabs">
-     <div class="tabs-1" id="homeTab">
-       <svg id="home-icon" style="display:block; margin:auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M20 9v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9"/><path d="M9 22V12h6v10M2 10.6L12 2l10 8.6"/></svg>
-     </div>
-     <div class="tabs-2" id="settingsTab">
-       <svg id="settings-icon" style= "display: block; margin: auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-     </div>
-     <div class="tabs-3" id="whitelistTab">
-       <svg id="whitelist-icon" style= "display: block; margin: auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><path d="M14 3v5h5M12 18v-6M9 15h6"/></svg>
-     </div> -->
-     <!-- <div class="tabs-4">
-       <svg style= "display: block; margin: auto" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-     </div> -->
-   <!-- </div> -->
-
-
-   <!-- <script src="ui2.js"></script> -->
-   <script src="popup.js"></script>
-
-
-
- </body>
- </html>
+</html>

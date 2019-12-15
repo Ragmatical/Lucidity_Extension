@@ -1,5 +1,5 @@
-var mode = 1;
-var whitelist = []
+var mode = 2;
+var whitelist = ["lucidity.ninja/rewards.html"]
 
 var blacklist = []
 

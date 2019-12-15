@@ -1,11 +1,73 @@
-@import url('https://fonts.googleapis.com/css?family=Merriweather:700');
-@import url('https://fonts.googleapis.com/css?family=Lato');
-
 body {
   width: 300px;
   height: 400px;
 }
 
+.icon {
+  width: inherit;
+  height: inherit;
+  display: block;
+  padding: none;
+  margin: 3vw;
+  align-items: center;
+}
+
+#error {
+  color: red;
+  display: block;
+}
+
+.tabs {
+  width: 100%;
+  display: block;
+  align-items: center;
+  bottom: 0%;
+}
+
+/* Style the tab buttons */
+.tablink {
+  background-color: #555;
+  color: white;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 17px;
+  width: 20%;
+  align-items: center;
+}
+
+/* Change background color of buttons on hover */
+.tablink:hover {
+  background-color: #777;
+}
+
+/* Set default styles for tab content */
+.tabcontent {
+  color: black;
+  padding: 50px;
+  text-align: center;
+  display: block;
+}
+
+/* Style each tab content individually */
+#Lists {
+  display: none;
+}
+
+#Todos {}
+
+#Rewards {
+  display: none;
+}
+
+#Settings {
+  display: none;
+}
+
+#Search {
+  display: none;
+}
 
 h1 {
   font-family: 'Merriweather', serif;
@@ -15,9 +77,147 @@ h1 {
   color: black;
 }
 
+img#logo {
+  display: block;
+  width: 40%;
+  margin: auto;
+}
 
+.input {
+  font-family: 'Lato', sans-serif;
+  font-size: 11pt;
+  border-top: 1.5pt;
+  border-left: 1.5pt;
+  border-right: 1.5pt;
+  border-color: #A5A5AF;
+  align-items: center;
+  width: auto;
+  margin: 5%
+}
+
+div#loginFields {
+  display: block;
+  margin: auto;
+  width: 50%;
+  margin-top: 10%;
+  align-items: center;
+}
+
+.btnContainer {
+  display: block;
+  width: 100%;
+  align-items: center;
+  margin: auto;
+}
 
 .btn2 {
+  width: 100%;
+  border: 2px solid #e06967;
+  padding: 6px 16px;
+  border-radius: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  outline: none;
+  background: #fff;
+  color: #e06967;
+  font-size: 11px;
+}
+
+.btn2:hover {
+  background: #e06967;
+  color: #fff;
+  border: 2px solid #e06967;
+  border-radius: 12px;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 28px;
+  width: 150px;
+  background: #f2f2f2;
+  border: 1px solid;
+  border-color: white #f7f7f7 whitesmoke;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown:before, .dropdown:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 4px dashed;
+  border-color: #888888 transparent;
+  pointer-events: none;
+}
+
+.dropdown:before {
+  border-bottom-style: solid;
+  border-top: none;
+}
+
+.dropdown:after {
+  margin-top: 7px;
+  border-top-style: solid;
+  border-bottom: none;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 130%;
+  margin: 0;
+  padding: 6px 8px 6px 10px;
+  height: 28px;
+  line-height: 14px;
+  font-size: 12px;
+  color: #62717a;
+  text-shadow: 0 1px white;
+  background: #f2f2f2;
+  /* Fallback for IE 8 */
+  background: rgba(0, 0, 0, 0) !important;
+  /* "transparent" doesn't work with Opera */
+  border: 0;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.dropdown-select:focus {
+  z-index: 3;
+  width: 100%;
+  color: #394349;
+  outline: 2px solid #49aff2;
+  outline: 2px solid -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+.dropdown-select>option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #f2f2f2;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.container {
+  text-align: center;
+}
+
+.timer {
+  font-size: 25px;
+  position: absolute;
+  top: 50px;
+  left: 70px;
+}
+
+#unblock {
   border: 2px solid #736cdb;
   padding: 6px 16px;
   border-radius: 12px;
@@ -30,121 +230,14 @@ h1 {
   font-size: 11px;
 }
 
-.btn2:hover {
-   background: #736cdb;
-   color: #fff;
-   border: 2px solid #736cdb;
-   border-radius: 12px;
- }
-
- .dropdown {
-   display: inline-block;
-   position: relative;
-   overflow: hidden;
-   height: 28px;
-   width: 150px;
-   background: #f2f2f2;
-   border: 1px solid;
-   border-color: white #f7f7f7 whitesmoke;
-   border-radius: 3px;
-   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
-   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
- }
-
- .dropdown:before, .dropdown:after {
-   content: '';
-   position: absolute;
-   z-index: 2;
-   top: 9px;
-   right: 10px;
-   width: 0;
-   height: 0;
-   border: 4px dashed;
-   border-color: #888888 transparent;
-   pointer-events: none;
- }
-
- .dropdown:before {
-   border-bottom-style: solid;
-   border-top: none;
- }
-
- .dropdown:after {
-   margin-top: 7px;
-   border-top-style: solid;
-   border-bottom: none;
- }
-
- .dropdown-select {
-   position: relative;
-   width: 130%;
-   margin: 0;
-   padding: 6px 8px 6px 10px;
-   height: 28px;
-   line-height: 14px;
-   font-size: 12px;
-   color: #62717a;
-   text-shadow: 0 1px white;
-   background: #f2f2f2; /* Fallback for IE 8 */
-   background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
-   border: 0;
-   border-radius: 0;
-   -webkit-appearance: none;
- }
-
- .dropdown-select:focus {
-   z-index: 3;
-   width: 100%;
-   color: #394349;
-   outline: 2px solid #49aff2;
-   outline: 2px solid -webkit-focus-ring-color;
-   outline-offset: -2px;
- }
-
- .dropdown-select > option {
-   margin: 3px;
-   padding: 6px 8px;
-   text-shadow: none;
-   background: #f2f2f2;
-   border-radius: 3px;
-   cursor: pointer;
- }
-
- .container {
-   text-align: center;
-
- }
-
- .timer {
-
-   font-size: 25px;
-   position: absolute;
-   top: 50px;
-   left: 70px;
- }
-
-
- #unblock {
-  border: 2px solid #736cdb;
-  padding: 6px 16px;
-  border-radius: 12px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  text-decoration: none;
-  outline: none;
-  background: #fff;
-  color: #736cdb;
-  font-size: 11px;
- }
-
- #unblock:hover {
+#unblock:hover {
   background: #736cdb;
-   color: #fff;
-   border: 2px solid #736cdb;
-   border-radius: 12px;
- }
+  color: #fff;
+  border: 2px solid #736cdb;
+  border-radius: 12px;
+}
 
-#table{
+#table {
   display: table;
   box-shadow: 0 0 1px 1px lightgray;
   z-index: 1000000;
@@ -156,20 +249,23 @@ h1 {
   right: 15px;
   visibility: hidden;
 }
-.tr{
+
+.tr {
   display: table-row;
   cursor: pointer;
 }
-.td{
+
+.td {
   display: table-cell;
   font-size: 20px;
-
   padding: 0.5em 0.25em;
   vertical-align: middle;
 }
+
 .tr:hover {
   background-color: lightgray;
 }
+
 #settings {
   z-index: 10000000000000;
   background-color: white;
@@ -198,17 +294,19 @@ h1 {
   color: #736cdb;
   font-size: 11px;
 }
+
 #saveSettings:hover {
   background: #736cdb;
-   color: #fff;
-   border: 2px solid #736cdb;
-   border-radius: 12px;
+  color: #fff;
+  border: 2px solid #736cdb;
+  border-radius: 12px;
 }
-#options:hover{
+
+#options:hover {
   background-color: lightgray;
 }
 
-#whitelistPanel{
+#whitelistPanel {
   z-index: 1000000000000000000000000000;
   position: absolute;
   right: 5%;
@@ -217,10 +315,9 @@ h1 {
   width: 90%;
   background-color: white;
   visibility: hidden;
-
-
 }
-#overlay{
+
+#overlay {
   z-index: 10000000000000000000;
   position: absolute;
   right: 0;
@@ -231,27 +328,7 @@ h1 {
   visibility: hidden;
 }
 
-#tutorial {
-  z-index: 10000000000000;
-  background-color: white;
-  box-shadow: 0 0 1px 1px lightgray;
-  height: 95%;
-  width: 95%;
-  top: 20px;
-  right: 2.5%;
-  top: 2.5%;
-  position: absolute;
-  padding: 0 1em;
-  box-sizing: border-box;
-  overflow: scroll;
-  visibility: hidden;
-}
-
-#exitTutorial:hover {
-  background-color: lightgray;
-}
-
-hr{
+hr {
   color: #333333;
 }
 
@@ -261,70 +338,272 @@ hr{
   padding-bottom: 10px;
   padding-top: 10px;
   border-radius: 25px;
-  margin-top:-35%;
+  margin-top: -35%;
+  position: absolute;
+  bottom: 10%;
+  align-items: center;
+  width: 100%;
+  display: block;
 }
 
 .tabs-1 {
   display: inline-block;
-  text-align:center;
-  margin:auto;
-  width: 32%;
-  border-right:1px solid black;
+  text-align: center;
+  width: 20%;
+  border-right: 1px solid black;
   transition: color 0.3s;
+  padding: 15px;
 }
 
-.tabs-1:hover{
-  cursor:pointer;
-  color:red;
+.tabs-1:hover {
+  cursor: pointer;
+  color: red;
   transition: color 0.3s;
 }
 
 .tabs-2 {
   display: inline-block;
-  text-align:center;
-  margin:auto;
-  width: 35%;
-  border-right:1px solid black;
+  text-align: center;
+  width: 20%;
+  border-right: 1px solid black;
   transition: color 0.3s;
+  padding: 15px;
 }
 
-.tabs-2:hover{
-  cursor:pointer;
-  color:red;
+.tabs-2:hover {
+  cursor: pointer;
+  color: red;
   transition: color 0.3s;
 }
 
 .tabs-3 {
   display: inline-block;
-  text-align:center;
-  margin:auto;
-  width: 28%;
+  text-align: center;
+  width: 20%;
   transition: color 0.3s;
+  border-right: 1px solid black;
+  padding: 15px;
 }
 
-.tabs-3:hover{
-  cursor:pointer;
-  color:red;
+.tabs-3:hover {
+  cursor: pointer;
+  color: red;
   transition: color 0.3s;
 }
 
 .tabs-4 {
   display: inline-block;
-  left: 80%;
+  text-align: center;
+  width: 20%;
+  transition: color 0.3s;
+  border-right: 1px solid black;
+  padding: 15px;
+}
+
+.tabs-4:hover {
+  cursor: pointer;
+  color: red;
+  transition: color 0.3s;
+}
+
+.tabs-5 {
+  display: inline-block;
+  text-align: center;
+  width: 20%;
+  transition: color 0.3s;
+  padding: 15px;
+}
+
+.tabs-5:hover {
+  cursor: pointer;
+  color: red;
+  transition: color 0.3s;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  /* make the list items unselectable */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* When clicked on, add a background color and strike out text */
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Add a "checked" mark when clicked on */
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+/* Style the close button */
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style the header */
+.header {
+  background-color: #f44336;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addBtn:hover {
+  background-color: #bbb;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10vmin;
+}
+
+#container button {
   width: 30%;
 }
 
-#home-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(113, 109, 218);
+ul {
+  width: 90%;
+  margin: auto;
 }
 
-#settings-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(255, 255, 255);
+#main {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2vw;
+  color: white;
+  text-align: center;
+  font-size: 2vw;
 }
 
-#whitelist-icon {
-  padding-bottom: 2px;
-  border-bottom: 3px solid rgb(255, 255, 255);
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+a {
+  display: block;
+  text-align: left;
+  font-size: 1.5vw;
+  color: #DA4743;
 }
