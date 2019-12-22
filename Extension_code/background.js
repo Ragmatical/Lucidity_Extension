@@ -1,4 +1,4 @@
-var mode = 2;
+var mode = 3;
 var whitelist = ["lucidity.ninja/rewards.html"]
 
 var blacklist = []
@@ -19,6 +19,18 @@ function getLists(){
         }
    }
     xhr.send()
+}
+
+function sendToAi(url) {
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', 'https://lucidity.ninja/bigbrain/5d7e5db36ce4b5a013795834')
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.onreadystatechange = (res) => {
+		if (xhr.readyState != 4 || xhr.status > 300) {
+			return;
+		}
+	}
+	xhr.send(url)
 }
 
 function sendUserData(url){
@@ -54,6 +66,7 @@ chrome.runtime.onMessage.addListener(
             } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el))){
 								sendUserData(url)
                 sendResponse({res: 'AI'})
+								sendToAi(url)
             }
         }
 
