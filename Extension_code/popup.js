@@ -1,7 +1,86 @@
+/********** GLOBALS *************/
 var username = document.querySelector('#username')
 var password = document.querySelector('#password')
 var loginBtn = document.querySelector('#loginBtn')
 var loginStatus = false;
+
+var homeTab = document.getElementById("homeTab")
+var settingsTab = document.getElementById("settingsTab")
+var whitelistTab = document.getElementById("whitelistTab")
+var rewardsTab = document.getElementById("rewardsTab")
+var searchTab = document.getElementById("searchTab")
+
+// var $lockButton = document.querySelector('#lockButton');
+var $addWhite = document.querySelector('#addWhite');
+var $addBlack = document.querySelector('#addBlack');
+var whitelist = document.getElementById('whitelist');
+var blacklist = document.getElementById('blacklist');
+
+var topmostlist = document.getElementById('topmostlist');
+var recentlist = document.getElementById('recentlist');
+
+var myNodelist = Array.from(document.getElementsByTagName("LI"));
+var list = document.querySelector('ul');
+var allButton = document.querySelector('#allButton');
+var activeButton = document.querySelector('#activeButton');
+var completedButton = document.querySelector('#completedButton');
+var submitButton = document.querySelector('#submit')
+var addButton = document.querySelector('#addBtn');
+
+// Click on a close button to hide the current list item
+var closeElements = Array.from(document.querySelectorAll(".close"));
+
+
+/********** FUNCTIONS *************/
+function loggedIn() {
+  if (loginStatus === true) {
+    document.getElementById("loginFields").style.display = "none"
+    document.getElementById("Todos").style.display = "block"
+    homeTab.style.display = "initial";
+    settingsTab.style.display = "initial";
+    whitelistTab.style.display = "initial";
+    rewardsTab.style.display = "initial";
+    searchTab.style.display = "initial";
+    getLists();
+    getSitesVisited();
+  } else {
+    document.getElementById("error").innerHTML = "Invalid Username/Password"
+    document.getElementById("error").style.visibility = "visible"
+  }
+}
+
+function sendLoginData(data) {
+  var xhr = new XMLHttpRequest();
+  console.log("made request")
+  xhr.open('POST', 'https://www.lucidity.ninja/users/login');
+  console.log('posted')
+  xhr.setRequestHeader('content-type', 'application/json');
+  xhr.onreadystatechange = (res) => {
+    if (xhr.readyState != 4 || xhr.status > 300) {
+      return;
+    }
+    console.log("response text", xhr.responseText)
+    var data = JSON.parse(xhr.responseText);
+    chrome.storage.sync.set({
+      id: data._id
+    }, function() {
+      console.log("data id: ", data._id)
+    })
+    console.log("logged in")
+    if (JSON.parse(xhr.responseText)._id) {
+      loginStatus = true
+      loggedIn();
+    }
+  };
+  console.log("data: ", data)
+  xhr.send(JSON.stringify(data));
+}
+
+function openTab(tab) {
+  console.log(document.getElementsByClassName("tabcontent"));
+  Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+  document.getElementById(tab).style.display = "block";
+}
 
 function getLists() {
   var xhr = new XMLHttpRequest();
@@ -32,104 +111,6 @@ function convertLists(data) {
     }
   });
 }
-
-var homeTab = document.getElementById("homeTab")
-var settingsTab = document.getElementById("settingsTab")
-var whitelistTab = document.getElementById("whitelistTab")
-var rewardsTab = document.getElementById("rewardsTab")
-var searchTab = document.getElementById("searchTab")
-
-homeTab.addEventListener('click', function() {
-  openTab("Todos")
-})
-
-settingsTab.addEventListener('click', function() {
-  openTab("Settings")
-})
-
-whitelistTab.addEventListener('click', function() {
-  openTab("Lists")
-})
-
-rewardsTab.addEventListener('click', function() {
-  openTab("Rewards")
-})
-
-searchTab.addEventListener('click', function() {
-  openTab("Search")
-})
-
-function openTab(tab) {
-  console.log(document.getElementsByClassName("tabcontent"));
-  Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
-  document.getElementById(tab).style.display = "block";
-}
-
-Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
-homeTab.style.display = "none";
-settingsTab.style.display = "none";
-whitelistTab.style.display = "none";
-rewardsTab.style.display = "none";
-searchTab.style.display = "none";
-document.getElementById("error").style.visibility = "hidden"
-
-function loggedIn() {
-  if (loginStatus === true) {
-    document.getElementById("loginFields").style.display = "none"
-    document.getElementById("Todos").style.display = "block"
-    homeTab.style.display = "initial";
-    settingsTab.style.display = "initial";
-    whitelistTab.style.display = "initial";
-    rewardsTab.style.display = "initial";
-    searchTab.style.display = "initial";
-  } else {
-    document.getElementById("error").innerHTML = "Invalid Username/Password"
-    document.getElementById("error").style.visibility = "visible"
-  }
-}
-
-
-function sendLoginData(data) {
-  var xhr = new XMLHttpRequest();
-  console.log("made request")
-  xhr.open('POST', 'https://www.lucidity.ninja/users/login');
-  console.log('posted')
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    if (xhr.readyState != 4 || xhr.status > 300) {
-      return;
-    }
-    console.log("response text", xhr.responseText)
-    var data = JSON.parse(xhr.responseText);
-    chrome.storage.sync.set({
-      id: data._id
-    }, function() {
-      console.log("data id: ", data._id)
-    })
-    console.log("logged in")
-    if (JSON.parse(xhr.responseText)._id) {
-      loginStatus = true
-      loggedIn();
-    }
-  };
-  console.log("data: ", data)
-  xhr.send(JSON.stringify(data));
-}
-
-loginBtn.addEventListener('click', function() {
-  sendLoginData({
-    username: username.value,
-    password: password.value
-  })
-})
-
-var myNodelist = document.getElementsByTagName("LI");
-var list = document.querySelector('ul');
-var allButton = document.querySelector('#allButton');
-var activeButton = document.querySelector('#activeButton');
-var completedButton = document.querySelector('#completedButton');
-var submitButton = document.querySelector('#submit')
-var addButton = document.querySelector('#addBtn')
 
 function hideActiveTasks() {
   // if() < go thru each task using a loop n hide the non checked ones
@@ -172,19 +153,6 @@ function addCloseButton() {
   }
 }
 
-
-// Click on a close button to hide the current list item
-
-var close = document.getElementsByClassName("close");
-var i;
-for (i = 0; i < close.length; i++) {
-  close[i].onclick = function() {
-    var div = this.parentElement;
-    // div.style.display = "none";
-    div.remove()
-  }
-}
-
 // Create a new list item when clicking on the "Add" button
 function newElement() {
   var li = document.createElement("li");
@@ -211,48 +179,6 @@ function newElement() {
     }
   }
 }
-
-chrome.storage.sync.get(['id'], function(result) {
-  if (Object.values(result)[0].startsWith('5')) {
-    loginStatus = true;
-    console.log("Logged in from last time")
-    loggedIn();
-  } else {
-    console.log("ID does not start with 5 or ID not found.")
-  }
-})
-
-// Add a "checked" symbol when clicking on a list item
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false);
-
-// var $lockButton = document.querySelector('#lockButton');
-var $addWhite = document.querySelector('#addWhite');
-var $addBlack = document.querySelector('#addBlack');
-var whitelist = document.getElementById('whitelist');
-var blacklist = document.getElementById('blacklist');
-
-var topmostlist = document.getElementById('topmostlist');
-var recentlist = document.getElementById('recentlist');
-//var mode = 0;
-
-/** function toggleLock(){
-	if($lockButton.classList.contains('checked')){
-		$lockButton.classList.remove('fa-lock');
-		$lockButton.classList.add('fa-lock-open');
-		mode = 1;
-	} else {
-		$lockButton.classList.add('fa-lock')
-		$lockButton.classList.remove('fa-lock-open')
-		mode = 0;
-	}
-	$lockButton.classList.toggle('checked')
-
-}
-**/
 
 function getLists() {
   var xhr = new XMLHttpRequest();
@@ -452,13 +378,72 @@ function save(data) {
   xhr.send(JSON.stringify(data));
 }
 
+function removeBWListEntry(element) {
+ var div = element.parentElement;
+ div.remove()
+}
+
+/********** EVENT LISTENERS *************/
+// Add a "checked" symbol when clicking on a list item
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+loginBtn.addEventListener('click', function() {
+  sendLoginData({
+    username: username.value,
+    password: password.value
+  })
+})
+
 // $lockButton.addEventListener('click', toggleLock)
 $addWhite.addEventListener('click', addWhite);
 $addBlack.addEventListener('click', addBlack);
-getLists();
-getSitesVisited();
 
 allButton.addEventListener("click", showAllTasks);
 activeButton.addEventListener("click", hideCompletedTasks);
 completedButton.addEventListener("click", hideActiveTasks);
 addButton.addEventListener("click", newElement);
+homeTab.addEventListener('click', function() {
+  openTab("Todos")
+})
+
+settingsTab.addEventListener('click', function() {
+  openTab("Settings")
+})
+
+whitelistTab.addEventListener('click', function() {
+  openTab("Lists")
+})
+
+rewardsTab.addEventListener('click', function() {
+  openTab("Rewards")
+})
+
+searchTab.addEventListener('click', function() {
+  openTab("Search")
+})
+
+closeElements.forEach(element => element.addEventListener('click', removeBWListEntry))
+
+/********** SET UP VIEW *************/
+Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+homeTab.style.display = "none";
+settingsTab.style.display = "none";
+whitelistTab.style.display = "none";
+rewardsTab.style.display = "none";
+searchTab.style.display = "none";
+document.getElementById("error").style.visibility = "hidden"
+
+/********** INITIALIZATION *************/
+chrome.storage.sync.get(['id'], function(result) {
+  if (Object.values(result)[0].startsWith('5')) {
+    loginStatus = true;
+    console.log("Logged in from last time")
+    loggedIn();
+  } else {
+    console.log("ID does not start with 5 or ID not found.")
+  }
+})
