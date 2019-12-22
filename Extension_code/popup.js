@@ -26,6 +26,7 @@ var activeButton = document.querySelector('#activeButton');
 var completedButton = document.querySelector('#completedButton');
 var submitButton = document.querySelector('#submit')
 var addButton = document.querySelector('#addBtn');
+var userID;
 
 // Click on a close button to hide the current list item
 var closeElements = Array.from(document.querySelectorAll(".close"));
@@ -61,6 +62,7 @@ function sendLoginData(data) {
     }
     console.log("response text", xhr.responseText)
     var data = JSON.parse(xhr.responseText);
+    userID = data._id;
     chrome.storage.sync.set({
       id: data._id
     }, function() {
@@ -84,7 +86,7 @@ function openTab(tab) {
 
 function getLists() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://www.lucidity.ninja/blackWhiteList/5d7e5db36ce4b5a013795834');
+  xhr.open('GET', `'https://www.lucidity.ninja/blackWhiteList/${userID}'`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -182,7 +184,7 @@ function newElement() {
 
 function getLists() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/blackWhiteList/5d7e5db36ce4b5a013795834');
+  xhr.open('GET', `'/blackWhiteList/${userID}'`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -196,7 +198,7 @@ function getLists() {
 
 function getSitesVisited() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/userdata/report/5d7e5db36ce4b5a013795834');
+  xhr.open('GET', `'/userdata/report/${userID}'`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -358,7 +360,7 @@ function addBlack() {
 function deleteItem(data, parent, blah) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', '/blackwhitelist/5d7e5db36ce4b5a013795834');
+  xhr.open('DELETE', `'/blackwhitelist/${userID}'`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -369,7 +371,7 @@ function deleteItem(data, parent, blah) {
 
 function save(data) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/blackwhitelist/5d7e5db36ce4b5a013795834');
+  xhr.open('POST', `'/blackwhitelist/${userID}'`);
 
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -440,6 +442,7 @@ document.getElementById("error").style.visibility = "hidden"
 /********** INITIALIZATION *************/
 chrome.storage.sync.get(['id'], function(result) {
   if (Object.values(result)[0].startsWith('5')) {
+    userID = Object.values(result)[0].startsWith('5');
     loginStatus = true;
     console.log("Logged in from last time")
     loggedIn();

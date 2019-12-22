@@ -1,12 +1,31 @@
 var mode = 3;
 var whitelist = ["lucidity.ninja/rewards.html"]
-
 var blacklist = []
+var userID;
 
+function getUserID(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https://www.lucidity.ninja/users/login');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		if (xhr.readyState != 4 || xhr.status > 300) {
+			return;
+		}
+		var data = JSON.parse(xhr.responseText);
+		userID = data._id;
+		chrome.storage.sync.set({
+			id: data._id
+		}, function() {
+			console.log("data id: ", data._id)
+		})
+	}
+}
+
+getUserID();
 
 function getLists(){
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', 'https://lucidity.ninja/blackWhiteList/5d7e5db36ce4b5a013795834')
+	xhr.open('GET', `'https://lucidity.ninja/blackWhiteList/${userID}'`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
         if (xhr.readyState != 4 || xhr.status > 300) {
@@ -23,7 +42,7 @@ function getLists(){
 
 function sendToAi(url) {
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', 'https://lucidity.ninja/bigbrain/5d7e5db36ce4b5a013795834')
+	xhr.open('GET', `'https://lucidity.ninja/bigbrain/${userID}'`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
 		if (xhr.readyState != 4 || xhr.status > 300) {
@@ -35,7 +54,7 @@ function sendToAi(url) {
 
 function sendUserData(url){
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://lucidity.ninja/userdata/5d7e5db36ce4b5a013795834?site=${url}`)
+	xhr.open('GET', `https://lucidity.ninja/userdata/${userID}?site=${url}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.send();
 }
