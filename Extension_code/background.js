@@ -21,9 +21,8 @@ function getUserID(){
 	}
 }
 
-getUserID();
-
 function getLists(){
+	getUserID();
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `'https://lucidity.ninja/blackWhiteList/${userID}'`)
 	xhr.setRequestHeader('content-type', 'application/json')
@@ -41,6 +40,7 @@ function getLists(){
 }
 
 function sendToAi(url) {
+	getUserID();
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `'https://lucidity.ninja/bigbrain/${userID}'`)
 	xhr.setRequestHeader('content-type', 'application/json')
@@ -53,6 +53,7 @@ function sendToAi(url) {
 }
 
 function sendUserData(url){
+	getUserID();
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `https://lucidity.ninja/userdata/${userID}?site=${url}`)
 	xhr.setRequestHeader('content-type', 'application/json')
