@@ -87,3 +87,4 @@ chrome.runtime.onMessage.addListener(
 				getUserID(url, sendResponse)
 			}
 	}
+)
