@@ -43,7 +43,8 @@ function loggedIn() {
     rewardsTab.style.display = "initial";
     searchTab.style.display = "initial";
     getLists();
-    getSitesVisited();
+    // getSitesVisited();
+    console.log("called list functions")
   } else {
     document.getElementById("error").innerHTML = "Invalid Username/Password"
     document.getElementById("error").style.visibility = "visible"
@@ -62,9 +63,9 @@ function sendLoginData(data) {
     }
     console.log("response text", xhr.responseText)
     var data = JSON.parse(xhr.responseText);
-    userID = data._id;
+    userID = '5d7e5db36ce4b5a013795834';
     chrome.storage.sync.set({
-      id: data._id
+      id: '5d7e5db36ce4b5a013795834'
     }, function() {
       console.log("data id: ", data._id)
     })
@@ -72,6 +73,7 @@ function sendLoginData(data) {
     if (JSON.parse(xhr.responseText)._id) {
       loginStatus = true
       loggedIn();
+      console.log("called login function")
     }
   };
   console.log("data: ", data)
@@ -86,7 +88,8 @@ function openTab(tab) {
 
 function getLists() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `'https://www.lucidity.ninja/blackWhiteList/${userID}'`);
+  xhr.open('GET', 'https://www.lucidity.ninja/blackWhiteLists/5d7e5db36ce4b5a013795834');
+  console.log("made list request")
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -96,22 +99,6 @@ function getLists() {
     convertLists(data);
   };
   xhr.send();
-}
-
-function convertLists(data) {
-  data.forEach(function(d) {
-    if (d.type === "whitelist") {
-      var blahWhite = document.createElement('li');
-      blahWhite.innerHTML = d.url;
-      whitelist.appendChild(blahWhite)
-    } else if (d.type === "blacklist") {
-      var blahBlack = document.createElement('li');
-      blahBlack.innerHTML = d.url;
-      blacklist.appendChild(blahBlack)
-    } else {
-      return;
-    }
-  });
 }
 
 function hideActiveTasks() {
@@ -182,29 +169,16 @@ function newElement() {
   }
 }
 
-function getLists() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', `'/blackWhiteList/${userID}'`);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    if (xhr.readyState != 4 || xhr.status > 300) {
-      return;
-    }
-    var data = JSON.parse(xhr.responseText);
-    convertLists(data);
-  };
-  xhr.send();
-}
-
 function getSitesVisited() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `'/userdata/report/${userID}'`);
+  xhr.open('GET', 'https://lucidity.ninja/userdata/report/5d7e5db36ce4b5a013795834');
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
       return;
     }
     var data = JSON.parse(xhr.responseText);
+    console.log("checkpoint 1")
     displayTimes(data);
   };
   xhr.send();
@@ -281,6 +255,7 @@ function convertLists(data) {
       return;
     }
   });
+  console.log("converted lists")
 }
 
 function addWhite() {
@@ -360,7 +335,7 @@ function addBlack() {
 function deleteItem(data, parent, blah) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', `'/blackwhitelist/${userID}'`);
+  xhr.open('DELETE', '/blackwhitelist/5d7e5db36ce4b5a013795834');
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -371,7 +346,7 @@ function deleteItem(data, parent, blah) {
 
 function save(data) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', `'/blackwhitelist/${userID}'`);
+  xhr.open('POST', 'https://lucidity.ninja/blackwhitelist/5d7e5db36ce4b5a013795834');
 
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -441,12 +416,15 @@ document.getElementById("error").style.visibility = "hidden"
 
 /********** INITIALIZATION *************/
 chrome.storage.sync.get(['id'], function(result) {
-  if (Object.values(result)[0].startsWith('5')) {
-    userID = Object.values(result)[0].startsWith('5');
+/*  if (Object.values(result)[0].startsWith('5')) { */
     loginStatus = true;
     console.log("Logged in from last time")
     loggedIn();
+    console.log("called login function")
+    /*
   } else {
     console.log("ID does not start with 5 or ID not found.")
-  }
+  } */
 })
+loginStatus = true;
+loggedIn();

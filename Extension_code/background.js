@@ -13,12 +13,13 @@ function getUserID(url, sendResponse){
 
 function getLists(url, userID, sendResponse) {
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `'https://lucidity.ninja/blackWhiteList/${userID}'`)
+	xhr.open('GET', "https://www.lucidity.ninja/blackWhiteLists/5d7e5db36ce4b5a013795834")
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
       if (xhr.readyState != 4 || xhr.status > 300) {
           return;
       }
+			console.log(xhr.responseText)
       var bwdata = JSON.parse(xhr.responseText);
 			var blacklist = [];
 			var whitelist = [];
@@ -35,21 +36,25 @@ function getLists(url, userID, sendResponse) {
   xhr.send()
 }
 
-function sendToAi(url, userID) {
+function sendToAi(url) {
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `'https://lucidity.ninja/bigbrain/${userID}'`)
+	xhr.open('GET', `https://www.lucidity.ninja/bigbrain/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
 		if (xhr.readyState != 4 || xhr.status > 300) {
 			return;
 		}
-	}
+		console.log(xhr.responseText)
+		if(xhr.responseText==='{"educational":false}'){
+			console.log(new Date())
+			chrome.runtime.sendMessage(chrome.runtime.id, {BLOCK: true}, function(response) {})
+	}}
 	xhr.send(url)
 }
 
 function sendUserData(url, userID){
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://lucidity.ninja/userdata/${userID}?site=${url}`)
+	xhr.open('GET', `https://www.lucidity.ninja/userdata/5d7e5db36ce4b5a013795834?site=${url}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.send();
 }
@@ -74,8 +79,8 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
             sendResponse({res: 'BLOCK'})
         } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el))){
 						sendUserData(url)
-            sendResponse({res: 'AI'})
 						sendToAi(url)
+						console.log("sent to ai")
         }
     }
 }
@@ -84,7 +89,7 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse){
         var url = req.site;
+				console.log(req.site, "checkpoint cool")
 				getUserID(url, sendResponse)
-			}
-	}
-)
+				console.log("checkpoint something")
+			})
