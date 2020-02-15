@@ -1,5 +1,7 @@
 var mode = 3;
 
+var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
+
 function getUserID(url, sendResponse){
 	// chrome.storage.sync.get(['id'], function(result) {
 	//   if (Object.values(result)[0].startsWith('5')) {
@@ -51,11 +53,10 @@ function sendToAi(url) {
 			console.log(new Date())
 			chrome.tabs.query({url: url}, function(tabs){
 				console.log(tabs)
-				chrome.tabs.remove(tabs[0].id, null)
+				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
 				console.log("tab removed")
 			})
-			chrome.runtime.sendMessage(chrome.runtime.id, {BLOCK: true}, function(response) {})
-	}}
+}}
 	xhr.send(url)
 }
 
@@ -84,7 +85,8 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
     } if (mode === 3) {
         if(blacklist.some(el => url.includes(el))){
             sendResponse({res: 'BLOCK'})
-        } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el))){
+        } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+						console.log(whitelist)
 						sendUserData(url)
 						sendToAi(url)
 						console.log("sent to ai")
