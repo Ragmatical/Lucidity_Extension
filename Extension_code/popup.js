@@ -403,6 +403,257 @@ searchTab.addEventListener('click', function() {
   openTab("Search")
 })
 
+
+var myNodelist = document.getElementsByTagName("LI");
+var list = document.querySelector('ul');
+var allButton = document.querySelector('#allButton');
+var activeButton = document.querySelector('#activeButton');
+var completedButton = document.querySelector('#completedButton');
+var submitButton = document.querySelector('#submit');
+
+
+// submitButton.addEventListener('click', function() {
+// 	var done = document.getElementsByClassName("checked");
+// 	if(done.length == myNodelist.length){
+// 		taskDone({url: 'https://www.lucidity.ninja/todo/:user', user: "5d7e5db36ce4b5a013795834"});
+// 	} else{
+// 		alert("not done!")
+// 	}
+// });
+// function getTokenCount(){
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('GET', '/blackWhiteList/5d7e5db36ce4b5a013795834');
+// 	xhr.setRequestHeader('content-type', 'application/json');
+// 	xhr.onreadystatechange = (res) => {
+// 			if (xhr.readyState != 4 || xhr.status > 300) {
+//                 return;
+//             }
+//         var data = JSON.parse(xhr.responseText);
+//         convertLists(data);
+//     };
+//     xhr.send();
+// }
+
+function getTodo(){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', '/todos/5d7e5db36ce4b5a013795834');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+			if (xhr.readyState != 4 || xhr.status > 300) {
+                return;
+            }
+        var data = JSON.parse(xhr.responseText);
+        console.log(data, "jusjtin");
+        convertTodo(data);
+    };
+    xhr.send();
+}
+getTodo();
+
+function deleteItem(data, user){
+
+	xhr = new XMLHttpRequest();
+	xhr.open('DELETE', '/todos/5d7e5db36ce4b5a013795834');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+
+}
+
+function patchItem(data, user){// RUN IT SOMEWHERE
+
+	xhr = new XMLHttpRequest();
+	xhr.open('PATCH', '/todos/5d7e5db36ce4b5a013795834/' + data.id);
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+
+}
+
+function convertTodo(data){
+	var neededdata = data["0"].list;
+	neededdata.forEach(function(d) {
+		if(d.status==="notdone"){
+			// <li class="">wdld<span class="close">×</span></li>
+			var todo = document.createElement('li');
+			var todoDelete = document.createElement('button');
+
+			todo.innerHTML = d.description;
+			todoDelete.innerHTML = "x";
+			todoDelete.className = "close";
+
+			todo.setAttribute("index", d._id)
+			todo.appendChild(todoDelete);
+			list.appendChild(todo);
+
+			// make so that this is dependent on parent verification
+			todoDelete.addEventListener('click', function(){
+				list.removeChild(todo)
+				deleteItem({description: d.description, user: "5d7e5db36ce4b5a013795834"});
+			});
+		}
+		else if(d.status==="done"){
+			var todo = document.createElement('li');
+			var todoDelete = document.createElement('button');
+			todo.className = "checked"
+			todo.innerHTML = d.description;
+			todoDelete.innerHTML = "x";
+			todoDelete.className = "close";
+
+
+			todo.appendChild(todoDelete);
+			list.appendChild(todo);
+			todo.setAttribute("index", d._id)
+			todoDelete.addEventListener('click', function(){
+				list.removeChild(todo)
+				deleteItem({description: d.description, user: "5d7e5db36ce4b5a013795834"});
+			});
+		}
+		else{
+			return;
+		}
+	});
+}
+function rewardUser(data, user){
+
+	xhr = new XMLHttpRequest();
+	xhr.open('POST', '/submission/5d7e5db36ce4b5a013795834');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+
+}
+function allDone(){
+	for(i=0; i<list.length; i++){
+		if(!list[i] == "checked"){
+			return;
+		}
+	}
+	prompt("All Done!");
+	rewardUser({user: "5d7e5db36ce4b5a013795834"});
+}
+allDone()
+
+function hideActiveTasks(){
+	// if() < go thru each task using a loop n hide the non checked ones
+	showAllTasks()
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  if(myNodelist[i].className != 'checked'){
+	  	myNodelist[i].style.display = 'none';
+	  }
+	}
+}
+
+function hideCompletedTasks(){
+	// if() < go thru each task using a loop n hide the checked ones
+	showAllTasks()
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  if(myNodelist[i].className === 'checked'){
+	  	myNodelist[i].style.display = 'none';
+	  }
+	}
+}
+
+function showAllTasks(){
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  myNodelist[i].style.display = 'block';
+	}
+}
+
+// Create a "close" button and append it to each list item
+function addCloseButton(){
+	var i;
+	for (i = 0; i < myNodelist.length; i++) {
+	  var span = document.createElement("SPAN");
+	  var txt = document.createTextNode("\u00D7");
+	  span.className = "close";
+	  span.appendChild(txt);
+	  myNodelist[i].appendChild(span);
+	}
+}
+
+
+// Click on a close button to hide the current list item
+
+// var close = document.getElementsByClassName("close");
+// var i;
+// for (i = 0; i < close.length; i++) {
+//   close[i].onclick = deleteTask
+
+// }
+function deleteTask(event) {
+	// xhr = new XMLHttpRequest();
+	// xhr.open('DELETE', '/todos/5d7e5db36ce4b5a013795834');
+	// xhr.setRequestHeader('content-type', 'application/json');
+	// xhr.onreadystatechange = (res) => {
+	// 	console.log(xhr.responseText);
+	// };
+	// xhr.send(JSON.stringify(data));
+	var div = event.target.parentElement;
+
+	// div.remove()
+	console.log(div)
+}
+
+function taskCreated(data){
+	var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/todos/5d7e5db36ce4b5a013795834');
+
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.onreadystatechange = (res) => {
+       console.log(xhr.responseText);
+    };
+    xhr.send(JSON.stringify(data));
+}
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.querySelector("#taskInput").value;
+  console.log(inputValue)
+  var t = document.createTextNode(inputValue);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must write something!");
+  } else {
+    document.querySelector("#todoList").appendChild(li);
+  }
+  document.querySelector("#taskInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  taskCreated({description: inputValue})
+
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+}
+
+// Add a "checked" symbol when clicking on a list item
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+    console.log(ev.target.classList.value)
+    patchItem({status: ev.target.classList.value, id: ev.target.getAttribute("index"),  user: "5d7e5db36ce4b5a013795834"})
+    ev.stopPropagation();
+  }
+}, false);
+allButton.addEventListener("click", showAllTasks);
+activeButton.addEventListener("click", hideCompletedTasks);
+completedButton.addEventListener("click", hideActiveTasks);
+
+
+
+
 closeElements.forEach(element => element.addEventListener('click', removeBWListEntry))
 
 /********** SET UP VIEW *************/
