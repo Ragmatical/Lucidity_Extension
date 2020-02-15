@@ -1,14 +1,16 @@
 var mode = 3;
 
 function getUserID(url, sendResponse){
-	chrome.storage.sync.get(['id'], function(result) {
-	  if (Object.values(result)[0].startsWith('5')) {
-	    userID = Object.values(result)[0].startsWith('5');
-			getLists(url, userID, sendResponse);
-	  } else {
-	    console.log("ID does not start with 5 or ID not found.")
-	  }
-	})
+	// chrome.storage.sync.get(['id'], function(result) {
+	//   if (Object.values(result)[0].startsWith('5')) {
+	//     userID = Object.values(result)[0].startsWith('5');
+	// 		getLists(url, userID, sendResponse);
+	//   } else {
+	//     console.log("ID does not start with 5 or ID not found.")
+	//   }
+	// })
+	var userID = "5d7e5db36ce4b5a013795834"
+	getLists(url, userID, sendResponse)
 }
 
 function getLists(url, userID, sendResponse) {
@@ -47,6 +49,11 @@ function sendToAi(url) {
 		console.log(xhr.responseText)
 		if(xhr.responseText==='{"educational":false}'){
 			console.log(new Date())
+			chrome.tabs.query({url: url}, function(tabs){
+				console.log(tabs)
+				chrome.tabs.remove(tabs[0].id, null)
+				console.log("tab removed")
+			})
 			chrome.runtime.sendMessage(chrome.runtime.id, {BLOCK: true}, function(response) {})
 	}}
 	xhr.send(url)
@@ -91,5 +98,5 @@ chrome.runtime.onMessage.addListener(
         var url = req.site;
 				console.log(req.site, "checkpoint cool")
 				getUserID(url, sendResponse)
-				console.log("checkpoint something")
+				console.log("called getUserID")
 			})
