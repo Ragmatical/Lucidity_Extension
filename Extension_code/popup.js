@@ -171,7 +171,7 @@ function newElement() {
 
 function getSitesVisited() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'https://lucidity.ninja/userdata/report/5d7e5db36ce4b5a013795834');
+  xhr.open('GET', 'https://www.lucidity.ninja/userdata/report/5d7e5db36ce4b5a013795834');
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -226,7 +226,7 @@ function convertLists(data) {
 
       whiteDelete.addEventListener('click', function() {
         whitelist.removeChild(blahWhite)
-        deleteItem({
+        deleteLink({
           url: d.url,
           user: "5d7e5db36ce4b5a013795834"
         });
@@ -246,7 +246,7 @@ function convertLists(data) {
 
       blackDelete.addEventListener('click', function() {
         blacklist.removeChild(blahBlack)
-        deleteItem({
+        deleteLink({
           url: d.url,
           user: "5d7e5db36ce4b5a013795834"
         });
@@ -259,10 +259,6 @@ function convertLists(data) {
 }
 
 function addWhite() {
-  /**	if(mode === 0){
-  		window.alert("You are not authenticated to make changes, please click the lock.")
-  	}else
-  		**/
   var newWhite = prompt("Enter the URL of the whitelisted site.");
   var blahWhite = document.createElement('li');
   var whitelink = document.createElement('a');
@@ -286,7 +282,7 @@ function addWhite() {
 
   whiteDelete.addEventListener('click', function() {
     whitelist.removeChild(blahWhite);
-    deleteItem({
+    deleteLink({
       url: newWhite,
       user: "5d7e5db36ce4b5a013795834"
     });
@@ -296,11 +292,6 @@ function addWhite() {
 }
 
 function addBlack() {
-  /**
-  	if(mode === 0){
-  		window.alert("You are not authenticated to make changes, please click the lock.")
-  	}else
-  	**/
   var newBlack = prompt("Enter the URL of the blacklisted site.");
   var blahBlack = document.createElement('li');
   var blacklink = document.createElement('a');
@@ -324,7 +315,7 @@ function addBlack() {
 
   blackDelete.addEventListener('click', function() {
     blacklist.removeChild(blahBlack);
-    deleteItem({
+    deleteLink({
       url: newBlack,
       user: "5d7e5db36ce4b5a013795834"
     });
@@ -332,10 +323,10 @@ function addBlack() {
   //	}
 }
 
-function deleteItem(data, parent, blah) {
+function deleteLink(data, parent, blah) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', '/blackwhitelist/5d7e5db36ce4b5a013795834');
+  xhr.open('DELETE', 'https://www.lucidity.ninja/blackwhitelist/5d7e5db36ce4b5a013795834');
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -346,7 +337,7 @@ function deleteItem(data, parent, blah) {
 
 function save(data) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'https://lucidity.ninja/blackwhitelist/5d7e5db36ce4b5a013795834');
+  xhr.open('POST', 'https://www.lucidity.ninja/blackwhitelist/5d7e5db36ce4b5a013795834');
 
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -436,7 +427,7 @@ var submitButton = document.querySelector('#submit');
 
 function getTodo(){
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', '/todos/5d7e5db36ce4b5a013795834');
+	xhr.open('GET', 'https://www.lucidity.ninja/todos/5d7e5db36ce4b5a013795834');
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 			if (xhr.readyState != 4 || xhr.status > 300) {
@@ -450,10 +441,10 @@ function getTodo(){
 }
 getTodo();
 
-function deleteItem(data, user){
+function deleteTask(data, user){
 
 	xhr = new XMLHttpRequest();
-	xhr.open('DELETE', '/todos/5d7e5db36ce4b5a013795834');
+	xhr.open('DELETE', 'https://www.lucidity.ninja/todos/5d7e5db36ce4b5a013795834');
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
@@ -465,7 +456,7 @@ function deleteItem(data, user){
 function patchItem(data, user){// RUN IT SOMEWHERE
 
 	xhr = new XMLHttpRequest();
-	xhr.open('PATCH', '/todos/5d7e5db36ce4b5a013795834/' + data.id);
+	xhr.open('PATCH', 'https://www.lucidity.ninja/todos/5d7e5db36ce4b5a013795834/' + data.id);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
@@ -493,7 +484,7 @@ function convertTodo(data){
 			// make so that this is dependent on parent verification
 			todoDelete.addEventListener('click', function(){
 				list.removeChild(todo)
-				deleteItem({description: d.description, user: "5d7e5db36ce4b5a013795834"});
+				deleteTask({description: d.description, user: "5d7e5db36ce4b5a013795834"});
 			});
 		}
 		else if(d.status==="done"){
@@ -510,7 +501,7 @@ function convertTodo(data){
 			todo.setAttribute("index", d._id)
 			todoDelete.addEventListener('click', function(){
 				list.removeChild(todo)
-				deleteItem({description: d.description, user: "5d7e5db36ce4b5a013795834"});
+				deleteTask({description: d.description, user: "5d7e5db36ce4b5a013795834"});
 			});
 		}
 		else{
@@ -521,7 +512,7 @@ function convertTodo(data){
 function rewardUser(data, user){
 
 	xhr = new XMLHttpRequest();
-	xhr.open('POST', '/submission/5d7e5db36ce4b5a013795834');
+	xhr.open('POST', 'https://www.lucidity.ninja/submission/5d7e5db36ce4b5a013795834');
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
@@ -606,7 +597,7 @@ function deleteTask(event) {
 
 function taskCreated(data){
 	var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/todos/5d7e5db36ce4b5a013795834');
+    xhr.open('POST', 'https://www.lucidity.ninja/todos/5d7e5db36ce4b5a013795834');
 
     xhr.setRequestHeader('content-type', 'application/json');
     xhr.onreadystatechange = (res) => {
