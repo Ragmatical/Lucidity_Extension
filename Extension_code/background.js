@@ -54,7 +54,6 @@ function sendToAi(url) {
 			chrome.tabs.query({url: url}, function(tabs){
 				console.log(tabs)
 				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
-				console.log("tab removed")
 			})
 }}
 	xhr.send(url)
