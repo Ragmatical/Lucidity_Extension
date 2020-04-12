@@ -49,6 +49,7 @@ function sendToAi(url) {
 			return;
 		}
 		console.log(xhr.responseText)
+
 		if(xhr.responseText==='{"educational":false}'){
 			console.log(new Date())
 			chrome.tabs.query({url: url}, function(tabs){
