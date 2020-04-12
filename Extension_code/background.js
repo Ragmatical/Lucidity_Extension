@@ -41,6 +41,7 @@ function getLists(url, userID, sendResponse) {
 }
 
 function sendToAi(url) {
+	checkInferences(url)
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `https://www.lucidity.ninja/bigbrain/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`)
 	xhr.setRequestHeader('content-type', 'application/json')
@@ -52,11 +53,15 @@ function sendToAi(url) {
 
 		if(xhr.responseText==='{"educational":false}'){
 			console.log(new Date())
+			logInference(url, false)
 			chrome.tabs.query({url: url}, function(tabs){
 				console.log(tabs)
 				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
 			})
-}}
+} else {
+	logInference(url, true)
+}
+}
 	xhr.send(url)
 }
 
@@ -65,6 +70,44 @@ function sendUserData(url, userID){
 	xhr.open('GET', `https://www.lucidity.ninja/userdata/5d7e5db36ce4b5a013795834?site=${url}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.send();
+}
+
+function logInference(url, inference){
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https://www.lucidity.ninja/inferences/5d7edb36ce4b5a013795834');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify({
+		url: url,
+		user: "5d7edb36ce4b5a013795834",
+		inference: inference
+	}));
+}
+
+function checkInferences(url){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', 'https://www.lucidity.ninja/inferences/5d7edb36ce4b5a013795834');
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.onreadystatechange = (res) => {
+		if (xhr.readyState != 4 || xhr.status > 300) {
+			return;
+		}
+		console.log(xhr.responseText)
+
+		if(xhr.responseText !== null){
+			if(xhr.responseText.inference === false){
+				chrome.tabs.query({url:url}, function(tabs){
+					chrome.tabs.update(tabs[0].id, {url:'https://www.lucidity.ninja/redirected.html'}, null)
+				})
+			}else{
+				return
+			}
+		} else {
+			return;
+		}
+	}
 }
 
 function useModes(url, userID, blacklist, whitelist, sendResponse){
