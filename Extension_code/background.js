@@ -73,22 +73,26 @@ function sendUserData(url, userID){
 }
 
 function logInference(url, inference){
+	console.log("logging inferences function called")
+	console.log("url:", url)
+	console.log("inference:", inference)
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'https://www.lucidity.ninja/inferences/5d7edb36ce4b5a013795834');
+	xhr.open('POST', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
 	};
 	xhr.send(JSON.stringify({
 		url: url,
-		user: "5d7edb36ce4b5a013795834",
+		user: "5d7e5db36ce4b5a013795834",
 		inference: inference
 	}));
 }
 
 function checkInferences(url){
+	console.log("checking inferences function called")
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'https://www.lucidity.ninja/inferences/5d7edb36ce4b5a013795834');
+	xhr.open('GET', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
 		if (xhr.readyState != 4 || xhr.status > 300) {
@@ -103,8 +107,10 @@ function checkInferences(url){
 				})
 			}else{
 				return
+				console.log("previous inference was educational")
 			}
 		} else {
+			console.log("no previous inferences on url")
 			return;
 		}
 	}
