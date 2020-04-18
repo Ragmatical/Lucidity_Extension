@@ -14,7 +14,27 @@ function getUserID(url, sendResponse){
 	var userID = "5d7e5db36ce4b5a013795834"
 	getLists(url, userID, sendResponse)
 }
-
+// function getRewards(){
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('GET', '/rewards/5d7e5db36ce4b5a013795834');
+// 	xhr.setRequestHeader('content-type', 'application/json');
+// 	xhr.onreadystatechange = (res) => {
+// 			if (xhr.readyState != 4 || xhr.status > 300) {
+//                 return;
+//             }
+//         var data = JSON.parse(xhr.responseText);
+// 		console.log(data, "jusjtin");
+// 		saveData(data);
+//     };
+//     xhr.send();
+// }
+// function saveData(data){
+// 	var mode = data[0].mode;
+// 	var tokenValue = data[0].tokenValue;
+// 	chrome.storage.sync.set({"mode": mode, "tokenValue": tokenValue}, function() {
+// 		console.log('Value is set to ' + mode + tokenValue);
+//   	});
+// }
 function getLists(url, userID, sendResponse) {
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', "https://www.lucidity.ninja/blackWhiteLists/5d7e5db36ce4b5a013795834")
