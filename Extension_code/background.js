@@ -72,14 +72,14 @@ function sendToAi(url) {
 		console.log(xhr.responseText)
 
 		if(xhr.responseText==='{"educational":false}'){
-			console.log(new Date())
-			logInference(url, false)
+			// console.log(new Date())
+			logInference({url: url, inference: false, user: "5d7e5db36ce4b5a013795834"})
 			chrome.tabs.query({url: url}, function(tabs){
 				console.log(tabs)
 				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
 			})
 } else {
-	logInference(url, true)
+	logInference({url: url, inference: true, user: "5d7e5db36ce4b5a013795834"})
 }
 }
 	xhr.send(url)
@@ -92,21 +92,22 @@ function sendUserData(url, userID){
 	xhr.send();
 }
 
-function logInference(url, inference){
+function logInference(data){
 	console.log("logging inferences function called")
-	console.log("url:", url)
-	console.log("inference:", inference)
+	// console.log("url:", data.url)
+	// console.log("inference:", data.inference)
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
+	xhr.open('POST', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
 	};
-	xhr.send(JSON.stringify({
-		url: url,
-		user: "5d7e5db36ce4b5a013795834",
-		inference: inference
-	}));
+	xhr.send(JSON.stringify(data));
+	// xhr.send(JSON.stringify({
+	// 	url: url,
+	// 	user: "5d7e5db36ce4b5a013795834",
+	// 	inference: inference
+	// }));
 }
 
 function checkInferences(url){
@@ -121,7 +122,9 @@ function checkInferences(url){
 		console.log(xhr.responseText)
 
 		if(xhr.responseText !== null){
+
 			if(xhr.responseText.inference === false){
+
 				chrome.tabs.query({url:url}, function(tabs){
 					chrome.tabs.update(tabs[0].id, {url:'https://www.lucidity.ninja/redirected.html'}, null)
 				})
@@ -137,6 +140,7 @@ function checkInferences(url){
 }
 
 function useModes(url, userID, blacklist, whitelist, sendResponse){
+		// console.log("here")
     if (mode === 0) {
         if (whitelist.some(el => url.includes(el))){
             return
@@ -155,10 +159,11 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
         if(blacklist.some(el => url.includes(el))){
             sendResponse({res: 'BLOCK'})
         } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-						console.log(whitelist)
+						// console.log(whitelist)
 						sendUserData(url)
+						// console.log("here2");
 						sendToAi(url)
-						console.log("sent to ai")
+						// console.log("sent to ai")
         }
     }
 }
@@ -167,7 +172,7 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse){
         var url = req.site;
-				console.log(req.site, "checkpoint cool")
+				// console.log(req.site, "checkpoint cool")
 				getUserID(url, sendResponse)
-				console.log("called getUserID")
+				// console.log("called getUserID")
 			})
