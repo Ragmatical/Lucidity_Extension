@@ -1,6 +1,6 @@
 var mode = 3;
 
-var hardcodedWhitelist = ['lucidity.ninja', 'google.com', 'totallyuselesswebsites.com']
+var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
 
 function getUserID(url, sendResponse){
 	// chrome.storage.sync.get(['id'], function(result) {
