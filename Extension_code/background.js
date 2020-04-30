@@ -3,41 +3,44 @@ var mode = 3;
 var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
 
 function getUserID(url, sendResponse){
-	// chrome.storage.sync.get(['id'], function(result) {
-	//   if (Object.values(result)[0].startsWith('5')) {
-	//     userID = Object.values(result)[0].startsWith('5');
-	// 		getLists(url, userID, sendResponse);
-	//   } else {
-	//     console.log("ID does not start with 5 or ID not found.")
-	//   }
-	// })
-	var userID = "5d7e5db36ce4b5a013795834"
+	 chrome.storage.sync.get(['currentUserId'], function(result) {
+	   if (Object.values(result)[0]) {
+	     var userID = Object.values(result)[0];
+	 		getLists(url, userID, sendResponse);
+	   } else {
+	     console.log("Error: Not Logged In.")
+	   }
+	 })
 	getLists(url, userID, sendResponse)
 }
-// function getRewards(){
-// 	var xhr = new XMLHttpRequest();
-// 	xhr.open('GET', '/rewards/5d7e5db36ce4b5a013795834');
-// 	xhr.setRequestHeader('content-type', 'application/json');
-// 	xhr.onreadystatechange = (res) => {
-// 			if (xhr.readyState != 4 || xhr.status > 300) {
-//                 return;
-//             }
-//         var data = JSON.parse(xhr.responseText);
-// 		console.log(data, "jusjtin");
-// 		saveData(data);
-//     };
-//     xhr.send();
-// }
-// function saveData(data){
-// 	var mode = data[0].mode;
-// 	var tokenValue = data[0].tokenValue;
-// 	chrome.storage.sync.set({"mode": mode, "tokenValue": tokenValue}, function() {
-// 		console.log('Value is set to ' + mode + tokenValue);
-//   	});
-// }
+
+/*
+ function getRewards(){
+ 	var xhr = new XMLHttpRequest();
+ 	xhr.open('GET', '/rewards/5d7e5db36ce4b5a013795834');
+ 	xhr.setRequestHeader('content-type', 'application/json');
+ 	xhr.onreadystatechange = (res) => {
+ 			if (xhr.readyState != 4 || xhr.status > 300) {
+                 return;
+             }
+         var data = JSON.parse(xhr.responseText);
+ 		console.log(data, "jusjtin");
+ 		saveData(data);
+     };
+     xhr.send();
+ }
+ function saveData(data){
+ 	var mode = data[0].mode;
+ 	var tokenValue = data[0].tokenValue;
+ 	chrome.storage.sync.set({"mode": mode, "tokenValue": tokenValue}, function() {
+ 		console.log('Value is set to ' + mode + tokenValue);
+   	});
+ }
+ */
+
 function getLists(url, userID, sendResponse) {
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', "https://www.lucidity.ninja/blackWhiteLists/5d7e5db36ce4b5a013795834")
+	xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(userID)}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
       if (xhr.readyState != 4 || xhr.status > 300) {
@@ -60,10 +63,10 @@ function getLists(url, userID, sendResponse) {
   xhr.send()
 }
 
-function sendToAi(url) {
-	checkInferences(url)
+function sendToAi(url, userID) {
+	checkInferences(url, userID)
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://www.lucidity.ninja/bigbrain/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`)
+	xhr.open('GET', `https://www.lucidity.ninja/bigbrain/${encodeURIComponent(userID)}?asdf=${Math.random()}&url=${encodeURIComponent(url)}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
 		if (xhr.readyState != 4 || xhr.status > 300) {
@@ -73,13 +76,13 @@ function sendToAi(url) {
 
 		if(xhr.responseText==='{"educational":false}'){
 			// console.log(new Date())
-			logInference({url: url, inference: false, user: "5d7e5db36ce4b5a013795834"})
+			logInference({url: url, inference: false, user: `${encodeURIComponent(userID)}`})
 			chrome.tabs.query({url: url}, function(tabs){
 				console.log(tabs)
 				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
 			})
 } else {
-	logInference({url: url, inference: true, user: "5d7e5db36ce4b5a013795834"})
+	logInference({url: url, inference: true, user: `${encodeURIComponent(userID)}`})
 }
 }
 	xhr.send(url)
@@ -87,7 +90,7 @@ function sendToAi(url) {
 
 function sendUserData(url, userID){
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://www.lucidity.ninja/userdata/5d7e5db36ce4b5a013795834?site=${url}`)
+	xhr.open('GET', `https://www.lucidity.ninja/userdata/${encodeURIComponent(userID)}?site=${url}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.send();
 }
@@ -97,7 +100,7 @@ function logInference(data){
 	// console.log("url:", data.url)
 	// console.log("inference:", data.inference)
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
+	xhr.open('POST', `https://www.lucidity.ninja/inferences/${encodeURIComponent(userID)}`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
@@ -110,10 +113,10 @@ function logInference(data){
 	// }));
 }
 
-function checkInferences(url){
+function checkInferences(url, userID){
 	console.log("checking inferences function called")
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', `https://www.lucidity.ninja/inferences/5d7e5db36ce4b5a013795834?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
+	xhr.open('GET', `https://www.lucidity.ninja/inferences/${encodeURIComponent(userID)}?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
 		if (xhr.readyState != 4 || xhr.status > 300) {
@@ -153,17 +156,14 @@ function useModes(url, userID, blacklist, whitelist, sendResponse){
             sendResponse({res: 'BLOCK'})
         }
     } if (mode === 2) {
-				sendUserData(url)
+				sendUserData(url, userID)
         return
     } if (mode === 3) {
         if(blacklist.some(el => url.includes(el))){
             sendResponse({res: 'BLOCK'})
         } if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-						// console.log(whitelist)
-						sendUserData(url)
-						// console.log("here2");
-						sendToAi(url)
-						// console.log("sent to ai")
+						sendUserData(url, userID)
+						sendToAi(url, userID)
         }
     }
 }
