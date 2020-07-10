@@ -2,7 +2,6 @@
 var username = document.querySelector('#username')
 var password = document.querySelector('#password')
 var loginBtn = document.querySelector('#loginBtn')
-var loginStatus = false;
 var homeTab = document.getElementById("homeTab")
 var settingsTab = document.getElementById("settingsTab")
 var whitelistTab = document.getElementById("whitelistTab")
@@ -22,21 +21,42 @@ var completedButton = document.querySelector('#completedButton');
 var submitButton = document.querySelector('#submit')
 var addButton = document.querySelector('#addBtn');
 var closeElements = Array.from(document.querySelectorAll(".close"));
+var currentUserId = "";
+var loginStatus = false;
+var logoutBtn = document.getElementById("tempLogoutButton")
+var addBtn = document.getElementById("addBtn")
 
 
 /********** FUNCTIONS *************/
-function loginSetup(){
-  Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
-  homeTab.style.display = "none";
-  settingsTab.style.display = "none";
-  whitelistTab.style.display = "none";
-  rewardsTab.style.display = "none";
-  searchTab.style.display = "none";
-  document.getElementById("error").style.visibility = "hidden"
+function checkForLogin(){
+  chrome.storage.sync.get(["currentUserId"], function(result) {
+    console.log("checking for login")
+    if(Object.values(result)[0]){
+      currentUserId = Object.values(result)[0]
+      console.log("INSIDE FUNCTION", currentUserId);
+      loginStatus = true;
+      loggedIn(currentUserId, 0.5)
+    } else {
+      loginSetup();
+      loggedIn(currentUserId, 0)
+    }
+  })
 }
-loginSetup()
+checkForLogin();
 
-function loggedIn(data) {
+function loginSetup(){
+  if(loginStatus == false){
+    Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+    homeTab.style.display = "none";
+    settingsTab.style.display = "none";
+    whitelistTab.style.display = "none";
+    rewardsTab.style.display = "none";
+    searchTab.style.display = "none";
+    document.getElementById("error").style.visibility = "hidden"
+  }
+}
+
+function loggedIn(currentUserId, time) {
   if (loginStatus === true) {
     document.getElementById("loginFields").style.display = "none"
     document.getElementById("Todos").style.display = "block"
@@ -45,12 +65,19 @@ function loggedIn(data) {
     whitelistTab.style.display = "initial";
     rewardsTab.style.display = "initial";
     searchTab.style.display = "initial";
-    getLists(data);
+    getLists(currentUserId);
+    chrome.storage.sync.set({
+      currentUserId: currentUserId
+    }, function() {
+      console.log("Set Current User Id", currentUserId)
+    })
     // getSitesVisited();
     console.log("called list functions")
-  } else {
+  } else if(time == 1) {
     document.getElementById("error").innerHTML = "Invalid Username/Password"
     document.getElementById("error").style.visibility = "visible"
+  } else if(time == 0){
+    console.log("Not logged in yet.")
   }
 }
 
@@ -68,14 +95,14 @@ function sendLoginData(data) {
     var data = JSON.parse(xhr.responseText);
     console.log(data)
      chrome.storage.sync.set({
-       CurrentUserId: `${encodeURIComponent(data._id)}`
+       currentUserId: currentUserId
      }, function() {
-       console.log("Current User Id: ", data._id)
+       console.log("Current User Id: ", currentUserId)
      })
     console.log("checkpoint 3: logged in")
     if (JSON.parse(xhr.responseText)._id) {
       loginStatus = true
-      loggedIn(data);
+      loggedIn(data, 1);
       console.log("checkpoint 4: called login function")
     }
   };
@@ -84,9 +111,10 @@ function sendLoginData(data) {
 }
 
 function logout() {
-  loginStatus = false
+  loginStatus = false;
+  console.log("logout1", loginStatus)
   chrome.storage.sync.set({
-    CurrentUserId: ""
+    currentUserId: ""
   }, function() {
     console.log("Logged Out")
   })
@@ -98,9 +126,9 @@ function openTab(tab) {
   document.getElementById(tab).style.display = "block";
 }
 
-function getLists(data) {
+function getLists(currentUserId) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(data._id)}`);
+  xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(currentUserId)}`);
   console.log("made list request")
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -108,7 +136,7 @@ function getLists(data) {
       return;
     }
     var lists = JSON.parse(xhr.responseText);
-    convertLists(lists, data);
+    convertLists(lists, currentUserId);
   };
   xhr.send();
 }
@@ -179,46 +207,7 @@ function newElement() {
   }
 }
 
-function getSitesVisited() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.lucidity.ninja/userdata/report/${encodeURIComponent(data)}`);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    if (xhr.readyState != 4 || xhr.status > 300) {
-      return;
-    }
-    var data = JSON.parse(xhr.responseText);
-    console.log("checkpoint 1")
-    displayTimes(data);
-  };
-  xhr.send();
-}
-
-function displayTimes(data) {
-  var mostoccurence = data.sort((a, b) => (a.count > b.count) ? -1 : 1)
-  var topmostTimes = [mostoccurence[0]._id, mostoccurence[1]._id, mostoccurence[2]._id]
-  var recentTimes = [data[0]._id, data[1]._id, data[2]._id]
-  var red = topmostTimes[0].count / topmostTimes.length * 360
-  // var orange = topmostTimes
-  // document.getElementsByClassName('pie')[0].style.backgroundImage = `conic-gradient(red 0deg, orange 0 ${}deg, yellow 0 80deg, green 0 290deg, blue 0 360deg)`
-
-  topmostlist.innerHTML = '';
-  topmostTimes.forEach(function(item) {
-    var li = document.createElement('li')
-    li.innerHTML = `<a href='${item}' class='topmost'>${item}</a>`
-    topmostlist.appendChild(li);
-  })
-  // <div class="pie" style="--segment1: 40; --segment2: 70; --segment3: 90;"></div>
-  recentlist.innerHTML = '';
-  recentTimes.forEach(function(item) {
-    var li = document.createElement('li')
-    li.innerHTML = `<a href='${item}' class='recent'>${item}</a>`
-    recentlist.appendChild(li);
-  })
-
-}
-
-function convertLists(lists, data) {
+function convertLists(lists, currentUserId) {
   lists.forEach(function(d) {
     if (d.type === "whitelist") {
       var blahWhite = document.createElement('li');
@@ -238,7 +227,7 @@ function convertLists(lists, data) {
         whitelist.removeChild(blahWhite)
         deleteLink({
           url: d.url,
-          user: `${encodeURIComponent(data._id)}`
+          user: `${encodeURIComponent(currentUserId)}`
         });
       });
     } else if (d.type === "blacklist") {
@@ -258,7 +247,7 @@ function convertLists(lists, data) {
         blacklist.removeChild(blahBlack)
         deleteLink({
           url: d.url,
-          user: `${encodeURIComponent(data._id)}`
+          user: `${encodeURIComponent(currentUserId)}`
         });
       });
     } else {
@@ -294,7 +283,7 @@ function addWhite(data) {
     whitelist.removeChild(blahWhite);
     deleteLink({
       url: newWhite,
-      user: `${encodeURIComponent(data._id)}`
+      user: `${encodeURIComponent(currentUserId)}`
     });
   });
 
@@ -327,7 +316,7 @@ function addBlack() {
     blacklist.removeChild(blahBlack);
     deleteLink({
       url: newBlack,
-      user: `${encodeURIComponent(data._id)}`
+      user: `${encodeURIComponent(currentUserId)}`
     });
   });
   //	}
@@ -336,7 +325,7 @@ function addBlack() {
 function deleteLink(data, parent, blah) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(data._id)}`);
+  xhr.open('DELETE', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(currentUserId)}`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -347,7 +336,7 @@ function deleteLink(data, parent, blah) {
 
 function save(data) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(data._id)}`);
+  xhr.open('POST', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(currentUserId)}`);
 
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -363,7 +352,7 @@ function removeBWListEntry(element) {
 
 function getTodo() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.lucidity.ninja/todos/${encodeURIComponent(data._id)}`);
+  xhr.open('GET', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
@@ -375,12 +364,11 @@ function getTodo() {
   };
   xhr.send();
 }
-getTodo();
 
 function deleteTask(data, user) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', `https://www.lucidity.ninja/todos/${encodeURIComponent(data._id)}`);
+  xhr.open('DELETE', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -392,7 +380,7 @@ function deleteTask(data, user) {
 function patchItem(data, user) { // RUN IT SOMEWHERE
 
   xhr = new XMLHttpRequest();
-  xhr.open('PATCH', `https://www.lucidity.ninja/todos/${encodeURIComponent(data._id)}` + data.id);
+  xhr.open('PATCH', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}` + data.id);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -422,7 +410,7 @@ function convertTodo(data) {
         list.removeChild(todo)
         deleteTask({
           description: d.description,
-          user: `${encodeURIComponent(data._id)}`
+          user: `${encodeURIComponent(currentUserId)}`
         });
       });
     } else if (d.status === "done") {
@@ -441,7 +429,7 @@ function convertTodo(data) {
         list.removeChild(todo)
         deleteTask({
           description: d.description,
-          user: `${encodeURIComponent(data._id)}`
+          user: `${encodeURIComponent(currentUserId)}`
         });
       });
     } else {
@@ -453,7 +441,7 @@ function convertTodo(data) {
 function rewardUser(data, user) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('POST', `https://www.lucidity.ninja/submission/${encodeURIComponent(data._id)}`);
+  xhr.open('POST', `https://www.lucidity.ninja/submission/${encodeURIComponent(currentUserId)}`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -470,10 +458,9 @@ function allDone() {
   }
   prompt("All Done!");
   rewardUser({
-    user: `${encodeURIComponent(data._id)}`
+    user: `${encodeURIComponent(currentUserId)}`
   });
 }
-allDone()
 
 /* Event Listeners  */
 
@@ -516,12 +503,14 @@ list.addEventListener('click', function(ev) {
     patchItem({
       status: ev.target.classList.value,
       id: ev.target.getAttribute("index"),
-      user: `${encodeURIComponent(data._id)}`
+      user: `${encodeURIComponent(currentUserId)}`
     })
     ev.stopPropagation();
   }
 }, false);
+logoutBtn.addEventListener('click', logout);
 allButton.addEventListener("click", showAllTasks);
 activeButton.addEventListener("click", hideCompletedTasks);
 completedButton.addEventListener("click", hideActiveTasks);
 closeElements.forEach(element => element.addEventListener('click', removeBWListEntry))
+addBtn.addEventListener("click", newElement)
