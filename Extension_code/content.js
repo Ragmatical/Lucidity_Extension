@@ -5,11 +5,16 @@ chrome.storage.sync.get('currentUserId', function(result) {
   document.dispatchEvent(new CustomEvent('csEvent', {detail: data}));
 })
 
+chrome.storage.sync.get('teacherCode', function(result) {
+  var id = result
+  document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: id}));
+})
+
 var body = document.body.innerHTML
 chrome.runtime.sendMessage(chrome.runtime.id, {site: location.href}, function(response) {
-    console.log(response, "lucidity", new Date())
-    if(!response) return;
 
+    if(!response) return;
+    console.log(response, "lucidity", new Date())
     if (response.res == "BLOCK" && response.res !== "power off")  {
         document.write('<!DOCTYPE html><html><head></head><body></body></html>');
         window.document.title = "You shouldn't be here"
