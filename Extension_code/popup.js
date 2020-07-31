@@ -8,6 +8,7 @@ var whitelistTab = document.getElementById("whitelistTab")
 var rewardsTab = document.getElementById("rewardsTab")
 var searchTab = document.getElementById("searchTab")
 var $addWhite = document.querySelector('#addWhite');
+var $joinClass = document.querySelector('#joinClass');
 var $addBlack = document.querySelector('#addBlack');
 var whitelist = document.getElementById('whitelist');
 var blacklist = document.getElementById('blacklist');
@@ -95,7 +96,7 @@ function sendLoginData(data) {
     var data = JSON.parse(xhr.responseText);
     console.log(data)
      chrome.storage.sync.set({
-       currentUserId: currentUserId
+       currentUserId: data._id
      }, function() {
        console.log("Current User Id: ", currentUserId)
      })
@@ -477,6 +478,7 @@ loginBtn.addEventListener('click', function() {
 })
 $addWhite.addEventListener('click', addWhite);
 $addBlack.addEventListener('click', addBlack);
+$joinClass.addEventListener('click', joinClass);
 allButton.addEventListener("click", showAllTasks);
 activeButton.addEventListener("click", hideCompletedTasks);
 completedButton.addEventListener("click", hideActiveTasks);
