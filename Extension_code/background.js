@@ -75,29 +75,6 @@ function getUserID(){
 	});
 }
 
-<<<<<<< HEAD
-chrome.pageAction.onClicked.addListener(function sendData() {
-  url = "http://yoursite.com/yourpage.html";
-  data = {"key": value};
-  chrome.tabs.create(
-    { url: chrome.runtime.getURL("popup.html") },
-    function(tab) {
-      var handler = function(tabId, changeInfo) {
-        if(tabId === tab.id && changeInfo.status === "complete"){
-          chrome.tabs.onUpdated.removeListener(handler);
-          chrome.tabs.sendMessage(tabId, {url: url, data: data});
-        }
-      };
-
-      // in case we're faster than page load (usually):
-      chrome.tabs.onUpdated.addListener(handler);
-      // just in case we're too late with the listener:
-      chrome.tabs.sendMessage(tab.id, {url: url, data: data});
-    }
-  );
-});
-
-=======
 function getMode(currentUserId, cb){
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}`);
@@ -113,7 +90,6 @@ function getMode(currentUserId, cb){
     };
     xhr.send();
 }
->>>>>>> c51b80ee4798ed5ea2e263b159099a06f989a63c
 /*
  function getRewards(){
  	var xhr = new XMLHttpRequest();
