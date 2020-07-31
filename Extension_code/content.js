@@ -5,6 +5,11 @@ chrome.storage.sync.get('currentUserId', function(result) {
   document.dispatchEvent(new CustomEvent('csEvent', {detail: data}));
 })
 
+chrome.storage.sync.get('teacherCode', function(result) {
+  var id = result
+  document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: id}));
+})
+
 var body = document.body.innerHTML
 chrome.runtime.sendMessage(chrome.runtime.id, {site: location.href}, function(response) {
 

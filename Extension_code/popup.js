@@ -258,6 +258,13 @@ function convertLists(lists, currentUserId) {
   console.log("converted lists")
 }
 
+function joinClass() {
+  tc = document.getElementById('teacherCode').value
+  chrome.storage.sync.set({
+    teacherCode: tc
+  })
+}
+
 function addWhite(data) {
   var newWhite = prompt("Enter the URL of the whitelisted site.");
   var blahWhite = document.createElement('li');
