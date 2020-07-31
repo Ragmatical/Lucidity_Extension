@@ -37,8 +37,7 @@ function getUserID(){
 		chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 			// Get bl wl
 			url = req.site;
-			var result = window.prompt("Is the website educational? (y/n)");
-			mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
+
 			getMode(userId, (mode)=>{
 				getLists(userId, (blacklist, whitelist) => {
 					console.log(mode, 'hi')
@@ -67,7 +66,10 @@ function getUserID(){
 		 		 						sendUserData(url, currentUserId)
 		 		 						sendToAi(url, currentUserId)
 		 		 		}
-		 		 	}
+		 		 	} if(mode === 4){
+							var result = window.prompt("Is the website educational? (y/n)");
+							mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
+					}
 				});
 			});
 			return true;
