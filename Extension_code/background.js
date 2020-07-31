@@ -220,10 +220,11 @@ function checkInferences(url, currentUserId){
 }
 
 function mlCollection(currentUserId, data){
+	console.log(currentUserId)
 	console.log(currentUserId._id)
 	console.log(data)
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
+	xhr.open('POST', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
