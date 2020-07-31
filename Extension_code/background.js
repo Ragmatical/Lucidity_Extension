@@ -68,7 +68,14 @@ function getUserID(){
 		 		 		}
 		 		 	} if(mode === 4){
 							var result = window.prompt("Is the website educational? (y/n)");
+							getSites(currentUserId, (mlsites) => {
+								for(var s=0; s<mlsites.length; s++){
+									if(mlsites[s]==url){
+										return;
+									}
+								}
 							mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
+							});
 					}
 				});
 			});
@@ -217,6 +224,25 @@ function checkInferences(url, currentUserId){
 			return;
 		}
 	}
+}
+function getSites(currentUserId, cb) {
+	console.log(currentUserId)
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`)
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.onreadystatechange = (res) => {
+      if (xhr.readyState != 4 || xhr.status > 300) return;
+			console.log(xhr.responseText)
+      var data = JSON.parse(xhr.responseText);
+			var mlsites = [];
+			console.log(data[0].url)
+      for (i=0; i<data.length; i++){
+					mlsites.push(data[i].url)
+      }
+			console.log(mlsites)
+			cb(mlsites);
+   }
+  xhr.send()
 }
 
 function mlCollection(currentUserId, data){
