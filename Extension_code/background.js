@@ -1,19 +1,95 @@
-var mode = 3;
+// var mode = 1;
 var currentUserId = "";
 var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
 
-function getUserID(url, sendResponse){
-	 chrome.storage.sync.get(['currentUserId'], function(result) {
-	   if (Object.values(result)[0]) {
-		currentUserId = Object.values(result)[0]["_id"];
-		console.log(currentUserId)
-	 		getLists(url, currentUserId, sendResponse);
-	   } else {
-	     console.log("Error: Not Logged In.")
-	   }
-	 })
+// function getUserID(){
+//      chrome.storage.sync.get(['currentUserId'], function(result) {
+//        var userId = Object.values(result)[0];
+//        if (userId) {
+//         chrome.userId.onMessage.addListener(
+//             function(req, sender, sendResponse){
+//                 var url = req.site;
+//                 getLists(url, currentUserId, sendResponse/*, mode*/);
+//                 // then call the other function and pass in user id
+//             });
+//        } else {
+//          	console.log("Error: Not Logged In.")
+//        }
+//      })
+// }
+var userId;
+var url;
+// function getUserID(){
+//      chrome.storage.sync.get(['currentUserId'], function(result) {
+//        userId = Object.values(result)[0];
+// 			 console.log(userId);
+//
+// 			 getLists(userId/*, mode*/)
+//
+// 			 // return userId;
+//      })
+// }
+function getUserID(){
+	// Get the user id  when page loads
+	chrome.storage.sync.get(['currentUserId'], function(result) {
+		userId = Object.values(result)[0];
+		// Add the event listener for when the user changes tabs
+		chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+			// Get bl wl
+			url = req.site;
+			var result = window.prompt("Is the website educational? (y/n)");
+			mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
+			getMode(userId, (mode)=>{
+				getLists(userId, (blacklist, whitelist) => {
+					console.log(mode, 'hi')
+					if (mode === 0) {
+		 		 		if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
+		 		 			return
+		 		 		}else{
+							sendResponse({res: 'BLOCK'})
+							sendUserData(url, currentUserId)
+		 		 		}
+		 		 	} if (mode === 1) {
+		 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+		 		 			console.log('here')
+		 		 			sendResponse({res: 'BLOCK'})
+		 		 			console.log('here3')
+		 		 			sendUserData(url, currentUserId)
+		 		 		}
+		 		 	} if (mode === 2) {
+		 		 				sendUserData(url, currentUserId)
+		 		 				sendResponse({res: 'power off'})
+		 		 				return
+		 		 	} if (mode === 3) {
+		 		 		if(blacklist.some(el => url.includes(el))){
+		 		 			sendResponse({res: 'BLOCK'})
+		 		 		} if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+		 		 						sendUserData(url, currentUserId)
+		 		 						sendToAi(url, currentUserId)
+		 		 		}
+		 		 	}
+				});
+			});
+			return true;
+		});
+	});
 }
 
+function getMode(currentUserId, cb){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}`);
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+			if (xhr.readyState != 4 || xhr.status > 300) {
+                return;
+            }
+        console.log(xhr.responseText);
+        var data = JSON.parse(xhr.responseText);
+				var mode = data[0].mode
+				cb(mode);
+    };
+    xhr.send();
+}
 /*
  function getRewards(){
  	var xhr = new XMLHttpRequest();
@@ -37,19 +113,17 @@ function getUserID(url, sendResponse){
    	});
  }
  */
-
-function getLists(url, currentUserId, sendResponse) {
+function getLists(currentUserId, cb) {
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(currentUserId)}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
-      if (xhr.readyState != 4 || xhr.status > 300) {
-          return;
-      }
+      if (xhr.readyState != 4 || xhr.status > 300) return;
 			console.log(xhr.responseText)
       var bwdata = JSON.parse(xhr.responseText);
 			var blacklist = [];
 			var whitelist = [];
+			console.log(bwdata)
       for (i=0; i<bwdata.length; i++){
           if(bwdata[i].type === "blacklist") {
 						blacklist.push(bwdata[i].url);
@@ -58,36 +132,13 @@ function getLists(url, currentUserId, sendResponse) {
 						whitelist.push(bwdata[i].url);
 					}
       }
-			useModes(url, currentUserId, blacklist, whitelist, sendResponse);
+			console.log(blacklist);
+			cb(blacklist,whitelist);
    }
   xhr.send()
 }
 
-function useModes(url, currentUserId, blacklist, whitelist, sendResponse){
-	// console.log("here")
-if (mode === 0) {
-	if (whitelist.some(el => url.includes(el))){
-		return
-	} else{
-		// console.log(url)
-		sendResponse({res: 'BLOCK'})
-	}
-} if (mode === 1) {
-	if (blacklist.some(el => url.includes(el))){
-		sendResponse({res: 'BLOCK'})
-	}
-} if (mode === 2) {
-			sendUserData(url, userID)
-	return
-} if (mode === 3) {
-	if(blacklist.some(el => url.includes(el))){
-		sendResponse({res: 'BLOCK'})
-	} if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-					sendUserData(url, currentUserId)
-					sendToAi(url, currentUserId)
-	}
-}
-}
+
 
 function sendUserData(url, currentUserId){
 	var xhr = new XMLHttpRequest()
@@ -122,8 +173,6 @@ function sendToAi(url, currentUserId) {
 
 function logInference(data){
 	console.log("logging inferences function called")
-	// console.log("url:", data.url)
-	// console.log("inference:", data.inference)
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', `https://www.lucidity.ninja/inferences/${currentUserId}`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
 	xhr.setRequestHeader('content-type', 'application/json');
@@ -155,7 +204,7 @@ function checkInferences(url, currentUserId){
 			if(xhr.responseText.inference === false){
 
 				chrome.tabs.query({url:url}, function(tabs){
-					chrome.tabs.update(tabs[0].id, {url:'https://www.lucidity.ninja/redirected.html'}, null)
+					chrome.tabs.update(tabs[0].id, {url:'https://www.lucidity.ninja/redirected'}, null)
 				})
 			}else{
 				return
@@ -168,13 +217,17 @@ function checkInferences(url, currentUserId){
 	}
 }
 
+function mlCollection(currentUserId, data){
+	console.log(currentUserId._id)
+	console.log(data)
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
 
+}
 
-// When user visits a new tab or page this event fires
-chrome.runtime.onMessage.addListener(
-    function(req, sender, sendResponse){
-        var url = req.site;
-				// console.log(req.site, "checkpoint cool")
-				getUserID(url, sendResponse)
-				// console.log("called getUserID")
-			})
+getUserID();
