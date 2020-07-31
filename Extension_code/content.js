@@ -1,5 +1,10 @@
 console.log("Page pwdhas finished loading.")
 
+chrome.storage.sync.get('currentUserId', function(result) {
+  var data = result
+  document.dispatchEvent(new CustomEvent('csEvent', {detail: data}));
+})
+
 var body = document.body.innerHTML
 chrome.runtime.sendMessage(chrome.runtime.id, {site: location.href}, function(response) {
 
@@ -35,3 +40,16 @@ chrome.runtime.onMessage.addListener(
             history.back()
         })
 			})
+
+// var actualCode = `var $joinClass = document.querySelector('#joinClass');
+//                   $joinClass.addEventListener('click', joinClass);
+//
+//                   function joinClass() {
+//                     let enteredTeacherCode = document.getElementById('teacherCode').value
+//                     document.dispatchEvent(new CustomEvent('sendTeacherCode', data));
+//                   }`;
+//
+// var script = document.createElement('script');
+// script.textContent = actualCode;
+// (document.head||document.documentElement).appendChild(script);
+// script.parentNode.removeChild(script);
