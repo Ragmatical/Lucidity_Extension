@@ -47,6 +47,7 @@ checkForLogin();
 
 function loginSetup(){
   if(loginStatus == false){
+    document.getElementById("loginFields").style.display = "block"
     Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
     homeTab.style.display = "none";
     settingsTab.style.display = "none";
@@ -60,7 +61,7 @@ function loginSetup(){
 function loggedIn(currentUserId, time) {
   if (loginStatus === true) {
     document.getElementById("loginFields").style.display = "none"
-    document.getElementById("Todos").style.display = "block"
+    document.getElementById("Settings").style.display = "block"
     homeTab.style.display = "initial";
     settingsTab.style.display = "initial";
     whitelistTab.style.display = "initial";
@@ -115,9 +116,11 @@ function logout() {
   loginStatus = false;
   console.log("logout1", loginStatus)
   chrome.storage.sync.set({
-    currentUserId: ""
+    currentUserId: "",
+    teacherCode: ""
   }, function() {
     console.log("Logged Out")
+    loginSetup()
   })
 }
 
