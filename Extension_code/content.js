@@ -1,13 +1,20 @@
 console.log("Page pwdhas finished loading.")
 
 chrome.storage.sync.get('currentUserId', function(result) {
-  var data = result
-  document.dispatchEvent(new CustomEvent('csEvent', {detail: data}));
+  document.dispatchEvent(new CustomEvent('csEvent', {detail: result}));
 })
 
+// chrome.storage.sync.get(['currentUserId'], function(result) { 
+//   userId = Object.values(result)[0]
+//   console.log(userId)
+// });
+
 chrome.storage.sync.get('teacherCode', function(result) {
-  var id = result
-  document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: id}));
+  chrome.storage.sync.get('currentUserId', function(abc) {
+    document.dispatchEvent(new CustomEvent('csEvent', {detail: abc}));
+    teacherHub(result, {studentId:abc})
+  })
+  // document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: result}));
 })
 
 var body = document.body.innerHTML
@@ -46,15 +53,15 @@ chrome.runtime.onMessage.addListener(
         })
 			})
 
-// var actualCode = `var $joinClass = document.querySelector('#joinClass');
-//                   $joinClass.addEventListener('click', joinClass);
-//
-//                   function joinClass() {
-//                     let enteredTeacherCode = document.getElementById('teacherCode').value
-//                     document.dispatchEvent(new CustomEvent('sendTeacherCode', data));
-//                   }`;
-//
-// var script = document.createElement('script');
-// script.textContent = actualCode;
-// (document.head||document.documentElement).appendChild(script);
-// script.parentNode.removeChild(script);
+
+function teacherHub(teacherCode, data){
+  console.log(teacherCode)
+	console.log(data)
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', `https://www.lucidity.ninja/student/${teacherCode.teacherCode}`);
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+}

@@ -22,14 +22,14 @@
       </div>
 
       <div id="Lists" class="tabcontent">
-        <div>
+        <div style="visibility:hidden">
           <h4>Blacklist</h4>
           <ul id='blacklist'>
           </ul>
           <button id='addBlack'>Blacklist a website</button>
         </div>
 
-        <div>
+        <div style="visibility:hidden">
           <h4>Whitelist</h4>
           <ul id='whitelist'>
           </ul>
@@ -39,7 +39,7 @@
       </div>
     </div>
 
-    <div id="Todos" class="tabcontent">
+    <div id="Todos" class="tabcontent" style="visibility:hidden">
         <div>
   			<input type="text" id="taskInput" placeholder="task...">
   			<span id="addBtn">Add</span>
@@ -48,7 +48,6 @@
   			<button id='allButton' class='lucid-text-h5'>All</button>
   			<button id='activeButton' class='lucid-text-h5'>Active</button>
         <button id='completedButton' class='lucid-text-h5'>Done</button>
-        <button id='tempLogoutButton' class='lucid-text-h5'>Logout</button>
   		</div>
 
   		<ul id="todoList">
@@ -56,7 +55,7 @@
   		</ul>
     </div>
 
-    <div id="Rewards" class="tabcontent">
+    <div id="Rewards" class="tabcontent" style="visibility:hidden">
       <h1>Rewards</h1>
       <p>Cash in Rewards!</p>
     </div>
@@ -70,9 +69,10 @@
       <br>
       <input class="input" type="text" name="teacherCode" placeholder="Teacher code..." id='teacherCode'>
       <button id='joinClass'>Join class</button>
+      <button id='tempLogoutButton' class='lucid-text-h5'>Logout</button>
     </div>
 
-    <div id="Search" class="tabcontent">
+    <div id="Search" class="tabcontent" style="visibility:hidden">
       <div id='main'>
         <br />
         <input class="input" type="text" name="search" placeholder="Search.." id='search'>
@@ -82,17 +82,17 @@
     </div>
 
     <div class="tabs">
-      <div class="tabs-1" id="homeTab">
+      <div class="tabs-1" id="homeTab" style="visibility:hidden">
         <i class="material-icons">
           assignment
         </i>
       </div>
-      <div class="tabs-2" id="whitelistTab">
+      <div class="tabs-2" id="whitelistTab" style="visibility:hidden">
         <i class="material-icons">
           list
         </i>
       </div>
-      <div class="tabs-3" id="rewardsTab">
+      <div class="tabs-3" id="rewardsTab" style="visibility:hidden">
         <i class="material-icons">
           hourglass_full
         </i>
@@ -102,7 +102,7 @@
           settings_applications
         </i>
       </div>
-      <div class="tabs-5" id="searchTab">
+      <div class="tabs-5" id="searchTab" style="visibility:hidden">
         <i class="material-icons">
           search
         </i>
