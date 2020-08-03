@@ -2,33 +2,10 @@
 var currentUserId = "";
 var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
 
-// function getUserID(){
-//      chrome.storage.sync.get(['currentUserId'], function(result) {
-//        var userId = Object.values(result)[0];
-//        if (userId) {
-//         chrome.userId.onMessage.addListener(
-//             function(req, sender, sendResponse){
-//                 var url = req.site;
-//                 getLists(url, currentUserId, sendResponse/*, mode*/);
-//                 // then call the other function and pass in user id
-//             });
-//        } else {
-//          	console.log("Error: Not Logged In.")
-//        }
-//      })
-// }
+
 var userId;
 var url;
-// function getUserID(){
-//      chrome.storage.sync.get(['currentUserId'], function(result) {
-//        userId = Object.values(result)[0];
-// 			 console.log(userId);
-//
-// 			 getLists(userId/*, mode*/)
-//
-// 			 // return userId;
-//      })
-// }
+
 function getUserID(){
 	// Get the user id  when page loads
 	chrome.storage.sync.get(['currentUserId'], function(result) {
@@ -40,7 +17,6 @@ function getUserID(){
 
 			getMode(userId, (mode)=>{
 				getLists(userId, (blacklist, whitelist) => {
-					console.log(mode, 'hi')
 					if (mode === 0) {
 		 		 		if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
 		 		 			return
@@ -50,9 +26,7 @@ function getUserID(){
 		 		 		}
 		 		 	} if (mode === 1) {
 		 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-		 		 			console.log('here')
 		 		 			sendResponse({res: 'BLOCK'})
-		 		 			console.log('here3')
 		 		 			sendUserData(url, currentUserId)
 		 		 		}
 		 		 	} if (mode === 2) {
@@ -128,11 +102,9 @@ function getLists(currentUserId, cb) {
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
       if (xhr.readyState != 4 || xhr.status > 300) return;
-			console.log(xhr.responseText)
       var bwdata = JSON.parse(xhr.responseText);
 			var blacklist = [];
 			var whitelist = [];
-			console.log(bwdata)
       for (i=0; i<bwdata.length; i++){
           if(bwdata[i].type === "blacklist") {
 						blacklist.push(bwdata[i].url);
@@ -141,7 +113,6 @@ function getLists(currentUserId, cb) {
 						whitelist.push(bwdata[i].url);
 					}
       }
-			console.log(blacklist);
 			cb(blacklist,whitelist);
    }
   xhr.send()
@@ -165,7 +136,6 @@ function sendToAi(url, currentUserId) {
 		if (xhr.readyState != 4 || xhr.status > 300) {
 			return;
 		}
-		console.log(xhr.responseText)
 
 		if(xhr.responseText==='{"educational":false}'){
 			// console.log(new Date())
@@ -226,7 +196,6 @@ function checkInferences(url, currentUserId){
 	}
 }
 function getSites(currentUserId, cb) {
-	console.log(currentUserId)
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`)
 	xhr.setRequestHeader('content-type', 'application/json')
@@ -235,7 +204,6 @@ function getSites(currentUserId, cb) {
 			console.log(xhr.responseText)
       var data = JSON.parse(xhr.responseText);
 			var mlsites = [];
-			console.log(data[0].url)
       for (i=0; i<data.length; i++){
 					mlsites.push(data[i].url)
       }
@@ -246,8 +214,6 @@ function getSites(currentUserId, cb) {
 }
 
 function mlCollection(currentUserId, data){
-	console.log(currentUserId)
-	console.log(currentUserId._id)
 	console.log(data)
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`);
