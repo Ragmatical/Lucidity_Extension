@@ -9,13 +9,13 @@ chrome.storage.sync.get('currentUserId', function(result) {
 //   console.log(userId)
 // });
 
-chrome.storage.sync.get('teacherCode', function(result) {
-  chrome.storage.sync.get('currentUserId', function(abc) {
-    document.dispatchEvent(new CustomEvent('csEvent', {detail: abc}));
-    teacherHub(result, {studentId:abc})
-  })
-  // document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: result}));
-})
+// chrome.storage.sync.get('teacherCode', function(result) {
+//   chrome.storage.sync.get('currentUserId', function(abc) {
+//     document.dispatchEvent(new CustomEvent('csEvent', {detail: abc}));
+//     teacherHub(result, {studentId:abc})
+//   })
+//   // document.dispatchEvent(new CustomEvent('sendTeacherCode', {detail: result}));
+// })
 
 var body = document.body.innerHTML
 chrome.runtime.sendMessage(chrome.runtime.id, {site: location.href}, function(response) {
@@ -53,15 +53,15 @@ chrome.runtime.onMessage.addListener(
         })
 			})
 
-
-function teacherHub(teacherCode, data){
-  console.log(teacherCode)
-	console.log(data)
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://www.lucidity.ninja/student/${teacherCode.teacherCode}`);
-	xhr.setRequestHeader('content-type', 'application/json');
-	xhr.onreadystatechange = (res) => {
-		console.log(xhr.responseText);
-	};
-	xhr.send(JSON.stringify(data));
-}
+//
+// function teacherHub(teacherCode, data){
+//   console.log(teacherCode)
+// 	console.log(data)
+// 	var xhr = new XMLHttpRequest();
+// 	xhr.open('POST', `https://www.lucidity.ninja/student/${teacherCode.teacherCode}`);
+// 	xhr.setRequestHeader('content-type', 'application/json');
+// 	xhr.onreadystatechange = (res) => {
+// 		console.log(xhr.responseText);
+// 	};
+// 	xhr.send(JSON.stringify(data));
+// }
