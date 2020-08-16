@@ -10,57 +10,70 @@ function getUserID(){
 	// Get the user id  when page loads
 	chrome.storage.sync.get(['currentUserId'], function(result) {
 		userId = Object.values(result)[0];
-		// Add the event listener for when the user changes tabs
-		chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-			// Get bl wl
-			url = req.site;
-
-			getMode(userId, (mode)=>{
-				getLists(userId, (blacklist, whitelist) => {
-					if (mode === 0) {
-		 		 		if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
-		 		 			return
-		 		 		}else{
-							sendResponse({res: 'BLOCK'})
-							sendUserData(url, currentUserId)
-		 		 		}
-		 		 	} if (mode === 1) {
-		 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-		 		 			sendResponse({res: 'BLOCK'})
-		 		 			sendUserData(url, currentUserId)
-		 		 		}
-		 		 	} if (mode === 2) {
-		 		 				sendUserData(url, currentUserId)
-		 		 				sendResponse({res: 'power off'})
-		 		 				return
-		 		 	} if (mode === 3) {
-		 		 		if(blacklist.some(el => url.includes(el))){
-		 		 			sendResponse({res: 'BLOCK'})
-		 		 		} if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-		 		 						sendUserData(url, currentUserId)
-		 		 						sendToAi(url, currentUserId)
-		 		 		}
-		 		 	} if(mode === 4){
-							var result = window.prompt("Is the website educational? (y/n)");
-							getSites(currentUserId, (mlsites) => {
-								for(var s=0; s<mlsites.length; s++){
-									if(mlsites[s]==url){
-										return;
-									}
+		if (userId) {
+				chrome.storage.sync.get(['classcode'], function (result) {
+					var classcode = Object.values(result)[0]
+					console.log(classcode);
+					// Add the event listener for when the user changes tabs
+					chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+						// Get bl wl
+						url = req.site;
+						console.log(url)
+						getLists(userId, classcode, (blacklist, whitelist) => {
+							console.log(blacklist)
+							getMode(userId, classcode, (mode)=>{
+								console.log(mode)
+								if (mode === 0) {
+					 		 		if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
+					 		 			return
+					 		 		}else{
+										sendResponse({res: 'BLOCK'})
+										sendUserData(url, currentUserId)
+					 		 		}
+					 		 	} if (mode === 1) {
+									console.log('here2')
+									console.log(blacklist, whitelist)
+					 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+										console.log('here')
+										sendResponse({res: 'BLOCK'})
+					 		 			sendUserData(url, currentUserId)
+					 		 		}
+					 		 	} if (mode === 2) {
+					 		 				sendUserData(url, currentUserId)
+					 		 				sendResponse({res: 'power off'})
+					 		 				return
+					 		 	} if (mode === 3) {
+					 		 		if(blacklist.some(el => url.includes(el))){
+					 		 			sendResponse({res: 'BLOCK'})
+					 		 		} if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+					 		 						sendUserData(url, currentUserId)
+					 		 						sendToAi(url, currentUserId)
+					 		 		}
+					 		 	} if(mode === 4){
+										var result = window.prompt("Is the website educational? (y/n)");
+										getSites(currentUserId, (mlsites) => {
+											for(var s=0; s<mlsites.length; s++){
+												if(mlsites[s]==url){
+													return;
+												}
+											}
+										mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
+										});
 								}
-							mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
 							});
-					}
+						});
+						return true;
+					});
 				});
-			});
-			return true;
-		});
+		} else {
+			console.log("Error: Not Logged In.")
+		}
 	});
 }
 
-function getMode(currentUserId, cb){
+function getMode(currentUserId, classcode, cb){
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}`);
+	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}/${classcode}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 			if (xhr.readyState != 4 || xhr.status > 300) {
@@ -68,7 +81,9 @@ function getMode(currentUserId, cb){
             }
         console.log(xhr.responseText);
         var data = JSON.parse(xhr.responseText);
+				console.log(data)
 				var mode = data[0].mode
+				console.log(mode)
 				cb(mode);
     };
     xhr.send();
@@ -96,9 +111,10 @@ function getMode(currentUserId, cb){
    	});
  }
  */
-function getLists(currentUserId, cb) {
+function getLists(currentUserId, classcode, cb) {
+	console.log('here')
 	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(currentUserId)}`)
+	xhr.open('GET', `https://www.lucidity.ninja/blackWhiteList/${encodeURIComponent(currentUserId)}/${classcode}`)
 	xhr.setRequestHeader('content-type', 'application/json')
 	xhr.onreadystatechange = (res) => {
       if (xhr.readyState != 4 || xhr.status > 300) return;
@@ -113,6 +129,7 @@ function getLists(currentUserId, cb) {
 						whitelist.push(bwdata[i].url);
 					}
       }
+			console.log(blacklist,whitelist)
 			cb(blacklist,whitelist);
    }
   xhr.send()

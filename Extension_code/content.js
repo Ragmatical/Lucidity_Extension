@@ -26,17 +26,79 @@ chrome.runtime.sendMessage(chrome.runtime.id, {site: location.href}, function(re
         document.write('<!DOCTYPE html><html><head></head><body></body></html>');
         window.document.title = "You shouldn't be here"
 
-        document.body.innerHTML = `<p>Go to an educational site!</p><br><button id = "close"> Go Back </button>`;
+        document.body.innerHTML = `<p>Go to an educational site!</p><br><button id = "close"> Go Back </button><br><button id = "override"> Override</button>`;
         var close = document.getElementById('close')
-
+        var override = document.getElementById('override')
         close.addEventListener("click", function(){
             history.back()
+        })
+        override.addEventListener("click", function(){
+            var url = location.href
+            getLists((blacklist) => {
+              // if location.href is in bl, patch 'blacklisted' website to whitelist instead
+              if(blacklist.some(el => url.includes(el))){
+                patchItem({url: url, type: "whitelist"})
+              } else{
+                console.log(blacklist)
+                console.log(location.href)
+                postItem({url: url, type: "whitelist"})
+              }
+
+
+              // else, post new website to whitelist
+              // same idea for updating mlsites
+            });
+            window.location.reload();
         })
 
 
 
     }
 })
+
+// get bl
+function getLists(cb) {
+	var xhr = new XMLHttpRequest()
+	xhr.open('GET', `https://www.lucidity.ninja/blackWhiteList/user`)
+	xhr.setRequestHeader('content-type', 'application/json')
+	xhr.onreadystatechange = (res) => {
+      if (xhr.readyState != 4 || xhr.status > 300) return;
+      var bwdata = JSON.parse(xhr.responseText);
+			var blacklist = [];
+      for (i=0; i<bwdata.length; i++){
+          if(bwdata[i].type === "blacklist") {
+						blacklist.push(bwdata[i].url);
+					}
+
+      }
+			cb(blacklist);
+   }
+  xhr.send()
+}
+
+function postItem(data){
+	console.log(data)
+	xhr = new XMLHttpRequest();
+	xhr.open('POST', 'https://www.lucidity.ninja/blackWhiteList/user');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+
+}
+
+function patchItem(data){
+	console.log(data)
+	xhr = new XMLHttpRequest();
+	xhr.open('PATCH', 'https://www.lucidity.ninja/blackWhiteList/user');
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	};
+	xhr.send(JSON.stringify(data));
+
+}
 
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse){
@@ -45,12 +107,15 @@ chrome.runtime.onMessage.addListener(
         document.write('<!DOCTYPE html><html><head></head><body></body></html>');
         window.document.title = "You shouldn't be here"
 
-        document.body.innerHTML = `<p>Go to an educational site!</p><br><button id = "close"> Go Back </button>`;
+        document.body.innerHTML = `<p>Go to an educational site!</p><br><button id = "close"> Go Back </button><br><button id = "override"> Override</button>`;
+
         var close = document.getElementById('close')
+        var override = document.getElementById('override')
 
         close.addEventListener("click", function(){
             history.back()
         })
+
 			})
 
 

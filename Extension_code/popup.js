@@ -262,9 +262,10 @@ function convertLists(lists, currentUserId) {
 }
 
 function joinClass() {
-  tc = document.getElementById('teacherCode').value
+  cc = document.getElementById('classcode').value
+  console.log(cc)
   chrome.storage.sync.set({
-    teacherCode: tc
+    classcode: cc
   })
 }
 
