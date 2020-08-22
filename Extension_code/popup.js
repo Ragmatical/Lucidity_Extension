@@ -132,7 +132,7 @@ function openTab(tab) {
 
 function getLists(currentUserId) {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/${encodeURIComponent(currentUserId)}`);
+  xhr.open('GET', `https://www.lucidity.ninja/blackWhiteLists/user`);
   console.log("made list request")
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -171,17 +171,6 @@ function showAllTasks() {
   var i;
   for (i = 0; i < myNodelist.length; i++) {
     myNodelist[i].style.display = 'block';
-  }
-}
-
-function addCloseButton() {
-  var i;
-  for (i = 0; i < myNodelist.length; i++) {
-    var span = document.createElement("SPAN");
-    var txt = document.createTextNode("\u00D7");
-    span.className = "close";
-    span.appendChild(txt);
-    myNodelist[i].appendChild(span);
   }
 }
 
@@ -337,7 +326,7 @@ function addBlack() {
 function deleteLink(data, parent, blah) {
 
   xhr = new XMLHttpRequest();
-  xhr.open('DELETE', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(currentUserId)}`);
+  xhr.open('DELETE', `https://www.lucidity.ninja/blackwhitelist/user`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -348,7 +337,7 @@ function deleteLink(data, parent, blah) {
 
 function save(data) {
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', `https://www.lucidity.ninja/blackwhitelist/${encodeURIComponent(currentUserId)}`);
+  xhr.open('POST', `https://www.lucidity.ninja/blackwhitelist/user`);
 
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -361,38 +350,11 @@ function removeBWListEntry(element) {
   var div = element.parentElement;
   div.remove()
 }
-/*
-function getTodo() {
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}`);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    if (xhr.readyState != 4 || xhr.status > 300) {
-      return;
-    }
-    var data = JSON.parse(xhr.responseText);
-    console.log(data, "jusjtin");
-    convertTodo(data);
-  };
-  xhr.send();
-}
-
-function deleteTask(data, user) {
-
-  xhr = new XMLHttpRequest();
-  xhr.open('DELETE', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}`);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    console.log(xhr.responseText);
-  };
-  xhr.send(JSON.stringify(data));
-
-}
 
 function patchItem(data, user) { // RUN IT SOMEWHERE
 
   xhr = new XMLHttpRequest();
-  xhr.open('PATCH', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}` + data.id);
+  xhr.open('PATCH', `https://www.lucidity.ninja/todos/user`);
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     console.log(xhr.responseText);
@@ -401,79 +363,6 @@ function patchItem(data, user) { // RUN IT SOMEWHERE
 
 }
 
-function convertTodo(data) {
-  var neededdata = data["0"].list;
-  neededdata.forEach(function(d) {
-    if (d.status === "notdone") {
-      // <li class="">wdld<span class="close">×</span></li>
-      var todo = document.createElement('li');
-      var todoDelete = document.createElement('button');
-
-      todo.innerHTML = d.description;
-      todoDelete.innerHTML = "x";
-      todoDelete.className = "close";
-
-      todo.setAttribute("index", d._id)
-      todo.appendChild(todoDelete);
-      list.appendChild(todo);
-
-      // make so that this is dependent on parent verification
-      todoDelete.addEventListener('click', function() {
-        list.removeChild(todo)
-        deleteTask({
-          description: d.description,
-          user: `${encodeURIComponent(currentUserId)}`
-        });
-      });
-    } else if (d.status === "done") {
-      var todo = document.createElement('li');
-      var todoDelete = document.createElement('button');
-      todo.className = "checked"
-      todo.innerHTML = d.description;
-      todoDelete.innerHTML = "x";
-      todoDelete.className = "close";
-
-
-      todo.appendChild(todoDelete);
-      list.appendChild(todo);
-      todo.setAttribute("index", d._id)
-      todoDelete.addEventListener('click', function() {
-        list.removeChild(todo)
-        deleteTask({
-          description: d.description,
-          user: `${encodeURIComponent(currentUserId)}`
-        });
-      });
-    } else {
-      return;
-    }
-  });
-}
-
-function rewardUser(data, user) {
-
-  xhr = new XMLHttpRequest();
-  xhr.open('POST', `https://www.lucidity.ninja/submission/${encodeURIComponent(currentUserId)}`);
-  xhr.setRequestHeader('content-type', 'application/json');
-  xhr.onreadystatechange = (res) => {
-    console.log(xhr.responseText);
-  };
-  xhr.send(JSON.stringify(data));
-
-}
-
-function allDone() {
-  for (i = 0; i < list.length; i++) {
-    if (!list[i] == "checked") {
-      return;
-    }
-  }
-  prompt("All Done!");
-  rewardUser({
-    user: `${encodeURIComponent(currentUserId)}`
-  });
-}
-*/
 /* Event Listeners  */
 
 list.addEventListener('click', function(ev) {
@@ -515,8 +404,8 @@ list.addEventListener('click', function(ev) {
     console.log(ev.target.classList.value)
     patchItem({
       status: ev.target.classList.value,
-      id: ev.target.getAttribute("index"),
-      user: `${encodeURIComponent(currentUserId)}`
+      id: ev.target.getAttribute("index")//,
+//      user: `${encodeURIComponent(currentUserId)}`
     })
     ev.stopPropagation();
   }

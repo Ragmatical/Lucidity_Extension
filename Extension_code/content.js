@@ -4,7 +4,7 @@ chrome.storage.sync.get('currentUserId', function(result) {
   document.dispatchEvent(new CustomEvent('csEvent', {detail: result}));
 })
 
-// chrome.storage.sync.get(['currentUserId'], function(result) { 
+// chrome.storage.sync.get(['currentUserId'], function(result) {
 //   userId = Object.values(result)[0]
 //   console.log(userId)
 // });
