@@ -73,6 +73,7 @@ function getUserID(){
 
 function getMode(currentUserId, classcode, cb){
 	var xhr = new XMLHttpRequest();
+	console.log(currentUserId, classcode)
 	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}/${classcode}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {

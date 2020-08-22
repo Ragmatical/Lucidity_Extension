@@ -361,7 +361,7 @@ function removeBWListEntry(element) {
   var div = element.parentElement;
   div.remove()
 }
-
+/*
 function getTodo() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.lucidity.ninja/todos/${encodeURIComponent(currentUserId)}`);
@@ -473,7 +473,7 @@ function allDone() {
     user: `${encodeURIComponent(currentUserId)}`
   });
 }
-
+*/
 /* Event Listeners  */
 
 list.addEventListener('click', function(ev) {
