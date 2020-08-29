@@ -5,6 +5,7 @@ var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
 
 var userId;
 var url;
+var label;
 
 function getUserID(){
 	// Get the user id  when page loads
@@ -28,7 +29,7 @@ function getUserID(){
 					 		 			return
 					 		 		}else{
 										sendResponse({res: 'BLOCK'})
-										sendUserData(url, currentUserId)
+										sendUserData(url, userId)
 					 		 		}
 					 		 	} if (mode === 1) {
 									console.log('here2')
@@ -36,7 +37,7 @@ function getUserID(){
 					 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
 										console.log('here')
 										sendResponse({res: 'BLOCK'})
-					 		 			sendUserData(url, currentUserId)
+					 		 			sendUserData(url, userId)
 					 		 		}
 					 		 	} if (mode === 2) {
 					 		 				sendUserData(url, currentUserId)
@@ -46,12 +47,29 @@ function getUserID(){
 					 		 		if(blacklist.some(el => url.includes(el))){
 					 		 			sendResponse({res: 'BLOCK'})
 					 		 		} if(!blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
-					 		 						sendUserData(url, currentUserId)
-					 		 						sendToAi(url, currentUserId)
+													  sendUserData(url, userId)
+													  var xhr = new XMLHttpRequest()
+													  xhr.open('GET', `https://www.lucidity.ninja/bigbrain/${userId._id}?url=${url}`)
+													  console.log("get request")
+													  xhr.setRequestHeader('content-type', 'application/json')
+													  xhr.onreadystatechange = (res) => {
+														  if (xhr.readyState != 4 || xhr.status > 300) {
+															  return;
+														  }
+														  console.log(xhr.responseText)
+												  
+														  if(xhr.responseText==='{"educational":false}'){
+															  sendResponse({res:"BLOCK"})
+														  }
+													  }
+													  xhr.send(url)
+
+
+													
 					 		 		}
 					 		 	} if(mode === 4){
 										var result = window.prompt("Is the website educational? (y/n)");
-										getSites(currentUserId, (mlsites) => {
+										getSites(userId, (mlsites) => {
 											for(var s=0; s<mlsites.length; s++){
 												if(mlsites[s]==url){
 													return;
@@ -145,74 +163,6 @@ function sendUserData(url, currentUserId){
 	xhr.send();
 }
 
-function sendToAi(url, currentUserId) {
-	checkInferences(url, currentUserId)
-	var xhr = new XMLHttpRequest()
-	xhr.open('GET', `https://www.lucidity.ninja/bigbrain/${currentUserId}?asdf=${Math.random()}&url=${encodeURIComponent(url)}`)
-	xhr.setRequestHeader('content-type', 'application/json')
-	xhr.onreadystatechange = (res) => {
-		if (xhr.readyState != 4 || xhr.status > 300) {
-			return;
-		}
-
-		if(xhr.responseText==='{"educational":false}'){
-			// console.log(new Date())
-			logInference({url: url, inference: false, user: `${encodeURIComponent(currentUserId)}`})
-			chrome.tabs.query({url: url}, function(tabs){
-				chrome.tabs.update(tabs[0].id, {url: "https://www.lucidity.ninja/redirected.html"}, null)
-			})
-} else {
-	logInference({url: url, inference: true, user: `${currentUserId}`})
-}
-}
-	xhr.send(url)
-}
-
-function logInference(data){
-	console.log("logging inferences function called")
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://www.lucidity.ninja/inferences/${currentUserId}`);//?asdf=${Math.random()}&url=${encodeURIComponent(data.url)}`);
-	xhr.setRequestHeader('content-type', 'application/json');
-	xhr.onreadystatechange = (res) => {
-		console.log(xhr.responseText);
-	};
-	xhr.send(JSON.stringify(data));
-	// xhr.send(JSON.stringify({
-	// 	url: url,
-	// 	user: "5d7e5db36ce4b5a013795834",
-	// 	inference: inference
-	// }));
-}
-
-function checkInferences(url, currentUserId){
-	console.log("checking inferences function called")
-	var xhr = new XMLHttpRequest();
-	console.log("USER ID PROBLEM CHECK:", currentUserId)
-	xhr.open('GET', `https://www.lucidity.ninja/inferences/${currentUserId}?asdf=${Math.random()}&url=${encodeURIComponent(url)}`);
-	xhr.setRequestHeader('content-type', 'application/json')
-	xhr.onreadystatechange = (res) => {
-		if (xhr.readyState != 4 || xhr.status > 300) {
-			return;
-		}
-		console.log(xhr.responseText)
-
-		if(xhr.responseText !== null){
-
-			if(xhr.responseText.inference === false){
-
-				chrome.tabs.query({url:url}, function(tabs){
-					chrome.tabs.update(tabs[0].id, {url:'https://www.lucidity.ninja/redirected'}, null)
-				})
-			}else{
-				return
-				console.log("previous inference was educational")
-			}
-		} else {
-			console.log("no previous inferences on url")
-			return;
-		}
-	}
-}
 function getSites(currentUserId, cb) {
 	var xhr = new XMLHttpRequest()
 	xhr.open('GET', `https://www.lucidity.ninja/mlsites/${currentUserId._id}`)
