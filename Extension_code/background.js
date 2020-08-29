@@ -11,6 +11,7 @@ function getUserID(){
 	// Get the user id  when page loads
 	chrome.storage.sync.get(['currentUserId'], function(result) {
 		userId = Object.values(result)[0];
+		console.log(userId);
 		if (userId) {
 				chrome.storage.sync.get(['classcode'], function (result) {
 					var classcode = Object.values(result)[0]
@@ -57,7 +58,7 @@ function getUserID(){
 															  return;
 														  }
 														  console.log(xhr.responseText)
-												  
+
 														  if(xhr.responseText==='{"educational":false}'){
 															  sendResponse({res:"BLOCK"})
 														  }
@@ -65,7 +66,7 @@ function getUserID(){
 													  xhr.send(url)
 
 
-													
+
 					 		 		}
 					 		 	} if(mode === 4){
 										var result = window.prompt("Is the website educational? (y/n)");
