@@ -24,7 +24,7 @@ var addButton = document.querySelector('#addBtn');
 var closeElements = Array.from(document.querySelectorAll(".close"));
 var currentUserId = "";
 var loginStatus = false;
-var logoutBtn = document.getElementById("tempLogoutButton")
+var logoutBtn = document.getElementById("logoutBtn")
 var addBtn = document.getElementById("addBtn")
 
 
@@ -95,7 +95,6 @@ function sendLoginData(data) {
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
     if (xhr.readyState != 4 || xhr.status > 300) {
-      prompt('invalid classcode, try again');
       return;
     }
     console.log("response text", xhr.responseText)
@@ -178,7 +177,7 @@ list.addEventListener('click', function(ev) {
     ev.stopPropagation();
   }
 }, false);
-logoutBtn.addEventListener('click', logout);
+logoutBtn.addEventListener('click', logout());
 // allButton.addEventListener("click", showAllTasks);
 // activeButton.addEventListener("click", hideCompletedTasks);
 // completedButton.addEventListener("click", hideActiveTasks);
