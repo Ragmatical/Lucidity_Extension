@@ -109,7 +109,7 @@ function sendLoginData(data) {
     console.log("checkpoint 3: logged in")
     if (JSON.parse(xhr.responseText)._id) {
       loginStatus = true
-      loggedIn(data, 1, classcode);
+      loggedIn(data, 1, classcodee);
       console.log("checkpoint 4: called login function")
     }
   };
