@@ -11,104 +11,27 @@
 <body>
 
 
-  <div><img src="icon.png" id="logo">
     <div>
-
-      <div id="loginFields">
-        <input type="text" placeholder="First and Last Name" class="input" id="studentName">
-        <input type="text" placeholder="Your Classcode" class="input" id="classcode">
-        <div class="btnContainer"><button id="loginBtn" class="btn2">Enter</button></div>
-        <div id="error">Login</div>
-      </div>
-
-      <div id="Lists" class="tabcontent">
-        <div style="visibility:hidden">
-          <h4>Blacklist</h4>
-          <ul id='blacklist'>
-          </ul>
-          <button id='addBlack'>Blacklist a website</button>
-        </div>
-
-        <div style="visibility:hidden">
-          <h4>Whitelist</h4>
-          <ul id='whitelist'>
-          </ul>
-          <button id='addWhite'>Whitelist a website</button>
-        </div>
-
-      </div>
-    </div>
-
-    <div id="Todos" class="tabcontent" style="visibility:hidden">
+        <img src="icon.png" id="logo">
         <div>
-  			<input type="text" id="taskInput" placeholder="task...">
-  			<span id="addBtn">Add</span>
-  		</div>
-  		<div id='container'>
-  			<button id='allButton' class='lucid-text-h5'>All</button>
-  			<button id='activeButton' class='lucid-text-h5'>Active</button>
-        <button id='completedButton' class='lucid-text-h5'>Done</button>
-  		</div>
 
-  		<ul id="todoList">
-
-  		</ul>
-    </div>
-
-    <div id="Rewards" class="tabcontent" style="visibility:hidden">
-      <h1>Rewards</h1>
-      <p>Cash in Rewards!</p>
-    </div>
-
-    <div id="Settings" class="tabcontent">
-      <h1>Settings</h1>
-      <label class="switch">
-        <input type="checkbox" checked>
-        <span class="slider round"></span>
-      </label>
-      <br>
-      <!-- <input class="input" type="text" name="classcode" placeholder="Class code..." id='classcode'>
-      <button id='joinClass'>Join class</button> -->
-      <button id='tempLogoutButton' class='lucid-text-h5'>Logout</button>
-    </div>
-
-    <div id="Search" class="tabcontent" style="visibility:hidden">
-      <div id='main'>
-        <br />
-        <input class="input" type="text" name="search" placeholder="Search.." id='search'>
-        <div id='links'>
+            <div id="loginFields">
+                <input type="text" placeholder="First and Last Name" class="input" id="studentName">
+                <input type="text" placeholder="Your Classcode" class="input" id="classcode">
+                <div class="btnContainer"><button id="loginBtn" class="btn2">Enter</button></div>
+                <div id="error">Login</div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div class="tabs">
-      <div class="tabs-1" id="homeTab" style="visibility:hidden">
-        <i class="material-icons">
-          assignment
-        </i>
-      </div>
-      <div class="tabs-2" id="whitelistTab" style="visibility:hidden">
-        <i class="material-icons">
-          list
-        </i>
-      </div>
-      <div class="tabs-3" id="rewardsTab" style="visibility:hidden">
-        <i class="material-icons">
-          hourglass_full
-        </i>
-      </div>
-      <div class="tabs-4" id="settingsTab">
-        <i class="material-icons">
-          settings_applications
-        </i>
-      </div>
-      <div class="tabs-5" id="searchTab" style="visibility:hidden">
-        <i class="material-icons">
-          search
-        </i>
-      </div>
+        <div id="Settings" class="tabcontent">
+            <img style="width:50px;" src="default-avatar.png" />
+            <br />
+            <span style="font-size:2em;">STUDENT NAME</span>
+
+        </div>
+        <button id='tempLogoutButton' class='btn2'>Logout</button>
     </div>
-    <script src="popup.js"></script>
+        <script src="popup.js"></script>
 </body>
 
 </html>

@@ -17,13 +17,6 @@ body {
   display: block;
 }
 
-.tabs {
-  width: 100%;
-  display: block;
-  align-items: center;
-  bottom: 0%;
-}
-
 /* Style the tab buttons */
 .tablink {
   background-color: #555;
@@ -61,10 +54,6 @@ body {
   display: none;
 }
 
-#Settings {
-  display: none;
-}
-
 #Search {
   display: none;
 }
@@ -91,21 +80,47 @@ img#logo {
   border-right: 1.5pt;
   border-color: #A5A5AF;
   align-items: center;
-  width: auto;
-  margin: 5%
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input {
+    color: #333;
+    font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    border: none;
+    border-bottom: #e06967 1px solid;
+    padding: 5px;
+    -webkit-transition: 500ms;
+    -moz-transition: 500ms;
+    -o-transition: 500ms;
+    transition: 500ms;
+    background: none;
+}
+
+.input:focus {
+    -webkit-transition: 500ms;
+    -moz-transition: 500ms;
+    -o-transition: 500ms;
+    transition: 500ms;
+    border-bottom: #333 1px solid;
+    outline: none;
+        
+    background: #fff4f4;
 }
 
 div#loginFields {
   display: block;
   margin: auto;
   width: 50%;
-  margin-top: 10%;
+  margin-top: 20%;
   align-items: center;
 }
 
 .btnContainer {
   display: block;
-  width: 100%;
+  width: 50%;
   align-items: center;
   margin: auto;
 }
@@ -122,6 +137,7 @@ div#loginFields {
   background: #fff;
   color: #e06967;
   font-size: 11px;
+  transition:0.3s;
 }
 
 .btn2:hover {
@@ -129,6 +145,7 @@ div#loginFields {
   color: #fff;
   border: 2px solid #e06967;
   border-radius: 12px;
+  transition:0.3s;
 }
 
 .dropdown {
@@ -267,16 +284,8 @@ div#loginFields {
 }
 
 #settings {
-  z-index: 10000000000000;
-  background-color: white;
-  height: 70%;
-  width: 95%;
-  top: 27%;
-  right: 2.5%;
-  position: absolute;
   padding: 0 1em;
   box-sizing: border-box;
-  visibility: hidden;
 }
 
 #saveSettings {
@@ -333,88 +342,19 @@ hr {
 }
 
 .tabs {
-  border-bottom-color: #333333;
-  margin: auto;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  border-radius: 25px;
-  margin-top: -35%;
-  position: absolute;
-  bottom: 10%;
-  align-items: center;
-  width: 100%;
-  display: block;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
-.tabs-1 {
-  display: inline-block;
+.tabs > div {
   text-align: center;
-  width: 20%;
-  border-right: 1px solid black;
-  transition: color 0.3s;
-  padding: 15px;
-}
-
-.tabs-1:hover {
-  cursor: pointer;
-  color: red;
   transition: color 0.3s;
 }
 
-.tabs-2 {
-  display: inline-block;
-  text-align: center;
-  width: 20%;
-  border-right: 1px solid black;
-  transition: color 0.3s;
-  padding: 15px;
-}
-
-.tabs-2:hover {
-  cursor: pointer;
-  color: red;
-  transition: color 0.3s;
-}
-
-.tabs-3 {
-  display: inline-block;
-  text-align: center;
-  width: 20%;
-  transition: color 0.3s;
-  border-right: 1px solid black;
-  padding: 15px;
-}
-
-.tabs-3:hover {
-  cursor: pointer;
-  color: red;
-  transition: color 0.3s;
-}
-
-.tabs-4 {
-  display: inline-block;
-  text-align: center;
-  width: 20%;
-  transition: color 0.3s;
-  border-right: 1px solid black;
-  padding: 15px;
-}
-
-.tabs-4:hover {
-  cursor: pointer;
-  color: red;
-  transition: color 0.3s;
-}
-
-.tabs-5 {
-  display: inline-block;
-  text-align: center;
-  width: 20%;
-  transition: color 0.3s;
-  padding: 15px;
-}
-
-.tabs-5:hover {
+.tabs > div:hover {
   cursor: pointer;
   color: red;
   transition: color 0.3s;
