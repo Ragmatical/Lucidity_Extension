@@ -193,5 +193,7 @@ function mlCollection(currentUserId, data){
 	xhr.send(JSON.stringify(data));
 
 }
-
-getUserID();
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	// chrome.runtime.reload();
+	getUserID();
+});
