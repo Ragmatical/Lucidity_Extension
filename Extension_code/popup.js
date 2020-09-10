@@ -2,16 +2,16 @@
 var studentname = document.querySelector('#studentName')
 var classcode = document.querySelector('#classcode')
 var loginBtn = document.querySelector('#loginBtn')
-var homeTab = document.getElementById("homeTab")
-var settingsTab = document.getElementById("settingsTab")
-var whitelistTab = document.getElementById("whitelistTab")
-var rewardsTab = document.getElementById("rewardsTab")
-var searchTab = document.getElementById("searchTab")
-var $addWhite = document.querySelector('#addWhite');
-// var $joinClass = document.querySelector('#joinClass');
-var $addBlack = document.querySelector('#addBlack');
-var whitelist = document.getElementById('whitelist');
-var blacklist = document.getElementById('blacklist');
+//var homeTab = document.getElementById("homeTab")
+//var settingsTab = document.getElementById("settingsTab")
+//var whitelistTab = document.getElementById("whitelistTab")
+//var rewardsTab = document.getElementById("rewardsTab")
+//var searchTab = document.getElementById("searchTab")
+//var $addWhite = document.querySelector('#addWhite');
+//// var $joinClass = document.querySelector('#joinClass');
+//var $addBlack = document.querySelector('#addBlack');
+//var whitelist = document.getElementById('whitelist');
+//var blacklist = document.getElementById('blacklist');
 var topmostlist = document.getElementById('topmostlist');
 var recentlist = document.getElementById('recentlist');
 var myNodelist = Array.from(document.getElementsByTagName("LI"));
@@ -48,12 +48,12 @@ checkForLogin();
 function loginSetup(){
   if(loginStatus == false){
     document.getElementById("loginFields").style.display = "block"
-    Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
-    homeTab.style.display = "none";
-    settingsTab.style.display = "none";
-    whitelistTab.style.display = "none";
-    rewardsTab.style.display = "none";
-    searchTab.style.display = "none";
+    ////Array.from(document.getElementsByClassName("tabcontent")).forEach(tab => tab.style.display = "none");
+    //homeTab.style.display = "none";
+    //settingstab.style.display = "none";
+    //whitelistTab.style.display = "none";
+    //rewardsTab.style.display = "none";
+    //searchTab.style.display = "none";
     document.getElementById("error").style.visibility = "hidden"
   }
 }
@@ -61,12 +61,12 @@ function loginSetup(){
 function loggedIn(currentUserId, time, classcode) {
   if (loginStatus === true) {
     document.getElementById("loginFields").style.display = "none"
-    document.getElementById("Settings").style.display = "block"
-    homeTab.style.display = "initial";
-    settingsTab.style.display = "initial";
-    whitelistTab.style.display = "initial";
-    rewardsTab.style.display = "initial";
-    searchTab.style.display = "initial";
+      document.getElementById("Settings").style.display = "block";
+    //homeTab.style.display = "initial";
+    //settingsTab.style.display = "initial";
+    //whitelistTab.style.display = "initial";
+    //rewardsTab.style.display = "initial";
+    //searchTab.style.display = "initial";
     // chrome.storage.sync.set({
     //   currentUserId: currentUserId
     //   // classcode: classcode
@@ -131,11 +131,6 @@ function logout() {
 
 /* Event Listeners  */
 
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('checked');
-  }
-}, false);
 loginBtn.addEventListener('click', function() {
   console.log(studentName.value)
   sendLoginData({
@@ -150,7 +145,7 @@ loginBtn.addEventListener('click', function() {
 // activeButton.addEventListener("click", hideCompletedTasks);
 // completedButton.addEventListener("click", hideActiveTasks);
 // addButton.addEventListener("click", newElement);
-homeTab.addEventListener('click', function() {
+/*homeTab.addEventListener('click', function() {
   openTab("Todos")
 })
 settingsTab.addEventListener('click', function() {
@@ -176,7 +171,7 @@ list.addEventListener('click', function(ev) {
     })
     ev.stopPropagation();
   }
-}, false);
+}, false);*/
 logoutBtn.addEventListener('click', logout());
 // allButton.addEventListener("click", showAllTasks);
 // activeButton.addEventListener("click", hideCompletedTasks);
