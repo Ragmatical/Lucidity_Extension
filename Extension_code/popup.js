@@ -31,16 +31,20 @@ var addBtn = document.getElementById("addBtn")
 /********** FUNCTIONS *************/
 function checkForLogin(){
   chrome.storage.sync.get(["currentUserId"], function(result) {
-    console.log("checking for login")
-    if(Object.values(result)[0]){
-      currentUserId = Object.values(result)[0]
-      console.log("INSIDE FUNCTION", currentUserId);
-      loginStatus = true;
-      loggedIn(currentUserId, 0.5)
-    } else {
-      loginSetup();
-      loggedIn(currentUserId, 0)
-    }
+    var currentUserId = Object.values(result)[0];
+    chrome.storage.sync.get(["classcode"], function(result) {
+      console.log("checking for login")
+      var classcode = Object.values(result)[0];
+      if(Object.values(result)[0]){
+
+        console.log("INSIDE FUNCTION", currentUserId);
+        loginStatus = true;
+        loggedIn(currentUserId, classcode, 0.5)
+      } else {
+        loginSetup();
+        loggedIn(currentUserId, classcode, 0)
+      }
+    });
   })
 }
 checkForLogin();
@@ -62,12 +66,17 @@ function loggedIn(currentUserId, classcode1, time, name) {
   if (loginStatus === true) {
     document.getElementById("loginFields").style.display = "none"
       document.getElementById("Settings").style.display = "block";
+      document.getElementById("Settings").style.visibility = "visible";
+      document.getElementById("logoutBtn").style.visibility = "visible";
       // document.getElementById("name").innerHTML = name;
     //homeTab.style.display = "initial";
     //settingsTab.style.display = "initial";
     //whitelistTab.style.display = "initial";
     //rewardsTab.style.display = "initial";
     //searchTab.style.display = "initial";
+    document.getElementById("error").style.visibility = "visible"
+    console.log(classcode1)
+    document.getElementById("studentclass").innerHTML = "You are in class: " + classcode1;
     chrome.storage.sync.set({
       currentUserId: currentUserId
       , classcode: classcode1
@@ -101,6 +110,7 @@ function sendLoginData(data) {
     console.log("response text", xhr.responseText)
     var data = JSON.parse(xhr.responseText);
     console.log(data)
+    console.log(classcodee)
      chrome.storage.sync.set({
        currentUserId: data._id
        , classcode: classcodee
@@ -195,6 +205,7 @@ list.addEventListener('click', function(ev) {
     ev.stopPropagation();
   }
 }, false);*/
+// loggedIn();
 logoutBtn.addEventListener('click', logout);
 // allButton.addEventListener("click", showAllTasks);
 // activeButton.addEventListener("click", hideCompletedTasks);
