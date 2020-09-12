@@ -39,6 +39,7 @@ body {
 .tabcontent {
   color: black;
   padding: 50px;
+  padding-top:20px;
   text-align: center;
   display: block;
 }
@@ -125,8 +126,16 @@ div#loginFields {
   margin: auto;
 }
 
+#avatar {
+    width: 80px;
+    border: 4px ridge #e06967;
+    border-radius: 50%;
+    margin-bottom:10px;
+}
+
 .btn2 {
-  width: 100%;
+  display:inline-block;
+  margin-top:25px;
   border: 2px solid #e06967;
   padding: 6px 16px;
   border-radius: 12px;
