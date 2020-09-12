@@ -58,23 +58,23 @@ function loginSetup(){
   }
 }
 
-function loggedIn(currentUserId, time, classcode) {
+function loggedIn(currentUserId, classcode1, time, name) {
   if (loginStatus === true) {
     document.getElementById("loginFields").style.display = "none"
       document.getElementById("Settings").style.display = "block";
+      // document.getElementById("name").innerHTML = name;
     //homeTab.style.display = "initial";
     //settingsTab.style.display = "initial";
     //whitelistTab.style.display = "initial";
     //rewardsTab.style.display = "initial";
     //searchTab.style.display = "initial";
-    // chrome.storage.sync.set({
-    //   currentUserId: currentUserId
-    //   // classcode: classcode
-    //
-    // }, function() {
-    //   console.log("Set Current User Id", currentUserId)
-    // })
-    // getSitesVisited();
+    chrome.storage.sync.set({
+      currentUserId: currentUserId
+      , classcode: classcode1
+
+    }, function() {
+      console.log("Set Current User Id", currentUserId)
+    });
     console.log("called list functions")
   } else if(time == 1) {
     document.getElementById("error").innerHTML = "Invalid Classcode"
@@ -87,6 +87,7 @@ function loggedIn(currentUserId, time, classcode) {
 function sendLoginData(data) {
   console.log(data)
   var classcodee = data.classcode
+  var name = data.studentNames
   console.log(classcodee)
   var xhr = new XMLHttpRequest();
   console.log("checkpoint 1: made request")
@@ -103,13 +104,14 @@ function sendLoginData(data) {
      chrome.storage.sync.set({
        currentUserId: data._id
        , classcode: classcodee
+       , studentname: name
      }, function() {
        console.log("Current Usefr Id: ", currentUserId)
      })
     console.log("checkpoint 3: logged in")
     if (JSON.parse(xhr.responseText)._id) {
       loginStatus = true
-      loggedIn(data, 1, classcodee);
+      loggedIn(data._id, classcodee, 1, name);
       console.log("checkpoint 4: called login function")
     }
   };
@@ -134,10 +136,27 @@ function logout() {
 loginBtn.addEventListener('click', function() {
   console.log(studentName.value)
   sendLoginData({
-    studentNames: studentname.value,
+    studentNames: studentName.value,
     classcode: classcode.value
   })
 })
+
+
+// chrome.storage.sync.get(['studentname'], function(result) {
+//   studentname = Object.values(result)[0];
+//   console.log(studentname)
+//   chrome.storage.sync.get(['currentUserId'], function(result) {
+//     currentUserId = Object.values(result)[0];
+//     chrome.storage.sync.get(['classcode'], function(result) {
+//       classcode = Object.values(result)[0];
+//       try{
+//         loggedIn(currrentUserId, classcode, 1, studentname);
+//       } catch(err){
+//         console.log(err);
+//       }
+//     });
+//   });
+// });
 // $addWhite.addEventListener('click', addWhite);
 // $addBlack.addEventListener('click', addBlack);
 // $joinClass.addEventListener('click', joinClass);

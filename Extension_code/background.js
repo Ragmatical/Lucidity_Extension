@@ -86,6 +86,7 @@ function getUserID(){
 				});
 		} else {
 			console.log("Error: Not Logged In.")
+			// chrome.runtime.reload();
 		}
 	});
 }
@@ -193,6 +194,7 @@ function mlCollection(currentUserId, data){
 	xhr.send(JSON.stringify(data));
 
 }
+
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	// chrome.runtime.reload();
 	getUserID();
