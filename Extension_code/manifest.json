@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
 
-  "name": "Lucidity",
+  "name": "Lucidity - Think Productive",
 
   "description": "Lucidity helps us stay focused and productive by blocking websites for procrastination.",
 
@@ -10,7 +10,7 @@
 
   "browser_action": {
 
-   "default_icon": "icon.png",
+   "icons": {"48": "icon.png"},
 
    "default_popup": "popup.html"
 
