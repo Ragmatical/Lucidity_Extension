@@ -122,6 +122,10 @@ function sendLoginData(data) {
 function logout() {
   loginStatus = false;
   console.log("logout1", loginStatus)
+  document.getElementById("Settings").style.visibility = "hidden";
+  document.getElementById("logoutBtn").style.visibility = "hidden"
+  document.getElementById("studentName").value = ""
+  document.getElementById("classcode").value = ""
   chrome.storage.sync.set({
     currentUserId: "",
     classcode: ""
@@ -191,7 +195,7 @@ list.addEventListener('click', function(ev) {
     ev.stopPropagation();
   }
 }, false);*/
-logoutBtn.addEventListener('click', logout());
+logoutBtn.addEventListener('click', logout);
 // allButton.addEventListener("click", showAllTasks);
 // activeButton.addEventListener("click", hideCompletedTasks);
 // completedButton.addEventListener("click", hideActiveTasks);
