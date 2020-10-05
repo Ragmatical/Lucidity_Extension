@@ -1,7 +1,7 @@
 // var mode = 1;
 var currentUserId = "";
 var hardcodedWhitelist = ['lucidity.ninja', 'google.com']
-var hardCodeMode = 5;
+// var hardCodeMode = 6;
 
 
 var userId;
@@ -79,18 +79,20 @@ function getUserID(){
 											}
 										mlCollection(userId, {url: url, label: result, checked: 'unchecked'})
 										});
-								} if(hardCodeMode === 5){ // whitelist
+								}
+								 if(mode === 5){ // whitelist
+									 console.log('inmode')
 										getMLSites(userId, (ourBlacklist, ourWhitelist)=>{
-											if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
+											if (ourWhitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
 							 		 			return
 							 		 		}else{
 												sendResponse({res: 'BLOCK'})
 												sendUserData(url, userId)
 							 		 		}
 										});
-								} if(hardCodeMode === 6){ // blacklist
+								} if(mode === 6){ // blacklist
 										getMLSites(userId, (ourBlacklist, ourWhitelist)=>{
-											if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
+											if (ourBlacklist.some(el => url.includes(el)) && !ourWhitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
 												console.log('here')
 												sendResponse({res: 'BLOCK'})
 												sendUserData(url, userId)
@@ -129,8 +131,8 @@ function getMode(currentUserId, classcode, cb){
 }
 function getMLSites(currentUserId, cb){
 	var xhr = new XMLHttpRequest();
-	console.log(currentUserId, classcode)
-	xhr.open('GET', `https://www.lucidity.ninja/modes/${encodeURIComponent(currentUserId)}`);
+	console.log(currentUserId)
+	xhr.open('GET', `https://www.lucidity.ninja/mlsites/${encodeURIComponent(currentUserId)}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 			if (xhr.readyState != 4 || xhr.status > 300) {
@@ -138,7 +140,7 @@ function getMLSites(currentUserId, cb){
             }
         console.log(xhr.responseText);
         var bwdata = JSON.parse(xhr.responseText);
-				console.log(data)
+				console.log(bwdata)
 				var ourBlacklist = [];
 				var ourWhitelist = [];
 	      for (i=0; i<bwdata.length; i++){

@@ -92,7 +92,6 @@ function loggedIn(currentUserId, classcode1, time, name) {
     console.log("Not logged in yet.")
   }
 }
-// does this fucking update
 function sendLoginData(data) {
   console.log(data)
   var classcodee = data.classcode
