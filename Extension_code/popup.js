@@ -99,7 +99,7 @@ function sendLoginData(data) {
   console.log(classcodee)
   var xhr = new XMLHttpRequest();
   console.log("checkpoint 1: made request")
-  xhr.open('POST', 'https://www.lucidity.ninja/users/classlogin');
+  xhr.open('POST', 'https://justin.lucidity.ninja/users/classlogin');
   console.log('checkpoint 2: posted')
   xhr.setRequestHeader('content-type', 'application/json');
   xhr.onreadystatechange = (res) => {
@@ -126,6 +126,7 @@ function sendLoginData(data) {
   };
   console.log("data: ", data)
   xhr.send(JSON.stringify(data));
+  console.log("data2: ", JSON.stringify(data))
 }
 
 function logout() {
