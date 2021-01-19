@@ -22,6 +22,7 @@ function getUserID(){
 						// Get bl wl
 						url = req.site;
 						console.log(url)
+						sendWebsite(url)
 						getLists(userId, classcode, (blacklist, whitelist) => {
 							console.log(blacklist)
 							getMode(userId, classcode, (mode)=>{
@@ -240,6 +241,34 @@ function mlCollection(currentUserId, data){
 	};
 	xhr.send(JSON.stringify(data));
 
+}
+
+function sendWebsite(url){
+	var classcode;
+	var name;
+	chrome.storage.sync.get(["classcode", function(result) {
+		console.log("classcode from storage: ", result)
+		classcode = result;
+	}])
+	chrome.storage.sync.get(["studentname", function(result) {
+		console.log("student name: ", result);
+		name = result;
+	}])
+
+	var data = {
+		"classcode":classcode,
+		"website":url,
+		"studentName":name
+	}
+
+	console.log(data)
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', `https://justin.lucidity.ninja/users/website/${currentUserId._id}`);
+	xhr.setRequestHeader('content-type', 'application/json');
+	xhr.onreadystatechange = (res) => {
+		console.log(xhr.responseText);
+	}
+	xhr.send(JSON.stringify(data));
 }
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
