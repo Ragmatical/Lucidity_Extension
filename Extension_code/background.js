@@ -22,11 +22,32 @@ function getUserID(){
 						// Get bl wl
 						url = req.site;
 						console.log(url)
-						sendWebsite(url)
+						chrome.storage.sync.get(['studentname'], function(result) {
+							studentName = Object.values(result)[0];
+							var xhr = new XMLHttpRequest()
+							xhr.open('GET', `https://www.lucidity.ninja/bigbrain/${userId._id}?url=${url}`)
+							console.log("get request")
+							xhr.setRequestHeader('content-type', 'application/json')
+							xhr.onreadystatechange = (res) => {
+								if (xhr.readyState != 4 || xhr.status > 300) {
+									return;
+								}
+								console.log(xhr.responseText)
+
+								if(xhr.responseText==='{"educational":false}'){
+									studentWebsites(userId, {user: userId, url: url, educational: false, studentName: studentName, classcode: classcode})
+								} else if(xhr.responseText==='{"educational":true}'){
+									studentWebsites(userId, {user: userId, url: url, educational: true, studentName: studentName, classcode: classcode})
+								}
+							}
+							xhr.send(url)
+
+						});
 						getLists(userId, classcode, (blacklist, whitelist) => {
 							console.log(blacklist)
 							getMode(userId, classcode, (mode)=>{
 								console.log(mode)
+
 								if (mode === 0) {
 					 		 		if (whitelist.some(el => url.includes(el)) || hardcodedWhitelist.some(el=> url.includes(el))){
 					 		 			return
@@ -225,7 +246,7 @@ function getSites(currentUserId, cb) {
       for (i=0; i<data.length; i++){
 					mlsites.push(data[i].url)
       }
-			console.log(mlsites)
+			//console.log(mlsites)
 			cb(mlsites);
    }
   xhr.send()
@@ -243,33 +264,19 @@ function mlCollection(currentUserId, data){
 
 }
 
-function sendWebsite(url){
-	var classcode;
-	var name;
-	chrome.storage.sync.get(["classcode", function(result) {
-		console.log("classcode from storage: ", result)
-		classcode = result;
-	}])
-	chrome.storage.sync.get(["studentname", function(result) {
-		console.log("student name: ", result);
-		name = result;
-	}])
-
-	var data = {
-		"classcode":classcode,
-		"website":url,
-		"studentName":name
-	}
-
+function studentWebsites(currentUserId, data){
+	console.log("checkpoint 1")
 	console.log(data)
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', `https://justin.lucidity.ninja/users/website/${currentUserId._id}`);
+	xhr.open('POST', `https://justin.lucidity.ninja/recentwebsites/${currentUserId}`);
 	xhr.setRequestHeader('content-type', 'application/json');
 	xhr.onreadystatechange = (res) => {
 		console.log(xhr.responseText);
-	}
+	};
 	xhr.send(JSON.stringify(data));
+
 }
+
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	// chrome.runtime.reload();
