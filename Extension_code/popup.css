@@ -61,7 +61,8 @@ body {
 
 h1 {
   font-family: 'Merriweather', serif;
-  font-size: 15px;
+  font-size: 30px;
+  text-align: center;
   font-weight: 700;
   letter-spacing: 1px;
   color: black;
@@ -107,7 +108,7 @@ img#logo {
     transition: 500ms;
     border-bottom: #333 1px solid;
     outline: none;
-        
+
     background: #fff4f4;
 }
 
@@ -401,14 +402,14 @@ ul li:hover {
 }
 
 /* When clicked on, add a background color and strike out text */
-ul li.checked {
+ul li.done {
   background: #888;
   color: #fff;
   text-decoration: line-through;
 }
 
 /* Add a "checked" mark when clicked on */
-ul li.checked::before {
+ul li.done::before {
   content: '';
   position: absolute;
   border-color: #fff;
@@ -527,7 +528,7 @@ ul {
   transition: .4s;
 }
 
-input:checked + .slider {
+input:done + .slider {
   background-color: #2196F3;
 }
 
@@ -535,7 +536,7 @@ input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
+input:done + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);

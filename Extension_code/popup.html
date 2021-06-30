@@ -12,7 +12,8 @@
 
 
     <div>
-        <img src="icon.png" id="logo">
+        <img src="luclogo.PNG" id="logo">
+        <h1>Lucidity</h1>
         <div>
 
             <div id="loginFields">
@@ -23,16 +24,32 @@
             </div>
         </div>
         <div id="Settings" style="display:none;" class="tabcontent">
-            <img id="avatar" src="/avatar.jpg" />
+            <!-- <img id="avatar" src="/luclogo.PNG" /> -->
             <br />
             <!-- <span style="font-size:2em;" id="name">STUDENT NAME</span> -->
             <br />
             <span style="font-size:2em;" id= "studentclass">You are in class: ___</span>
             <br />
+          		<div>
+          			<input type="text" id="taskInput" placeholder="task...">
+          			<!-- <span onclick="newElement()" id="addBtn">Add</span> -->
+          		</div>
+          		<div id='container'>
+          			<button id='allButton' class='lucid-text-h5'>All</button>
+          			<button id='activeButton' class='lucid-text-h5'>Active</button>
+          			<button id='completedButton' class='lucid-text-h5'>Done</button>
+          		</div>
+
+          		<ul id="todoList">
+
+          		</ul>
+
+
             <button id='logoutBtn' width="50px" class='btn2'>Logout</button>
         </div>
 
     </div>
+        <!-- <script src='todos.js'></script> -->
         <script src="popup.js"></script>
 </body>
 
