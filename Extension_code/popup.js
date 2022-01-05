@@ -401,7 +401,7 @@ function convertTodo(data){
 list.addEventListener('click', function(ev) {
   if (ev.target.tagName === 'LI') {
     ev.target.classList.toggle('done');
-    console.log(ev.target.classList.value)
+    console.log(ev.target)
     chrome.storage.sync.get(['currentUserId'], function(result) {
       currentUserId = Object.values(result)[0];
         chrome.storage.sync.get(['studentname'], function(result){
@@ -410,6 +410,7 @@ list.addEventListener('click', function(ev) {
             classcode = Object.values(result)[0];
             patchItem({
               status: ev.target.classList.value
+              // description: 
               // id: ev.target.getAttribute("index")//,
             }, currentUserId, classcode, studentName);
           });

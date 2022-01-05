@@ -8,6 +8,36 @@ var userId;
 var url;
 var label;
 
+function blockAd(){
+	chrome.webNavigation.onCommitted.adListener(function (tab){
+		// Prevents script from running when other frames load
+    if (tab.frameId == 0) {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+					getLists(userId, classcode, (blacklist, whitelist) => {
+						console.log(blacklist)
+						let url = tabs[0].url;
+						try{
+							if(!blacklist.some(el => url.includes(el))){
+								runBlockScript();
+								return;
+							} else{
+								return;
+							}
+						} catch(err){
+							throw err;
+						}
+					});
+				});
+		}
+	});
+}
+function runBlockScript(){
+	chrome.tabs.executeScript({
+		file: "block.js"
+	});
+	return true;
+}
+
 function getUserID(){
 	// Get the user id  when page loads
 	chrome.storage.sync.get(['currentUserId'], function(result) {
@@ -58,6 +88,7 @@ function getUserID(){
 					 		 	} if (mode === 1) {
 									console.log('here2')
 									console.log(blacklist, whitelist)
+									// alert("hi")
 					 		 		if (blacklist.some(el => url.includes(el)) && !whitelist.some(el => url.includes(el)) && !hardcodedWhitelist.some(el=> url.includes(el))){
 										console.log('here')
 										sendResponse({res: 'BLOCK'})
@@ -281,4 +312,5 @@ function studentWebsites(currentUserId, data){
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	// chrome.runtime.reload();
 	getUserID();
+	// blockAd();
 });
