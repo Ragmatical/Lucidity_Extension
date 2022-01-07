@@ -20,37 +20,58 @@ function removeAds() {
     let domain = parsedUrl.slice(0, parsedUrl.indexOf('/') == -1 ? parsedUrl.length : parsedUrl.indexOf('/'))
         .slice(0, parsedUrl.indexOf('?') == -1 ? parsedUrl.length : parsedUrl.indexOf('?'));
 
-    // var links = [], l = document.links; // maybe eliminate by iframe src link instead
-    // for(var i=0; i<l.length; i++) {
-    //   if(adDomains.some(el => l[i].includes(el)) || !l[i].includes(domain) || l[i].charAt(0)!="/"){
-    //     links.push(l[i].href);
-    //   }
-    // }
+    
+    // hide all <a> parents by href
+    var links = [], links = document.links; 
+    for(var link: links) {
+      if(adHREFs.some(el => link.href.includes(el)) || !link.href.includes(domain) || link.href.charAt(0)!="/"){
+        let card = iframes[i].closest("div");
+        makedisappear(card, "a");
+      }
+    }
 
-
-
-    // Get all 'span' elements on the page
+    // Get all 'iframe' elements on the page
     let iframes = document.getElementsByTagName("iframe");
 
     for (let i = 0; i < iframe.length; i++) {
         // Check if they contain the text 'Promoted'
         var badlink = iframes[i].src;
-        if (adDomains.some(el => badlink.includes(el)) || !badlink.includes(domain) || badlink.charAt(0)!="/") {
+        var badid = iframes[i].id;
+        if (adIframeSRCs.some(el => badlink.includes(el)) || !badlink.includes(domain) || badlink.charAt(0)!="/") {
+            if(adIframeIDs.some(el => badid.includes(el))){
+                // Get the div that wraps around the entire ad
+                let card = iframes[i].closest("div");
+
+                makedisappear(card, "div");
+
+            }
+            
+        }
+    }
+
+    let imgs = document.getElementsByTagName("img");
+
+    for (let i = 0; i < iframe.length; i++) {
+        // Check if they contain the text 'Promoted'
+        var badlink = iframes[i].src;
+        if (adIMGSRCs.some(el => badlink.includes(el)) || !badlink.includes(domain) || badlink.charAt(0)!="/") {
             // Get the div that wraps around the entire ad
-            let card = iframes[i].closest(".GoogleCreativeContainerClass");
+            let card = iframes[i].closest("div");
 
-            makedisappear(card);
+            makedisappear(card, "div");
 
+            
         }
     }
 }
 
-function makedisappear(card){
-    if(card === null){
-        var newcard = card.closest(".GoogleCreativeContainerClass");
-        makedisappear(newcard);
-    } else if(card.classList.contains("")){
+function makedisappear(card, tagName){
+    if(card === null || card == card.closest(tagName)){
         card.setAttribute("style", "display: none !important;");
+        
+    } else {
+        var newcard = card.closest(tagName);
+        makedisappear(newcard, tagName);
     }
 }
 
