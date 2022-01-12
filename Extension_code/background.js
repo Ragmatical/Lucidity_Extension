@@ -9,24 +9,35 @@ var url;
 var label;
 
 function blockAd(){
-	chrome.webNavigation.onCommitted.adListener(function (tab){
+	console.log("inside blockad")
+	chrome.webNavigation.onCommitted.addListener(function (tab) {
 		// Prevents script from running when other frames load
+		console.log("inside listener")
     if (tab.frameId == 0) {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-					getLists(userId, classcode, (blacklist, whitelist) => {
-						console.log(blacklist)
-						let url = tabs[0].url;
-						try{
-							if(!blacklist.some(el => url.includes(el))){
-								runBlockScript();
-								return;
-							} else{
-								return;
-							}
-						} catch(err){
-							throw err;
-						}
-					});
+					console.log("beforeblockscript")
+					runBlockScript();
+					// chrome.storage.sync.get(['currentUserId'], function(result) {
+					// 	userId = Object.values(result)[0];
+					// 	chrome.storage.sync.get(['classcode'], function (result) {
+					// 		var classcode = Object.values(result)[0]
+					// 		getLists(userId, classcode, (blacklist, whitelist) => {
+					// 			console.log(blacklist)
+					// 			let url = tabs[0].url;
+					// 			try{
+					// 				if(!blacklist.some(el => url.includes(el))){
+					// 					console.log("beforeblockscript")
+					// 					runBlockScript();
+					// 					return;
+					// 				} else{
+					// 					return;
+					// 				}
+					// 			} catch(err){
+					// 				throw err;
+					// 			}
+					// 		});
+					// 	});
+					// });
 				});
 		}
 	});
@@ -311,6 +322,7 @@ function studentWebsites(currentUserId, data){
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	// chrome.runtime.reload();
-	getUserID();
-	// blockAd();
+	// getUserID();
+	console.log("first")
+	blockAd();
 });

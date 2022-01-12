@@ -30,7 +30,8 @@
 
    "activeTab",
    "webNavigation",
-   "storage"
+   "storage",
+   "*://*/*"
 
    ]
 
