@@ -20,9 +20,9 @@ function removeAds() {
     let domain = parsedUrl.slice(0, parsedUrl.indexOf('/') == -1 ? parsedUrl.length : parsedUrl.indexOf('/'))
         .slice(0, parsedUrl.indexOf('?') == -1 ? parsedUrl.length : parsedUrl.indexOf('?'));
 
-    
+
     // hide all <a> parents by href
-    var links = [], links = document.links; 
+    var links = [], links = document.links;
     for(var link: links) {
       if(adHREFs.some(el => link.href.includes(el)) || !link.href.includes(domain) || link.href.charAt(0)!="/"){
         let card = iframes[i].closest("div");
@@ -45,7 +45,7 @@ function removeAds() {
                 makedisappear(card, "div");
 
             }
-            
+
         }
     }
 
@@ -60,7 +60,7 @@ function removeAds() {
 
             makedisappear(card, "div");
 
-            
+
         }
     }
 }
@@ -68,7 +68,7 @@ function removeAds() {
 function makedisappear(card, tagName){
     if(card === null || card == card.closest(tagName)){
         card.setAttribute("style", "display: none !important;");
-        
+
     } else {
         var newcard = card.closest(tagName);
         makedisappear(newcard, tagName);
