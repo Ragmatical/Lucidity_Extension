@@ -32,35 +32,39 @@ function removeAds() { // WHITELIST LUCIDITY
 // a.forEach(el => addas.append((el.href.includes(url)) ? "" : el.href))
     var a = document.getElementsByTagName("a");
     var addas = [];
-    var url = "usatoday";
+    // var baseurl = domain.slice(domain.indexOf("."), domain.indexOf("."))
+    var baseurl = "usatoday";
 
     for(var i=0; i<a.length; i++){
       var d = a[i].href;
-      if(adHREFs.some(el => d.includes(el)) || !d.includes(url)){
-        if(a[i].title != ""){
-          let card = a[i].closest("div");
-          makedisappear(card, "div");
-        }
+      if(adHREFs.some(el => d.includes(el)) || !d.includes(baseurl)){
+        console.log(d)
+        console.log(a[i].title)
+        // if(a[i].title != ""){
+        console.log("indisappear")
+        let card = a[i].closest("div");
+        makedisappear(card, "div");
+        // }
       }
     }
     // Get all 'iframe' elements on the page
-    let iframes = document.getElementsByTagName("iframe");
-
-    for (let i = 0; i < iframes.length; i++) {
-        // Check if they contain the text 'Promoted'
-        var badlink = iframes[i].src;
-        var badid = iframes[i].id;
-        if (adIframeSRCs.some(el => badlink.includes(el)) || !badlink.includes(domain) || badlink.charAt(0)!="/") {
-            if(adIframeIDs.some(el => badid.includes(el))){
-                // Get the div that wraps around the entire ad
-                // let card = iframes[i].closest("div");
-
-                iframesmakedisappear(iframes[i], "div");
-
-            }
-
-        }
-    }
+    // let iframes = document.getElementsByTagName("iframe");
+    //
+    // for (let i = 0; i < iframes.length; i++) {
+    //     // Check if they contain the text 'Promoted'
+    //     var badlink = iframes[i].src;
+    //     var badid = iframes[i].id;
+    //     if (adIframeSRCs.some(el => badlink.includes(el)) || !badlink.includes(domain) || badlink.charAt(0)!="/") {
+    //         if(adIframeIDs.some(el => badid.includes(el))){
+    //             // Get the div that wraps around the entire ad
+    //             // let card = iframes[i].closest("div");
+    //
+    //             iframesmakedisappear(iframes[i], "div");
+    //
+    //         }
+    //
+    //     }
+    // }
 
     // let imgs = document.getElementsByTagName("img");
     //
@@ -99,8 +103,10 @@ function iframesmakedisappear(card, tagName){
     }
 }
 function makedisappear(card, tagName){
+    console.log("making disappear")
     if(card == card.closest(tagName)){
         var parent = card.parentNode;
+        card.setAttribute("style", "display: none !important;");
         if(parent != null){
           card.setAttribute("style", "display: none !important;");
         }
@@ -116,7 +122,7 @@ function makedisappear(card, tagName){
 }
 
 
-removeAds();
+// removeAds();
 
 // Ensures ads will be removed as the user scrolls
 setInterval(function () {
