@@ -24,7 +24,7 @@ var addButton = document.querySelector('#addBtn');
 var closeElements = Array.from(document.querySelectorAll(".close"));
 var currentUserId = "";
 var loginStatus = false;
-var logoutBtn = document.getElementById("logoutBtn")
+// var logoutBtn = document.getElementById("logoutBtn")
 var addBtn = document.getElementById("addBtn")
 
 
@@ -67,7 +67,7 @@ function loggedIn(currentUserId, classcode1, time, name) {
     document.getElementById("loginFields").style.display = "none"
       document.getElementById("Settings").style.display = "block";
       document.getElementById("Settings").style.visibility = "visible";
-      document.getElementById("logoutBtn").style.visibility = "visible";
+      // document.getElementById("logoutBtn").style.visibility = "visible";
       // document.getElementById("name").innerHTML = name;
     //homeTab.style.display = "initial";
     //settingsTab.style.display = "initial";
@@ -80,6 +80,7 @@ function loggedIn(currentUserId, classcode1, time, name) {
     chrome.storage.sync.set({
       currentUserId: currentUserId
       , classcode: classcode1
+      , adblockstatus: false
 
     }, function() {
       console.log("Set Current User Id", currentUserId)
@@ -92,7 +93,7 @@ function loggedIn(currentUserId, classcode1, time, name) {
           classcode = Object.values(result)[0];
           chrome.storage.sync.get(['studentname'], function(result) {
             studentName = Object.values(result)[0];
-            getTodo(currentUserId, classcode, studentName);
+            // getTodo(currentUserId, classcode, studentName);
           });
         });
     });
@@ -126,9 +127,10 @@ function sendLoginData(data) {
        currentUserId: data._id
        , classcode: classcodee
        , studentname: name
+       , adblockstatus: false
        // , todos: ["Todo Entries Show up Here": {"status": "notdone"}]
      }, function() {
-       console.log("Current Usefr Id: ", currentUserId)
+       console.log("Current User Id: ", currentUserId)
      })
     console.log("checkpoint 3: logged in")
     if (JSON.parse(xhr.responseText)._id) {
@@ -150,7 +152,8 @@ function logout() {
   document.getElementById("classcode").value = ""
   chrome.storage.sync.set({
     currentUserId: "",
-    classcode: ""
+    classcode: "",
+    adblockstatus: false
   }, function() {
     console.log("Logged Out")
     loginSetup()
@@ -215,41 +218,41 @@ function showAllTasks(){
 	  myNodelist[i].style.display = 'block';
 	}
 }
-document.querySelector('#taskInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-      var li = document.createElement("li");
-      var inputValue = document.querySelector("#taskInput").value;
-      //console.log(inputValue)
-      var t = document.createTextNode(inputValue);
-      li.appendChild(t);
-      if (inputValue === '') {
-        alert("You must write something!");
-      } else {
-        document.querySelector("#todoList").appendChild(li);
-      }
-      document.querySelector("#taskInput").value = "";
-
-      var span = document.createElement("SPAN");
-      var txt = document.createTextNode("\u00D7");
-      chrome.storage.sync.get(['currentUserId'], function(result) {
-        currentUserId = Object.values(result)[0];
-          chrome.storage.sync.get(['studentname'], function(result){
-            studentName = Object.values(result)[0];
-            chrome.storage.sync.get(['classcode'], function(result){
-              classcode = Object.values(result)[0];
-              taskCreated({user: currentUserId, studentName: studentName, classcode: classcode, description: inputValue, status: "notdone"}, currentUserId, classcode)
-            })
-          })
-
-
-      });
-
-
-      span.className = "close";
-      span.appendChild(txt);
-      li.appendChild(span);
-    }
-});
+// document.querySelector('#taskInput').addEventListener('keypress', function (e) {
+//     if (e.key === 'Enter') {
+//       var li = document.createElement("li");
+//       var inputValue = document.querySelector("#taskInput").value;
+//       //console.log(inputValue)
+//       var t = document.createTextNode(inputValue);
+//       li.appendChild(t);
+//       if (inputValue === '') {
+//         alert("You must write something!");
+//       } else {
+//         document.querySelector("#todoList").appendChild(li);
+//       }
+//       document.querySelector("#taskInput").value = "";
+//
+//       var span = document.createElement("SPAN");
+//       var txt = document.createTextNode("\u00D7");
+//       chrome.storage.sync.get(['currentUserId'], function(result) {
+//         currentUserId = Object.values(result)[0];
+//           chrome.storage.sync.get(['studentname'], function(result){
+//             studentName = Object.values(result)[0];
+//             chrome.storage.sync.get(['classcode'], function(result){
+//               classcode = Object.values(result)[0];
+//               taskCreated({user: currentUserId, studentName: studentName, classcode: classcode, description: inputValue, status: "notdone"}, currentUserId, classcode)
+//             })
+//           })
+//
+//
+//       });
+//
+//
+//       span.className = "close";
+//       span.appendChild(txt);
+//       li.appendChild(span);
+//     }
+// });
 // studentWebsites(userId, {user: userId, url: url, educational: false, studentName: studentName, classcode: classcode})
 function getTodo(currentUserId, classcode, studentName){
     console.log(currentUserId, classcode, studentName)
@@ -345,6 +348,25 @@ function convertTodo(data){
 		}
 	});
 }
+
+
+var adyesno = document.querySelector("#ad");
+chrome.storage.sync.get(['adblockstatus'], function(result){
+  var status = Object.values(result)[0];
+  adyesno.checked = status;
+});
+document.querySelector(".switch").addEventListener('click', function(){
+  console.log(adyesno)
+  console.log(adyesno.checked)
+  let s = adyesno.checked;
+  chrome.storage.sync.set({
+    adblockstatus: s
+  }, function() {
+    console.log("reset adyesno", s)
+  })
+})
+
+
 // function rewardUser(data, user){
 
 // 	xhr = new XMLHttpRequest();
@@ -398,30 +420,31 @@ function convertTodo(data){
 // searchTab.addEventListener('click', function() {
 //   openTab("Search")
 // })
-list.addEventListener('click', function(ev) {
-  if (ev.target.tagName === 'LI') {
-    ev.target.classList.toggle('done');
-    console.log(ev.target)
-    chrome.storage.sync.get(['currentUserId'], function(result) {
-      currentUserId = Object.values(result)[0];
-        chrome.storage.sync.get(['studentname'], function(result){
-          studentName = Object.values(result)[0];
-          chrome.storage.sync.get(['classcode'], function(result){
-            classcode = Object.values(result)[0];
-            patchItem({
-              status: ev.target.classList.value
-              // description: 
-              // id: ev.target.getAttribute("index")//,
-            }, currentUserId, classcode, studentName);
-          });
-      });
-    });
-
-    ev.stopPropagation();
-  }
-}, false);
+// list.addEventListener('click', function(ev) {
+//   if (ev.target.tagName === 'LI') {
+//     ev.target.classList.toggle('done');
+//     console.log(ev.target)
+//     chrome.storage.sync.get(['currentUserId'], function(result) {
+//       currentUserId = Object.values(result)[0];
+//         chrome.storage.sync.get(['studentname'], function(result){
+//           studentName = Object.values(result)[0];
+//           chrome.storage.sync.get(['classcode'], function(result){
+//             classcode = Object.values(result)[0];
+//             patchItem({
+//               status: ev.target.classList.value
+//               // description:
+//               // id: ev.target.getAttribute("index")//,
+//             }, currentUserId, classcode, studentName);
+//           });
+//       });
+//     });
+//
+//     ev.stopPropagation();
+//   }
+// }, false);
 // loggedIn();
-logoutBtn.addEventListener('click', logout);
+// logoutBtn.addEventListener('click', logout);
+
 // allButton.addEventListener("click", showAllTasks);
 // activeButton.addEventListener("click", hideCompletedTasks);
 // completedButton.addEventListener("click", hideActiveTasks);

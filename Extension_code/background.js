@@ -12,34 +12,20 @@ function blockAd(){
 	console.log("inside blockad")
 	chrome.webNavigation.onCommitted.addListener(function (tab) {
 		// Prevents script from running when other frames load
-		console.log("inside listener")
-    if (tab.frameId == 0) {
-        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-					console.log("beforeblockscript")
-					runBlockScript();
-					// chrome.storage.sync.get(['currentUserId'], function(result) {
-					// 	userId = Object.values(result)[0];
-					// 	chrome.storage.sync.get(['classcode'], function (result) {
-					// 		var classcode = Object.values(result)[0]
-					// 		getLists(userId, classcode, (blacklist, whitelist) => {
-					// 			console.log(blacklist)
-					// 			let url = tabs[0].url;
-					// 			try{
-					// 				if(!blacklist.some(el => url.includes(el))){
-					// 					console.log("beforeblockscript")
-					// 					runBlockScript();
-					// 					return;
-					// 				} else{
-					// 					return;
-					// 				}
-					// 			} catch(err){
-					// 				throw err;
-					// 			}
-					// 		});
-					// 	});
-					// });
-				});
-		}
+		chrome.storage.sync.get(['currentUserId'], function(result) {
+			userId = Object.values(result)[0];
+			if(userId){
+					console.log("inside listener")
+			    if (tab.frameId == 0) {
+			        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+								console.log("beforeblockscript")
+								runBlockScript();
+							});
+					}
+
+
+			}
+		});
 	});
 }
 function runBlockScript(){
@@ -170,7 +156,10 @@ function getUserID(){
 				});
 		} else {
 			console.log("Error: Not Logged In.")
-			// chrome.runtime.reload();
+
+			alert("Classcode Does Not Exist");
+			chrome.runtime.reload();
+
 		}
 	});
 }
@@ -322,7 +311,18 @@ function studentWebsites(currentUserId, data){
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
 	// chrome.runtime.reload();
-	// getUserID();
+	getUserID();
 	console.log("first")
-	blockAd();
+	chrome.storage.sync.get(['adblockstatus'], function(result){
+
+
+		var status = Object.values(result)[0];
+		console.log(status)
+		var di = status
+		console.log(di)
+		if(di){
+			console.log("entering")
+			blockAd();
+		}
+	});
 });
