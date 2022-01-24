@@ -147,7 +147,7 @@ function logout() {
   loginStatus = false;
   console.log("logout1", loginStatus)
   document.getElementById("Settings").style.visibility = "hidden";
-  document.getElementById("logoutBtn").style.visibility = "hidden"
+  // document.getElementById("logoutBtn").style.visibility = "hidden"
   document.getElementById("studentName").value = ""
   document.getElementById("classcode").value = ""
   chrome.storage.sync.set({

@@ -10,23 +10,34 @@ var label;
 
 function blockAd(){
 	console.log("inside blockad")
+
 	chrome.webNavigation.onCommitted.addListener(function (tab) {
 		// Prevents script from running when other frames load
-		chrome.storage.sync.get(['currentUserId'], function(result) {
-			userId = Object.values(result)[0];
-			if(userId){
-					console.log("inside listener")
-			    if (tab.frameId == 0) {
-			        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
-								console.log("beforeblockscript")
-								runBlockScript();
-							});
+		chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+			// Get bl wl
+			var currentWebsite = req.site;
+			console.log(currentWebsite);
+			var goodWebsiteNames = ["lucidity", "chrome", "google", "cnn"];
+			console.log(!goodWebsiteNames.some(site => currentWebsite.includes(site)));
+			if(!goodWebsiteNames.some(site => currentWebsite.includes(site))){
+				chrome.storage.sync.get(['currentUserId'], function(result) {
+					userId = Object.values(result)[0];
+					if(userId){
+							console.log("inside listener")
+					    if (tab.frameId == 0) {
+					        chrome.tabs.query({ active: true, lastFocusedWindow: true }, tabs => {
+										console.log("beforeblockscript")
+										runBlockScript();
+									});
+							}
+
+
 					}
-
-
+				});
 			}
-		});
+		})
 	});
+
 }
 function runBlockScript(){
 	chrome.tabs.executeScript({
@@ -318,9 +329,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 		var status = Object.values(result)[0];
 		console.log(status)
-		var di = status
-		console.log(di)
-		if(di){
+
+		if(status){
 			console.log("entering")
 			blockAd();
 		}
